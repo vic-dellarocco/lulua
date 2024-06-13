@@ -90,8 +90,6 @@ clean:
 	# binaries
 	rm lua; 		true
 	rm lua.exe;		true
-	rm luajit; 		true
-	rm luajit.exe;	true
 	rm lua51.dll; 	true
 	# linenoise history file:
 	rm history.txt; true
@@ -157,12 +155,6 @@ lulua:  ##target:build the customized lua interpreter.
 	&& make lua \
 	&& mv lua ../lua \
 	;
-lulua-jit:       # don't use
-	:\
-	&& cd lulua \
-	&& make luajit \
-	&& mv luajit ../luajit \
-	;
 lulua-mingw:     # windows build
 	:\
 	&& cd lulua \
@@ -170,13 +162,6 @@ lulua-mingw:     # windows build
 	&& mv lua.exe ../lua.exe \
 	&& mv lua51.dll ../lua51.dll \
 	&& cp lua5.1/src/liblua.a ../sqlite/liblua.a \
-	;
-lulua-mingw-jit: # don't use
-	:\
-	&& cd lulua \
-	&& PLAT=mingw make luajit \
-	&& mv luajit.exe ../luajit.exe \
-	&& mv lua51.dll ../lua51.dll \
 	;
 
 modules: base64 curses lfs linenoise lpeg luaglut posix sdl signal sqlite utf8 zlib ##target:build the aforementioned lua interpreter and all modules.

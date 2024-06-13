@@ -114,7 +114,6 @@ Modules:
 		lpeg             Makefile.
 		luaglut:         Cmake.
 		lulua:lua5.1:    Makefiles.
-		lulua:luajit2.1: Makefiles.
 		lunit:           pure lua, no build process.
 		penlight         pure lua, no build process.
 		posix:           an alternative build system: 'luke',

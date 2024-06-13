@@ -37,17 +37,3 @@ VV: Lua Numbers
 	  because one bit of precision has been lost.
 
 	I have defined MAXINT,MININT variables.
-
-VV: LuaJIT
-
-	The LuaJIT that ships with Lulua is out of date and most
-	likely won't be updated. Don't use it. I have left it in
-	just so that if someone really needs LuaJIT, they can look
-	at the code modifications for reference. LuaJIT will be
-	removed in a later version. (Actually it will be removed in
-	the second commit on Github. )
-
-	If you use love2d (and I hope you do because it is awesome),
-	then you will be using a LuaJIT that is integrated and
-	maintained by their developers, so LuaJIT synchronization is
-	up to them.

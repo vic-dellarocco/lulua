@@ -4,9 +4,9 @@
 NAME = lulua
 SHELL=/bin/bash
 
-.PHONY: all lua luajit clean
+.PHONY: all lua clean
 
-all: lua luajit;
+all: lua
 lua:
 	@:\
 	&& if [[ "$$PLAT" != "mingw"  ]]; then \
@@ -31,28 +31,6 @@ lua:
 		cp ./lua5.1/bin/lua lua; \
 	  fi \
 	;
-luajit:
-	@if [[  "$$PLAT" = "mingw" ]]; then \
-		: \
-		&& cd luajit2.1 \
-		&& bash compile-windows.sh \
-		; \
-	  else \
-		export MACOSX_DEPLOYMENT_TARGET=10.6 \
-		&& cd luajit2.1 \
-		&& make clean \
-		&& make \
-		&& cd .. \
-		&& cp luajit2.1/src/luajit luajit \
-		|| { echo 'On MacOS you will need to have the environment variable'\
-		&& echo '"MACOSX_DEPLOYMENT_TARGET" set to a "correct" value. Try' \
-		&& echo 'some different numbers if it doesn''t compile such as:'   \
-		&& echo '10.5, 10.6, 10.7 ...' \
-		&& echo 'Edit the Makefile to change this variable.'  \
-		&& echo 'It is OK to have this variable set on linux.'\
-		; } ; \
-	  fi \
-	;
 clean:
 	# lua
 	@: \
@@ -63,13 +41,6 @@ clean:
 	&& cd .. \
 	&& rm -f lua \
 	;
-	# jit
-	@: \
-	&& cd  luajit2.1 \
-	&& make clean \
-	&& cd .. \
-	&& rm -f luajit \
-	;
 	# mac
 	@: \
 	&& find . -type f -name ".DS_Store"  -delete \
@@ -78,7 +49,6 @@ clean:
 	#
 	@: \
 	&& rm -rf lua-5.1.5 \
-	&& rm -rf luajit-2.1 \
 	;
 	#
 	@: \
@@ -122,14 +92,5 @@ hydrate: checks
 		;\
 	else echo "lua5.1 is already hydrated." ;\
 	fi
-	@if [ ! -d "luajit2.1" ]; then \
-		echo "hydrating luajit2.1 ." \
-		&&tar xzf luajit-2.1.tar.gz \
-		&& patch -s -p0 < luajit-2.1.patch \
-		&& mv luajit-2.1 luajit2.1 \
-		;\
-	else echo "luajit2.1 is already hydrated." ;\
-	fi
 patches:
 	tar xzf lua-5.1.5.tar.gz  && diff -ruN lua-5.1.5 lua5.1 	> lua-5.1.5.patch;  [ $$? -eq 1 ]
-	tar xzf luajit-2.1.tar.gz && diff -ruN luajit-2.1 luajit2.1 > luajit-2.1.patch; [ $$? -eq 1 ]

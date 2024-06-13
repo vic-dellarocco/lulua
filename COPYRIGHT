@@ -31,10 +31,6 @@ THE SOFTWARE.
   Copyright (C) 1994-2012 Lua.org, PUC-Rio.
   See lulua/lua5.1/COPYRIGHT ]
 
-[ Lulua contains code from LuaJIT http://luajit.org
-  Copyright (C) 2005-2024 Mike Pall. All rights reserved.
-  See lulua/luajit2.1/COPYRIGHT ]
-
 [ Lulua contains the following software as modules,
   licensed as noted:
 

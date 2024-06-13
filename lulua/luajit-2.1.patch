@@ -1,0 +1,479 @@
+Binary files luajit-2.1/.git/index and luajit2.1/.git/index differ
+diff -ruN luajit-2.1/.git/logs/HEAD luajit2.1/.git/logs/HEAD
+--- luajit-2.1/.git/logs/HEAD	2024-05-17 09:58:35.000000000 -0400
++++ luajit2.1/.git/logs/HEAD	2024-05-16 20:20:26.000000000 -0400
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 5790d253972c9d78a0c2aece527eda5b134bbbf7 sandy <> 1715954315 -0400	clone: from https://luajit.org/git/luajit.git
++0000000000000000000000000000000000000000 5790d253972c9d78a0c2aece527eda5b134bbbf7 sandy <> 1715905226 -0400	clone: from https://luajit.org/git/luajit.git
+diff -ruN luajit-2.1/.git/logs/refs/heads/v2.1 luajit2.1/.git/logs/refs/heads/v2.1
+--- luajit-2.1/.git/logs/refs/heads/v2.1	2024-05-17 09:58:35.000000000 -0400
++++ luajit2.1/.git/logs/refs/heads/v2.1	2024-05-16 20:20:26.000000000 -0400
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 5790d253972c9d78a0c2aece527eda5b134bbbf7 sandy <> 1715954315 -0400	clone: from https://luajit.org/git/luajit.git
++0000000000000000000000000000000000000000 5790d253972c9d78a0c2aece527eda5b134bbbf7 sandy <> 1715905226 -0400	clone: from https://luajit.org/git/luajit.git
+diff -ruN luajit-2.1/.git/logs/refs/remotes/origin/HEAD luajit2.1/.git/logs/refs/remotes/origin/HEAD
+--- luajit-2.1/.git/logs/refs/remotes/origin/HEAD	2024-05-17 09:58:35.000000000 -0400
++++ luajit2.1/.git/logs/refs/remotes/origin/HEAD	2024-05-16 20:20:26.000000000 -0400
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 5790d253972c9d78a0c2aece527eda5b134bbbf7 sandy <> 1715954315 -0400	clone: from https://luajit.org/git/luajit.git
++0000000000000000000000000000000000000000 5790d253972c9d78a0c2aece527eda5b134bbbf7 sandy <> 1715905226 -0400	clone: from https://luajit.org/git/luajit.git
+diff -ruN luajit-2.1/compile-windows.sh luajit2.1/compile-windows.sh
+--- luajit-2.1/compile-windows.sh	1969-12-31 19:00:00.000000000 -0500
++++ luajit2.1/compile-windows.sh	2023-09-27 11:15:42.000000000 -0400
+@@ -0,0 +1,7 @@
++#!/bin/bash
++# build luajit for windows on linux:
++:\
++&& make clean \
++&& make CROSS=x86_64-w64-mingw32- HOST_CC=gcc TARGET_SYS=Windows \
++&& mv src/luajit.exe src/lua51.dll ../ \
++;
+diff -ruN luajit-2.1/etc/luajit.1 luajit2.1/etc/luajit.1
+--- luajit-2.1/etc/luajit.1	2024-05-17 09:58:35.000000000 -0400
++++ luajit2.1/etc/luajit.1	2024-05-26 16:07:17.221759786 -0400
+@@ -41,9 +41,6 @@
+ .B "\-v"
+ Show \fBLuaJIT\fR version.
+ .TP
+-.B "\-E"
+-Ignore environment variables.
+-.TP
+ .B "\-\-"
+ Stop processing options.
+ .TP
+diff -ruN luajit-2.1/src/Makefile luajit2.1/src/Makefile
+--- luajit-2.1/src/Makefile	2024-05-17 09:58:35.000000000 -0400
++++ luajit2.1/src/Makefile	2024-05-16 21:12:36.000000000 -0400
+@@ -497,7 +497,8 @@
+ 
+ LJLIB_O= lib_base.o lib_math.o lib_bit.o lib_string.o lib_table.o \
+ 	 lib_io.o lib_os.o lib_package.o lib_debug.o lib_jit.o lib_ffi.o \
+-	 lib_buffer.o
++	 lib_buffer.o \
++   	 lulua.o
+ LJLIB_C= $(LJLIB_O:.o=.c)
+ 
+ LJCORE_O= lj_assert.o lj_gc.o lj_err.o lj_char.o lj_bc.o lj_obj.o lj_buf.o \
+diff -ruN luajit-2.1/src/lib_package.c luajit2.1/src/lib_package.c
+--- luajit-2.1/src/lib_package.c	2024-05-17 09:58:35.000000000 -0400
++++ luajit2.1/src/lib_package.c	2024-05-26 15:18:49.119542798 -0400
+@@ -547,23 +547,9 @@
+ 
+ #define AUXMARK		"\1"
+ 
+-static void setpath(lua_State *L, const char *fieldname, const char *envname,
+-		    const char *def, int noenv)
+-{
+-#if LJ_TARGET_CONSOLE
+-  const char *path = NULL;
+-  UNUSED(envname);
+-#else
+-  const char *path = getenv(envname);
+-#endif
+-  if (path == NULL || noenv) {
+-    lua_pushstring(L, def);
+-  } else {
+-    path = luaL_gsub(L, path, LUA_PATHSEP LUA_PATHSEP,
+-			      LUA_PATHSEP AUXMARK LUA_PATHSEP);
+-    luaL_gsub(L, path, AUXMARK, def);
+-    lua_remove(L, -2);
+-  }
++//VV:
++static void setpath(lua_State *L, const char *fieldname, const char *def){
++  lua_pushstring(L, def);
+   setprogdir(L);
+   lua_setfield(L, -2, fieldname);
+ }
+@@ -593,7 +579,7 @@
+ LUALIB_API int luaopen_package(lua_State *L)
+ {
+   int i;
+-  int noenv;
++  // int noenv;
+   luaL_newmetatable(L, "_LOADLIB");
+   lj_lib_pushcf(L, lj_cf_package_unloadlib, 1);
+   lua_setfield(L, -2, "__gc");
+@@ -609,11 +595,19 @@
+   lua_setfield(L, -3, "searchers");
+ #endif
+   lua_setfield(L, -2, "loaders");
+-  lua_getfield(L, LUA_REGISTRYINDEX, "LUA_NOENV");
+-  noenv = lua_toboolean(L, -1);
+-  lua_pop(L, 1);
+-  setpath(L, "path", LUA_PATH, LUA_PATH_DEFAULT, noenv);
+-  setpath(L, "cpath", LUA_CPATH, LUA_CPATH_DEFAULT, noenv);
++  // VV:
++  setpath(L, "path",  LUA_PATH_DEFAULT );
++  setpath(L, "cpath", LUA_CPATH_DEFAULT);
++  #if defined(_WIN32)
++	lua_pushstring(L, "!");
++	setprogdir(L);
++	lua_setfield(L, -2, "base");
++  #endif
++  #if !defined(_WIN32) //Linux,MacOS
++	lua_pushstring(L, LUA_BASE_PATH);
++	lua_setfield(L, -2, "base");
++  #endif
++  //:VV
+   lua_pushliteral(L, LUA_PATH_CONFIG);
+   lua_setfield(L, -2, "config");
+   luaL_findtable(L, LUA_REGISTRYINDEX, "_LOADED", 16);
+Binary files luajit-2.1/src/libluajit-5.1.dll.a and luajit2.1/src/libluajit-5.1.dll.a differ
+diff -ruN luajit-2.1/src/luaconf.h luajit2.1/src/luaconf.h
+--- luajit-2.1/src/luaconf.h	2024-05-17 09:58:35.000000000 -0400
++++ luajit2.1/src/luaconf.h	2024-05-16 21:21:01.000000000 -0400
+@@ -18,12 +18,9 @@
+ ** In Windows, any exclamation mark ('!') in the path is replaced by the
+ ** path of the directory of the executable file of the current process.
+ */
+-#define LUA_LDIR	"!\\lua\\"
+-#define LUA_CDIR	"!\\"
+-#define LUA_PATH_DEFAULT \
+-  ".\\?.lua;" LUA_LDIR"?.lua;" LUA_LDIR"?\\init.lua;"
+-#define LUA_CPATH_DEFAULT \
+-  ".\\?.dll;" LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
++//VV:
++#define LUA_PATH_DEFAULT  "!\\?.lua;!\\?\\init.lua"
++#define LUA_CPATH_DEFAULT "!\\?.dll;"
+ #else
+ /*
+ ** Note to distribution maintainers: do NOT patch the following lines!
+@@ -58,14 +55,20 @@
+ #define LUA_LCPATH1	";" LUA_LCDIR "?.so"
+ #define LUA_LCPATH2	";" LUA_LCDIR "loadall.so"
+ 
+-#define LUA_PATH_DEFAULT	"./?.lua" LUA_JPATH LUA_LLPATH LUA_RLPATH
+-#define LUA_CPATH_DEFAULT	"./?.so" LUA_LCPATH1 LUA_RCPATH LUA_LCPATH2
++//VV:
++// #define LUA_PATH_DEFAULT	"./?.lua" LUA_JPATH LUA_LLPATH LUA_RLPATH
++// #define LUA_CPATH_DEFAULT	"./?.so" LUA_LCPATH1 LUA_RCPATH LUA_LCPATH2
++/* These paths will be determined at runtime.*/
++extern char* LUA_BASE_PATH;     // The path of the lua interpreter's base dir.
++extern char* LUA_PATH_DEFAULT;  // Is read only once in loadlib.c .
++extern char* LUA_CPATH_DEFAULT; // Is read only once in loadlib.c .
+ #endif
+ 
+ /* Environment variable names for path overrides and initialization code. */
+-#define LUA_PATH	"LUA_PATH"
+-#define LUA_CPATH	"LUA_CPATH"
+-#define LUA_INIT	"LUA_INIT"
++//#define LUA_PATH	"LUA_PATH"
++//#define LUA_CPATH	"LUA_CPATH"
++//#define LUA_INIT	"LUA_INIT"
++//:VV
+ 
+ /* Special file system characters. */
+ #if defined(_WIN32)
+diff -ruN luajit-2.1/src/luajit.c luajit2.1/src/luajit.c
+--- luajit-2.1/src/luajit.c	2024-05-17 09:58:35.000000000 -0400
++++ luajit2.1/src/luajit.c	2024-05-26 16:08:40.338166122 -0400
+@@ -37,6 +37,10 @@
+ #include <signal.h>
+ #endif
+ 
++//VV:
++char* LUA_INIT_PATH; //The path of the lua interpreter's init.lua file.
++//:VV
++
+ static lua_State *globalL = NULL;
+ static const char *progname = LUA_PROGNAME;
+ static char *empty_argv[2] = { NULL, NULL };
+@@ -73,7 +77,6 @@
+   "  -O[opt]   Control LuaJIT optimizations.\n"
+   "  -i        Enter interactive mode after executing " LUA_QL("script") ".\n"
+   "  -v        Show version information.\n"
+-  "  -E        Ignore environment variables.\n"
+   "  --        Stop handling options.\n"
+   "  -         Execute stdin and stop handling options.\n", stderr);
+   fflush(stderr);
+@@ -487,20 +490,12 @@
+   return LUA_OK;
+ }
+ 
+-static int handle_luainit(lua_State *L)
+-{
+-#if LJ_TARGET_CONSOLE
+-  const char *init = NULL;
+-#else
+-  const char *init = getenv(LUA_INIT);
+-#endif
+-  if (init == NULL)
+-    return LUA_OK;
+-  else if (init[0] == '@')
+-    return dofile(L, init+1);
+-  else
+-    return dostring(L, init, "=" LUA_INIT);
+-}
++//VV: Runs the file "init.lua" at startup. The file must exist.
++//VV: LUA_INIT environment variable is no longer used.
++static int handle_luainit (lua_State *L) {
++	return dofile(L, LUA_INIT_PATH);
++ }
++
+ 
+ static struct Smain {
+   char **argv;
+@@ -524,7 +519,7 @@
+     return 0;
+   }
+ 
+-  if ((flags & FLAGS_NOENV)) {
++  if (1) {//VV: always set noenv
+     lua_pushboolean(L, 1);
+     lua_setfield(L, LUA_REGISTRYINDEX, "LUA_NOENV");
+   }
+@@ -536,9 +531,12 @@
+ 
+   createargtable(L, argv, s->argc, argn);
+ 
+-  if (!(flags & FLAGS_NOENV)) {
++  if (!flags) {
+     s->status = handle_luainit(L);
+     if (s->status != LUA_OK) return 0;
++	//VV: All done with LUA_INIT_PATH after handle_luainit() is called.
++	free(LUA_INIT_PATH);LUA_INIT_PATH=NULL;
++	//:VV
+   }
+ 
+   if ((flags & FLAGS_VERSION)) print_version();
+@@ -566,6 +564,219 @@
+   return 0;
+ }
+ 
++
++//VV: Code to set the default paths based on the path to the exe.
++#if defined(_WIN32)
++	//MAX_PATH wasn't defined for mingw!
++	#define MAX_PATH 260
++	/*  Two ways to do this. The first uses <tchar.h> and _pgmptr .
++		_pgmptr is 'depreciated', but it still works.
++	 */
++	///*
++	#include <tchar.h>
++	// static void l_locate(){//no error checks:
++	// 	LUA_INIT_PATH=malloc(MAX_PATH+1); 
++	// 	strcpy(LUA_INIT_PATH,_pgmptr);
++	// 	*(strrchr(LUA_INIT_PATH,'\\'))='\0';
++	// 	strcat(LUA_INIT_PATH,"\\init.lua");
++	//  }
++	static void l_locate(){//with error checks:
++		//malloc
++		if (LUA_INIT_PATH=malloc(MAX_PATH+1),NULL==LUA_INIT_PATH){
++			fprintf(stderr, "ERROR: Unable to allocate memory for LUA_INIT_PATH.\n");
++			exit(1);
++		 }
++		//strcpy
++		if (strlen(_pgmptr)>=MAX_PATH){
++			fprintf(stderr, "ERROR: File path for LUA_INIT_PATH is too long.\n");
++			exit(1);
++		 } else {
++			strcpy(LUA_INIT_PATH,_pgmptr);
++		 }
++		//strrchar
++		char* backslash=strrchr(LUA_INIT_PATH,'\\');
++		if (backslash==NULL){
++			fprintf(stderr, "ERROR: Unable to find path separator in LUA_INIT_PATH.\n");
++			exit(1);
++		 } else {
++			*backslash='\0';
++		 }
++		//strcpy
++		const char* init="\\init.lua";
++		if (strlen(LUA_INIT_PATH)+strlen(init)>=MAX_PATH){
++			fprintf(stderr, "ERROR: File path for LUA_INIT_PATH\\init.lua too long.\n");
++			exit(1);
++		 } else {
++			strcat(LUA_INIT_PATH,init);
++		 }
++	 }
++	 //*/
++	/*  The second way uses <windows.h> and GetModuleFileNameA .*/
++	/*
++	#include <windows.h>
++	static void l_locate(){
++		char buff[MAX_PATH+1];
++		DWORD nsize = sizeof(buff)/sizeof(char);
++		DWORD n = GetModuleFileNameA(NULL, buff, nsize);
++		char *lb;
++		if (n == 0 || n == nsize || (lb = strrchr(buff, '\\')) == NULL){
++			fprintf(stderr, "ERROR: Unable to determine exe path.\n");
++			exit(1);
++		 } else {
++			*lb = '\0';
++		 }
++		if (LUA_INIT_PATH=malloc(MAX_PATH+1),NULL==LUA_INIT_PATH){
++			fprintf(stderr, "ERROR: Unable to allocate memory for LUA_INIT_PATH.\n");
++			exit(1);
++		 }
++
++		strcpy(LUA_INIT_PATH,buff);
++		if (strlen(buff)>=MAX_PATH){
++			fprintf(stderr, "ERROR: File path for LUA_INIT_PATH is too long.\n");
++			exit(1);
++		 } else {
++			strcpy(LUA_INIT_PATH,buff);
++		 }
++
++		const char* init="\\init.lua";
++		if (strlen(LUA_INIT_PATH)+strlen(init)>=MAX_PATH){
++			fprintf(stderr, "ERROR: File path for LUA_INIT_PATH\\init.lua too long.\n");
++			exit(1);
++		 } else {
++			strcat(LUA_INIT_PATH,init);
++		 }
++		
++	 }
++	 */
++	#undef MAX_PATH
++#else //Linux, MacOS
++    #if defined(__APPLE__)
++    #include <sys/types.h>
++    #include <libproc.h>
++    #endif
++	/*	Sets the global variables: LUA_PATH_DEFAULT, LUA_CPATH_DEFAULT
++		by finding the path to the executable at runtime.
++		Exit on any error.
++	 */
++	static void l_locate(){
++		// Find path to the exe:
++			#if defined(__APPLE__)
++				char exe_path[PROC_PIDPATHINFO_MAXSIZE]; // 4x PATH_MAX
++				int sstval;
++				sstval = proc_pidpath(  getpid(),  exe_path, sizeof(exe_path) );
++			#else // linux
++				char exe_path[PATH_MAX];
++				ssize_t sstval;
++				sstval = readlink("/proc/self/exe",exe_path, sizeof(exe_path) );
++			#endif
++				 if (sstval <= 0){/*readlink returns -1 on error, but 0 or fewer bytes
++									read is also an error, logically. */
++					fprintf(stderr,	"ERROR: Failed to get executable path.\n");
++					exit(1);
++				 }
++				 if ( sstval >= sizeof(exe_path) || sstval >= PATH_MAX ){
++					fprintf(stderr,	"ERROR: Executable path greater than or equal\n"
++									"to the maximum path. Possible truncation occurred.\n");
++					exit(1);
++				 }
++				/*  readlink doesn't null terminate.
++					proc_pidpath on MacOS appears to null terminate, but I was
++					unable to find documentation confirming this. In either case,
++					null terminate the string:
++				 */
++				exe_path[sstval]='\0';
++
++			/*	truncate the exe_path such that "/foo/bar/lua" becomes "/foo/bar" .
++				"/lua" becomes "" . The template string will add the slash back in. */
++			char* last_slash = strrchr(exe_path, '/');
++			 if (last_slash != NULL) {
++				*(last_slash) = '\0';//truncate the string.
++			 } else {
++				fprintf(stderr, "ERROR: Failed to find any path separator in path to\n"
++								"the executable.\n");
++				exit(1);
++			 }
++		// LUA_INIT_PATH
++			// Saving the path to the exe so that I can open "$LUA_INIT_PATH/init.lua"
++			size_t exe_init_path_sz;
++			exe_init_path_sz=sstval+sizeof("/init.lua");
++			LUA_INIT_PATH=malloc(sizeof(char)*exe_init_path_sz);
++			if (NULL==LUA_INIT_PATH){
++				fprintf(stderr, "ERROR: Unable to allocate memory for LUA_INIT_PATH.\n");
++				exit(1);
++			 }
++			LUA_INIT_PATH[0]='\0';
++			strcpy(LUA_INIT_PATH,exe_path);
++			strcat(LUA_INIT_PATH,"/init.lua");
++		// LUA_BASE_PATH
++			// Saving the path to the exe so that I can open "$LUA_BASE_PATH/init.lua"
++			size_t lua_base_path_sz;
++			lua_base_path_sz=sstval+sizeof('/');
++			LUA_BASE_PATH=malloc(sizeof(char)*lua_base_path_sz);
++			if (NULL==LUA_BASE_PATH){
++				fprintf(stderr, "ERROR: Unable to allocate memory for LUA_BASE_PATH.\n");
++				exit(1);
++			 }
++			LUA_BASE_PATH[0]='\0';
++			strcpy(LUA_BASE_PATH,exe_path);
++			if (LUA_BASE_PATH
++				&& *LUA_BASE_PATH
++				&& LUA_BASE_PATH[strlen(LUA_BASE_PATH)-1] != '/'){
++					strcat(LUA_BASE_PATH,"/");
++			 }
++		// LUA_PATH_DEFAULT
++			const char LUA_PATH_DEFAULT_TEMPLATE []="%s/?.lua;%s/?/init.lua;";
++
++			int LUA_PATH_DEFAULT_SZ=sizeof(LUA_PATH_DEFAULT_TEMPLATE)+(2*PATH_MAX);
++			LUA_PATH_DEFAULT =malloc(sizeof(char)*LUA_PATH_DEFAULT_SZ);
++			if (NULL==LUA_PATH_DEFAULT){
++				fprintf(stderr, "ERROR: Unable to allocate memory for LUA_PATH_DEFAULT.\n");
++				exit(1);
++			 }
++
++			int ival;
++			ival=snprintf(LUA_PATH_DEFAULT,
++				LUA_PATH_DEFAULT_SZ, // will not write more bytes than this (includes the null terminator).
++				LUA_PATH_DEFAULT_TEMPLATE,// a const char[]
++				exe_path,exe_path);
++			 if (ival == -1){
++				perror("sprintf");
++				fprintf(stderr,"ERROR: sprintf failed.\n");
++				exit(1);
++			 }
++			 if (ival >= LUA_PATH_DEFAULT_SZ ){
++				perror("sprintf");
++				fprintf(stderr,"ERROR: the LUA_PATH_DEFAULT buffer was too small: %d >= %d\n", ival,LUA_PATH_DEFAULT_SZ );
++				exit(1);
++			 }
++		// LUA_CPATH_DEFAULT
++			const char LUA_CPATH_DEFAULT_TEMPLATE[]="%s/?.so;";
++
++			int LUA_CPATH_DEFAULT_SZ=sizeof(LUA_CPATH_DEFAULT_TEMPLATE)+PATH_MAX;
++			LUA_CPATH_DEFAULT =malloc(sizeof(char)*LUA_CPATH_DEFAULT_SZ);
++			if (NULL==LUA_CPATH_DEFAULT){
++				fprintf(stderr, "ERROR: Unable to allocate memory for LUA_CPATH_DEFAULT.\n");
++				exit(1);
++			 }
++
++			ival=snprintf(LUA_CPATH_DEFAULT,
++				LUA_CPATH_DEFAULT_SZ, // will not write more bytes than this (includes the null terminator).
++				LUA_CPATH_DEFAULT_TEMPLATE,// a const char[]
++				exe_path);
++			 if (ival == -1){
++				perror("sprintf");
++				fprintf(stderr,"ERROR: sprintf failed.\n");
++				exit(1);
++			 }
++			 if (ival >= LUA_CPATH_DEFAULT_SZ ){
++				perror("sprintf");
++				fprintf(stderr,"ERROR: the LUA_PATH_DEFAULT buffer was too small: %d >= %d\n", ival,LUA_CPATH_DEFAULT_SZ );
++				exit(1);
++			 }
++	 }
++	#endif
++	//:VV
++
+ int main(int argc, char **argv)
+ {
+   int status;
+@@ -578,6 +789,9 @@
+   }
+   smain.argc = argc;
+   smain.argv = argv;
++  //VV:
++  l_locate(); // Linux,MacOS: Sets the global variables: LUA_PATH_DEFAULT, LUA_CPATH_DEFAULT.
++  //:VV
+   status = lua_cpcall(L, pmain, NULL);
+   report(L, status);
+   lua_close(L);
+diff -ruN luajit-2.1/src/lulua.c luajit2.1/src/lulua.c
+--- luajit-2.1/src/lulua.c	1969-12-31 19:00:00.000000000 -0500
++++ luajit2.1/src/lulua.c	2023-09-26 22:06:30.000000000 -0400
+@@ -0,0 +1,7 @@
++//VV: lulua global vars.
++#include "luaconf.h"
++#if !defined(_WIN32)
++char* LUA_BASE_PATH;
++char* LUA_PATH_DEFAULT ;
++char* LUA_CPATH_DEFAULT;
++#endif

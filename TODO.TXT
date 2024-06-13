@@ -1,0 +1,305 @@
+Lulua Lua Distro TODO:
+
+For version 1.0.0:
+	Pre 1.0: for each '*' item completed add 0.0.02 to version.
+
+	* All features working on Linux.
+	* Test and document Love2d compatibility.
+	* Test and document MacOS  compatibility.
+	* Test and document Win64  compatibility.
+
+Makefile:
+	* Make the the build process like the sqlite build process
+	  where there is a build script that runs the platform specific
+	  build scripts based on the OS env var.
+
+	* Set MACOSX_DEPLOYMENT_TARGET in the Makefile, inherit from
+	  the environment, and use it in the MacOS build scripts.
+	  So that you only have to set it once.
+
+	* Some Makefile targets for better git status and diff viewing.
+
+	* The main Lulua Makefile is underspecified.
+
+	  If you "make modules", then lua will be built once.
+	  If you "make a-random-module", then lua will also be built once.
+	  So, make this, make that, and it rebuilds lua every time.
+
+	  Fix this.
+
+Docs:
+	* Improve the README.MD file. This is one of the first
+	  things that people will see, so make it good.
+
+	* Generate html docs. Generate markdown from the docstrings.
+
+	* Make sure that the examples in the docs work.
+
+	* Show how to add your own lua modules and files as a user.
+		* a single lua file.
+		* a lua module in a directory with an init.lua file.
+		* a C module.
+		* Show how to set path,cpath
+		* Show how to use require,import,or dofile
+
+Code:
+	* The MAP function shows how to allow named args.
+	  Adapt as many functions as it makes sense to use
+	  f{...} syntax and named args.
+		f(a,b,_foo)-->f{a,b} or f{a,b,foo="foo"}
+
+	* Make functions that accept tables also accept "List"s where
+	  appropriate, and they shall return "List"s if thats what they
+	  were provided, where appropriate.
+
+	* Make sure that path and cpath won't allow import of unintended
+	  .lua files. (example.lua,tests.lua,etc).
+	  Maybe rename like "test.lua"-->"test._lua".
+
+	* Improve the example file, "main.lua". Have it run a program
+	  that demonstrates how the lulua distro can be used with both
+	  love2d and the modified lua interpreter. Have it import and
+	  demonstrate usage of some of the modules that lulua provides.
+	  Have it run some tests and tests that can't be run by gambiarra.
+
+	* Take another look at the modifications to the lua interpreter.
+	  Make sure that errors are detected handled correctly. Maybe
+	  someone else should look at it.
+
+	  Are the buffers large enough?
+	  Are the strings properly null terminated?
+	  Is your error checking sufficient?
+
+Modules:
+	* Make a script that checks for updates for each module. Put in
+	  the Makefile.
+
+	* Make a list of what Ubuntu/debian packages are needed for the
+	  submodules, like "libsdl2-dev" and such. Make script. Put in
+	  the Makefile.
+
+	  ldd can show what .so's are needed: ldd luaglut/luaglut.so
+	  Now you know that it needs libglut.so.3 and others.
+	  Now to find the package:
+	    sudo apt install apt-file
+	    sudo apt-file update
+	    apt-file search libglut.so.3
+	    -->freeglut3: /usr/lib/x86_64-linux-gnu/libglut.so.3
+
+	* Modules that can be updated and why:
+		debug,      new version, added some helpful documentation.
+		fstring,    new version, added a function: dbg.pretty .
+		zlib-1.3.0, new version 1.3.1, bugfix release.
+
+	* Get sdl.net examples working. The module now loads, but
+	  I can't seem to get it to keep a socket open.
+	  (I think it is my firewall that is blocking it.)
+
+	* SDL on MacOS fails to link.
+
+	* update lfs url to:
+		https://github.com/lunarmodules/luafilesystem
+
+	* Eliminate Cmake,autotools,and alternative-build system
+	  dependencies:
+		
+		base64:          bash.
+		bit:             pure lua, no build process.
+		curses:          bash.
+		debug:           pure lua, no build process.
+		fstring:         pure lua, no build process.
+		gambiarra:       pure lua, no build process.
+		lfs:             bash.
+		linenoise:       bash.
+		lpeg             Makefile.
+		luaglut:         Cmake.
+		lulua:lua5.1:    Makefiles.
+		lulua:luajit2.1: Makefiles.
+		lunit:           pure lua, no build process.
+		penlight         pure lua, no build process.
+		posix:           an alternative build system: 'luke',
+		                 requires a working lua interpreter.
+		sdl:             Cmake.
+		signal:          bash.
+		sqlite:          bash.
+		utf8:            bash.
+		zlib:            Cmake?, configure script, Makefiles.
+
+Testing:
+	* Make submodule tests runnable from the Makefile.
+
+	* Make submodule example programs runnable from the Makefile.
+
+	* Write tests for the stdlib.
+	  TEST CHECKLIST: Put a * in front when it has tests.
+		*ALL
+		*ANY
+		*APPLY
+		*Array
+		*BOOL
+		*BSIEVE
+		*CALL
+		*CONCAT
+		*CURRY
+		*DEPTH
+		*DEPTHFIRST
+		*DYNAMIC
+		*Deque
+		*Enum
+		*FILTER
+		*FLATTEN
+		*FOREACH
+		*FULLINTERLEAVE
+		*FULLZIP
+		*IARRAY
+		*IF
+		*IFF
+		*INTERLEAVE
+		*IPAIRS
+		*IRANGE
+		*IRANGE0
+		*List
+		*MAIN
+		*MAP
+		*MAX
+		*MIN
+		*NOT
+		*PARTIAL
+		*PARTITION
+		*REVERSE
+		*REVERSEARRAY
+		*SSET
+		*SUM
+		*Stack
+		*THRICE
+		*UNROLL
+		*ZIP
+		*all
+		*any
+		*basename
+		*bin
+		*bin32
+		*bool
+		*bot
+		*bsieve
+		*callable
+		*checkbit
+		*chomp
+		*chr
+		*circle_back
+		*clamp
+		*classmethod
+		*closed
+		*coalesce
+		*cons
+		*copy
+		*curry
+		*dbg
+		*deepcopy
+		*def
+		*delattr
+		*dir
+		*enumerate
+		*error
+		*exec
+		*extend
+		*ezpath
+		*filter
+		*flatten
+		*float
+		*getattr
+		*getext
+		*glob
+		*globals
+		*has
+		*hasattr
+		*haskey
+		*hex
+		*import
+		*indent
+		*input
+		*int
+		*intmod
+		*irange
+		*irange0
+		*keys
+		*left
+		*len
+		*list
+		*locals
+		*map
+		*max
+		*merge
+		*method
+		*methodist
+		*min
+		*oct
+		*optionator
+		*ord
+		*pass
+		*pop
+		*popleft
+		*pow
+		*print
+		*printf
+		*push
+		*pushleft
+		*range
+		*range0
+		*reload
+		*repr
+		*reversed
+		*right
+		*round
+		*setattr
+		*setbit
+		*setbits
+		*settype
+		*shell
+		*slice
+		*sort
+		*sorted
+		*sprintf
+		*str
+		*sum
+		*tbl_repr
+		*tbl_str
+		*top
+		*type
+		*uniq
+		*unroll
+		*unsetbit
+		*values
+		*warn
+		*zip
+		*DBG_SUPPRESS
+		*F
+		*LULUA_VERSION
+		*MAXINT
+		*MININT
+		*bit
+		*breakpoint
+		*f
+		*os.path.realpath
+		*os.path.basename
+		*os.path.dirname
+		*os.path.expanduser
+		*os.path.getsize
+		*os.path.isfile
+		*os.path.join
+		*os.path.split
+		*os.path.splitext
+		*penlight
+		*string.trim
+		*string.ltrim
+		*string.rtrim
+		*string.trimall
+		*string.split
+		*string.join
+		*string.slice
+		*string.startswith
+		*sys.exit
+		*swap
+		*table.is_empty
+		*table.is_blank
+		*trace

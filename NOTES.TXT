@@ -1,0 +1,53 @@
+VV: Interpreter modifications
+
+	I have disabled the Lua interpreter's checks for environment
+	variables and I have modified the iterpreter so that it can find
+	itself in the filesystem. On startup the lulua lua interpreter
+	runs the file "init.lua" that is in the same directory as the
+	interpreter. This file must exist. It can be blank.
+
+	package.base is the path to the lua interpreter's directory.
+
+	To find the location of lua...
+
+	On Linux, I had to call:
+	  readlink("/proc/self/exe",exe_path,sizeof(exe_path));
+
+	On MacOS, I had to call:
+	  proc_pidpath(getpid(),exe_path,sizeof(exe_path));
+
+	On Windows, there are 2 ways:
+	  The first uses <tchar.h> and _pgmptr .
+	  _pgmptr is 'depreciated',but it still works.
+	  The second way uses <windows.h> and GetModuleFileNameA .
+
+VV: Lua Numbers
+
+	Assume lua uses IEEE 754 double precision floating point
+	numbers.
+
+	The largest ints are over
+	9 quadrillion:
+
+		 9007199254740991,  2^53-1
+		-9007199254740991, -2^53+1
+
+	If you math beyond these, weird things start to happen:
+	  9007199254740992, 9007199254740993 are the same number
+	  because one bit of precision has been lost.
+
+	I have defined MAXINT,MININT variables.
+
+VV: LuaJIT
+
+	The LuaJIT that ships with Lulua is out of date and most
+	likely won't be updated. Don't use it. I have left it in
+	just so that if someone really needs LuaJIT, they can look
+	at the code modifications for reference. LuaJIT will be
+	removed in a later version. (Actually it will be removed in
+	the second commit on Github. )
+
+	If you use love2d (and I hope you do because it is awesome),
+	then you will be using a LuaJIT that is integrated and
+	maintained by their developers, so LuaJIT synchronization is
+	up to them.

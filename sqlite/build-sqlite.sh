@@ -6,10 +6,12 @@ if [ -z "$OS" ]; then
 	OS=$(uname -s)
 fi
 OS=$(echo "$OS" | tr '[:upper:]' '[:lower:]')
+export OS
 
 if [ "$OS" = "darwin" ]; then
 	if [ -z "$MACOSX_DEPLOYMENT_TARGET" ]; then
 		MACOSX_DEPLOYMENT_TARGET= "10.4"
+		export MACOSX_DEPLOYMENT_TARGET
 	fi
 fi
 

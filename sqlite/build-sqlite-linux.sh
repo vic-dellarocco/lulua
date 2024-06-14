@@ -6,6 +6,7 @@ set -o pipefail; # fail if a pipe command fails
 
 
 
+
 set -u; # fail on unset vars.
 
 :\

@@ -3,12 +3,11 @@
 #licensed under the MIT License (see the COPYRIGHT file).
 
 # Accept OS from environment or detect it with uname:
-ifneq ("$(OS)", "")
-	OS := $(OS)
-else
+ifeq ("$(OS)", "")
 	OS := $(shell uname -s)
 endif
 OS := $(shell echo "$$OS" | tr '[:upper:]' '[:lower:]')
+export OS
 
 # Accept MACOSX_DEPLOYMENT_TARGET from environment or set it:
 ifeq ($(OS),darwin)

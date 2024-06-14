@@ -10,6 +10,14 @@ else
 endif
 OS := $(shell echo "$$OS" | tr '[:upper:]' '[:lower:]')
 
+# Accept MACOSX_DEPLOYMENT_TARGET from environment or set it:
+ifeq ($(OS),darwin)
+	ifeq ("$(MACOSX_DEPLOYMENT_TARGET)", "")
+		MACOSX_DEPLOYMENT_TARGET := "10.4"
+	endif
+	export MACOSX_DEPLOYMENT_TARGET
+endif
+
 define LULUA_MAKEFILE_HELP
 Lulua Makefile Help
 

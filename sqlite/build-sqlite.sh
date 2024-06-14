@@ -7,6 +7,14 @@ if [ -z "$OS" ]; then
 fi
 OS=$(echo "$OS" | tr '[:upper:]' '[:lower:]')
 
+if [ "$OS" = "darwin" ]; then
+	if [ -z "$MACOSX_DEPLOYMENT_TARGET" ]; then
+		MACOSX_DEPLOYMENT_TARGET= "10.4"
+	fi
+fi
+
+set -u; # fail on unset vars.
+
 case $OS in
 	linux*)
 		echo "Building sqlite for Linux..."

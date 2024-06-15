@@ -8,12 +8,13 @@ fi
 OS=$(echo "$OS" | tr '[:upper:]' '[:lower:]')
 export OS
 
-if [ "$OS" = "darwin" ]; then
+case $OS in darwin*|mac*)
 	if [ -z "$MACOSX_DEPLOYMENT_TARGET" ]; then
-		MACOSX_DEPLOYMENT_TARGET= "10.4"
+		MACOSX_DEPLOYMENT_TARGET="10.4"
 		export MACOSX_DEPLOYMENT_TARGET
 	fi
-fi
+	;;
+esac
 
 set -u; # fail on unset vars.
 

@@ -20,17 +20,17 @@ set -u; # fail on unset vars.
 
 case $OS in
 	linux*)
-		echo "Building base64 for Linux..."
-		bash ./build-base64-linux.sh
+		echo "Building curses for Linux..."
+		bash ./build-curses-linux.sh
 		;;
 	darwin*|mac*)
-		echo "Building base64 for macOS..."
-		bash ./build-base64-macos.sh
+		echo "Building curses for macOS..."
+		bash ./build-curses-macos.sh
 		;;
-	win*|mingw*) # cross compile on linux for windows:
-		echo "Building base64 for Windows (64-bit)..."
-		bash ./build-base64-windows.sh
-		;;
+	# win*|mingw*) # cross compile on linux for windows:
+	# 	echo "Building curses for Windows (64-bit)..."
+	# 	bash ./build-curses-windows.sh
+	# 	;;
 	*)
 		echo "Unsupported OS: $OS"
 		exit 1

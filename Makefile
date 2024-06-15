@@ -79,7 +79,7 @@ SHELL 	:=/bin/bash
 .PHONY: FORCE
 FORCE:
 
-.PHONY:   all lulua modules
+.PHONY:   all lua lulua modules
 .PHONY:   docs clean archive release tarball test
 .PHONY:   base64 curses lfs linenoise lpeg luaglut
 .PHONY:   posix sdl signal sqlite utf8 zlib
@@ -155,27 +155,71 @@ docs: # underspecified: does require lua to be built.
 	;
 
 #%%
-lua: lulua
+# Conditional dependencies based on the OS variable
+OS_PREFIX := $(shell echo $(OS) | cut -c1-3)
+ifeq ($(OS_PREFIX),win)
+lua:
+	@: 'OS=win lua:' \
+	&& if [[ ! -f "lulua/lua5.1/include/lua.h" ]]; then \
+		: "lua:lulua:" \
+		&& echo "make: Building target 'OS=win lua'." \
+		&& cd lulua \
+		&& make lua \
+		&& mv lua ../lua \
+		; \
+		else \
+		echo "make: Nothing to be done for 'OS=win lua'." \
+		; \
+		fi \
+	&& if [[ ! -f "lua51.dll" ]]; then \
+		: "OS=win lua:lulua-mingw:" \
+		&& echo "make: Building target 'OS=win lua:lulua-mingw'." \
+		&& cd lulua \
+		&& PLAT=mingw make lua \
+		&& mv lua.exe ../lua.exe \
+		&& mv lua51.dll ../lua51.dll \
+		; \
+		else \
+		echo "make: Nothing to be done for 'OS=win lua:lulua-mingw'." \
+		; \
+		fi \
+	;
+else
+lua:
+	@: 'lua:' \
+	&& if [[ ! -f "lulua/lua5.1/include/lua.h" ]]; then \
+		: "lua:lulua:" \
+		&& echo "make: Building target 'lua'." \
+		&& cd lulua \
+		&& make lua \
+		&& mv lua ../lua \
+		; \
+		else \
+		echo "make: Nothing to be done for 'lua'." \
+		; \
+		fi \
+	;
+endif
+
 lulua:  ##target:build the customized lua interpreter.
-	:\
+	: "lulua:" \
 	&& cd lulua \
 	&& make lua \
 	&& mv lua ../lua \
 	;
 lulua-mingw:     # windows build
-	:\
+	: "lulua-mingw:" \
 	&& cd lulua \
 	&& PLAT=mingw make lua \
 	&& mv lua.exe ../lua.exe \
 	&& mv lua51.dll ../lua51.dll \
-	&& cp lua5.1/src/liblua.a ../sqlite/liblua.a \
 	;
 
 modules: base64 curses lfs linenoise lpeg luaglut posix sdl signal sqlite utf8 zlib ##target:build the aforementioned lua interpreter and all modules.
 base64:    lua ##module:linux,macos?          [base64 encode/decode.]
-	:\
+	: 'base64:' \
 	&& cd base64 \
-	&& bash build-base64-linux-macos.sh \
+	&& bash build-base64.sh \
 	;
 curses:    lua ##module:linux,macos?          [full-screen text terminal manipulation.]
 	:\
@@ -225,20 +269,8 @@ signal:    lua ##module:linux,macos?          [handle signals.]
 	&& bash build-signal-linux-macos.sh \
 	;
 sqlite:    lua ##module:linux,macos,windows   [database.]
-	: "sqlite:" \
-	&& echo $$OS \
-	&& case $$OS in \
-		(win*|mingw*) \
-			: 'recipie for lulua-mingw:' \
-			&& cd lulua \
-			&& PLAT=mingw make lua \
-			&& mv lua.exe ../lua.exe \
-			&& mv lua51.dll ../lua51.dll \
-			&& cp lua5.1/src/liblua.a ../sqlite/liblua.a \
-			&& cd .. \
-		;; \
-		esac \
-	&& : 'this is how you can make inline comments.' \
+	:\
+	&& : 'sqlite:' \
 	&& cd sqlite \
 	&& bash build-sqlite.sh \
 	;

@@ -21,19 +21,9 @@ Makefile:
 		*luaglut
 		*lulua
 		*posix
-		sqlite--done
 		*zlib
 
-
 	* Some Makefile targets for better git status and diff viewing.
-
-	* The main Lulua Makefile is underspecified.
-
-	  If you "make modules", then lua will be built once.
-	  If you "make a-random-module", then lua will also be built once.
-	  So, make this, make that, and it rebuilds lua every time.
-
-	  Fix this.
 
 Docs:
 	* Improve the README.MD file. This is one of the first

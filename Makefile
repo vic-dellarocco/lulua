@@ -237,7 +237,7 @@ lfs:       lua ##module:linux,macos?          [lua filesystem.]
 linenoise: lua ##module:linux,macos?          [terminal text input.]
 	:\
 	&& cd linenoise \
-	&& bash  build-linenoise-linux-macos.sh \
+	&& bash  build-linenoise.sh \
 	;
 lpeg:      lua ##module:linux,macos?          [parsers.]
 	:\

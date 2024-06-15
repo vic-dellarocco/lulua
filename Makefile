@@ -252,7 +252,7 @@ luaglut:   lua ##module:linux,macos?          [openGL.]
 posix:     lua ##module:linux,macos?          [posix.]
 	:\
 	&& cd posix \
-	&& bash build-posix-linux-macos.sh \
+	&& bash build-posix.sh \
 	;
 sdl:       lua ##module:linux                 [multimedia.]
 	:\

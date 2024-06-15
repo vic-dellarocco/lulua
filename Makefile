@@ -242,7 +242,7 @@ linenoise: lua ##module:linux,macos?          [terminal text input.]
 lpeg:      lua ##module:linux,macos?          [parsers.]
 	:\
 	&& cd lpeg \
-	&& bash build-lpeg-linux-macos.sh \
+	&& bash build-lpeg.sh \
 	;
 luaglut:   lua ##module:linux,macos?          [openGL.]
 	:\

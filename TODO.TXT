@@ -16,8 +16,6 @@ Makefile:
 	* Set MACOSX_DEPLOYMENT_TARGET in the Makefile, inherit from
 	  the environment, and use it in the MacOS build scripts.
 	  So that you only have to set it once.
-		*lfs
-		*lpeg
 		*luaglut
 		*lulua
 		*posix

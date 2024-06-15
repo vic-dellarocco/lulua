@@ -256,12 +256,6 @@ posix:     lua ##module:linux,macos?          [posix.]
 	;
 sdl:       lua ##module:linux                 [multimedia.]
 	:\
-	&& OS=$$(uname) \
-	&& if [[ "$$OS" != 'Linux' ]]; then \
-		echo 'Linux is required.'; \
-		exit 1; \
-		fi
-	:\
 	&& cd sdl \
 	&& bash build-sdl.sh \
 	;

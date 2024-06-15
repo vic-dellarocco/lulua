@@ -262,7 +262,7 @@ sdl:       lua ##module:linux                 [multimedia.]
 signal:    lua ##module:linux,macos?          [handle signals.]
 	:\
 	&& cd signal \
-	&& bash build-signal-linux-macos.sh \
+	&& bash build-signal.sh \
 	;
 sqlite:    lua ##module:linux,macos,windows   [database.]
 	:\

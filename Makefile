@@ -247,8 +247,7 @@ lpeg:      lua ##module:linux,macos?          [parsers.]
 luaglut:   lua ##module:linux,macos?          [openGL.]
 	:\
 	&& cd luaglut \
-	&& make clean \
-	&& make \
+	&& bash build-luaglut.sh \
 	;
 posix:     lua ##module:linux,macos?          [posix.]
 	:\

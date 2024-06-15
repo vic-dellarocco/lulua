@@ -10,6 +10,13 @@ OS := $(shell echo "$$OS" | tr '[:upper:]' '[:lower:]')
 export OS
 
 # Accept MACOSX_DEPLOYMENT_TARGET from environment or set it:
+OS_PREFIX := $(shell echo $(OS) | cut -c1-3)
+ifeq ($(OS_PREFIX),mac)
+	ifeq ("$(MACOSX_DEPLOYMENT_TARGET)", "")
+		MACOSX_DEPLOYMENT_TARGET := "10.4"
+	endif
+	export MACOSX_DEPLOYMENT_TARGET
+endif
 ifeq ($(OS),darwin)
 	ifeq ("$(MACOSX_DEPLOYMENT_TARGET)", "")
 		MACOSX_DEPLOYMENT_TARGET := "10.4"
@@ -224,7 +231,7 @@ base64:    lua ##module:linux,macos?          [base64 encode/decode.]
 curses:    lua ##module:linux,macos?          [full-screen text terminal manipulation.]
 	:\
 	&& cd curses \
-	&& bash build-curses-linux-macos.sh \
+	&& bash build-curses.sh \
 	;
 lfs:       lua ##module:linux,macos?          [lua filesystem.]
 	:\

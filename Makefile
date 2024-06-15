@@ -166,8 +166,7 @@ docs: # underspecified: does require lua to be built.
 OS_PREFIX := $(shell echo $(OS) | cut -c1-3)
 ifeq ($(OS_PREFIX),win)
 lua:
-	@: 'OS=win lua:' \
-	&& if [[ ! -f "lulua/lua5.1/include/lua.h" ]]; then \
+	@ if [[ ! -f "lulua/lua5.1/include/lua.h" ]]; then \
 		: "lua:lulua:" \
 		&& echo "make: Building target 'OS=win lua'." \
 		&& cd lulua \
@@ -177,8 +176,8 @@ lua:
 		else \
 		echo "make: Nothing to be done for 'OS=win lua'." \
 		; \
-		fi \
-	&& if [[ ! -f "lua51.dll" ]]; then \
+		fi
+	@ if [[ ! -f "lua51.dll" ]]; then \
 		: "OS=win lua:lulua-mingw:" \
 		&& echo "make: Building target 'OS=win lua:lulua-mingw'." \
 		&& cd lulua \
@@ -189,12 +188,10 @@ lua:
 		else \
 		echo "make: Nothing to be done for 'OS=win lua:lulua-mingw'." \
 		; \
-		fi \
-	;
+		fi
 else
 lua:
-	@: 'lua:' \
-	&& if [[ ! -f "lulua/lua5.1/include/lua.h" ]]; then \
+	@ if [[ ! -f "lulua/lua5.1/include/lua.h" ]]; then \
 		: "lua:lulua:" \
 		&& echo "make: Building target 'lua'." \
 		&& cd lulua \
@@ -204,8 +201,7 @@ lua:
 		else \
 		echo "make: Nothing to be done for 'lua'." \
 		; \
-		fi \
-	;
+		fi
 endif
 
 lulua:  ##target:build the customized lua interpreter.
@@ -236,7 +232,7 @@ curses:    lua ##module:linux,macos?          [full-screen text terminal manipul
 lfs:       lua ##module:linux,macos?          [lua filesystem.]
 	:\
 	&& cd lfs \
-	&& bash build-lfs-linux-macos.sh \
+	&& bash build-lfs.sh \
 	;
 linenoise: lua ##module:linux,macos?          [terminal text input.]
 	:\

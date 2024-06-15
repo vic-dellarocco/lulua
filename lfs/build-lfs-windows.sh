@@ -15,6 +15,7 @@ set -u; # fail on unset vars.
 	-I ../lulua/lua5.1/include \
 	-Wall \
 	-fPIC \
-	-c lbase64.c \
-&& $CC -shared -o base64.dll lbase64.o -L.. -l:lua51.dll \
+	-c -o src/lfs.o src/lfs.c \
+&& $CC -shared -o src/lfs.dll src/lfs.o -L.. -l:lua51.dll \
+&& mv src/lfs.dll ./lfs.dll \
 ;

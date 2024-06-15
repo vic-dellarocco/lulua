@@ -16,5 +16,5 @@ set -u; # fail on unset vars.
 	-Wall \
 	-fPIC \
 	-c lsqlite3.c sqlite3/sqlite3.c \
-&& $CC -shared -o sqlite.dll sqlite3.o lsqlite3.o -L.. -llua51 \
+&& $CC -shared -o sqlite.dll sqlite3.o lsqlite3.o -L.. -l:lua51.dll \
 ;

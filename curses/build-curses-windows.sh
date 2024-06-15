@@ -16,5 +16,5 @@ set -u; # fail on unset vars.
 	-Wall \
 	-fPIC \
 	-c curses.c strings.c \
-&& $CC -shared -o curses.dll curses.o strings.o -L.. -llua51 -lncurses \
+&& $CC -shared -o curses.dll curses.o strings.o -L.. -l:lua51.dll -lncurses \
 ;

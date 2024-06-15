@@ -263,7 +263,7 @@ sdl:       lua ##module:linux                 [multimedia.]
 		fi
 	:\
 	&& cd sdl \
-	&& bash build-sdl-linux.sh \
+	&& bash build-sdl.sh \
 	;
 signal:    lua ##module:linux,macos?          [handle signals.]
 	:\

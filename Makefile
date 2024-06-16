@@ -95,9 +95,23 @@ FORCE:
 default:  lulua
 all:      lulua modules
 
-dirinfo:  FORCE #debug: print out some directory info.
+dirinfo:  FORCE #devel print out some directory info.
 	@:\
 	&& echo  ${CURDIR} $(shell realpath $(shell pwd)) ${NAME} \
+	;
+log:      FORCE #devel git log "--oneline" as I like it
+	@git log --oneline
+diff:     FORCE #devel "git difftool"
+	@:\
+	&& git difftool \
+	;
+recommit: FORCE clean #devel allow recommit with different commit message and more!
+	@:\
+	&& git add --all \
+	&& git commit --amend \
+		--date="`date -u +%Y-%m-%dT%H:%M:%S%z`" \
+		--file=COMMIT_MESSAGE -a \
+	&& :> COMMIT_MESSAGE \
 	;
 
 clean:
@@ -132,7 +146,7 @@ clean:
 archive: assert-project-structure
 	:\
 	&& cd .. \
-	&& tar -cvf ./ARCHIVES/$$(date -u +%F_%H-%M-%S)"_${NAME}".tar "${NAME}" \
+	&& tar -czvf ./ARCHIVES/$$(date -u +%F_%H-%M-%S)"_${NAME}".tgz "${NAME}" \
 	;
 release: assert-project-structure
 	:\
@@ -142,7 +156,7 @@ release: assert-project-structure
 tarball: #devel:always makes a tarball, one directory above.
 	:\
 	&& cd .. \
-	&& tar -cvf $$(date -u +%F_%H-%M-%S)"_${NAME}".tar "${NAME}" \
+	&& tar -czvf $$(date -u +%F_%H-%M-%S)"_${NAME}".tgz "${NAME}" \
 	;
 tests: FORCE test
 test:

@@ -8,9 +8,6 @@ For version 1.0.0:
 	* Test and document MacOS  compatibility.
 	* Test and document Win64  compatibility.
 
-Makefile:
-	* Some Makefile targets for better git status and diff viewing.
-
 Docs:
 	* Improve the README.MD file. This is one of the first
 	  things that people will see, so make it good.

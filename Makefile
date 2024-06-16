@@ -278,5 +278,5 @@ utf8:      lua ##module:linux,macos?          [utf8 module from compat53.]
 zlib:      lua ##module:linux,macos?          [file compression.]
 	:\
 	&& cd zlib \
-	&& bash build-zlib-linux-macos.sh \
+	&& bash build-zlib.sh \
 	;

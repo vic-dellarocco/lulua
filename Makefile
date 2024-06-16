@@ -273,7 +273,7 @@ sqlite:    lua ##module:linux,macos,windows   [database.]
 utf8:      lua ##module:linux,macos?          [utf8 module from compat53.]
 	:\
 	&& cd utf8 \
-	&& bash build-utf8-linux-macos.sh \
+	&& bash build-utf8.sh \
 	;
 zlib:      lua ##module:linux,macos?          [file compression.]
 	:\

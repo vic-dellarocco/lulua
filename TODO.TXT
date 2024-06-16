@@ -9,16 +9,6 @@ For version 1.0.0:
 	* Test and document Win64  compatibility.
 
 Makefile:
-	* Make the the build process like the sqlite build process
-	  where there is a build script that runs the platform specific
-	  build scripts based on the OS env var.
-
-	* Set MACOSX_DEPLOYMENT_TARGET in the Makefile, inherit from
-	  the environment, and use it in the MacOS build scripts.
-	  So that you only have to set it once.
-		*lulua
-		*zlib
-
 	* Some Makefile targets for better git status and diff viewing.
 
 Docs:

@@ -1468,13 +1468,17 @@
 		local doc=[[Python style boolean function.
 			BOOL(arg)
 
-			return false if arg in [nil,zero,false,"",{}] else return true
+			return false if arg in
+				[nil,zero,false,"",{},List()] else return true
 
-			BOOL("")-->false
-			BOOL({})-->false
+			In Lua only nil and false are false, but Python is more
+			permissive, where zero,empty strings,empty lists and dicts,
+			all evaulate as false. This function uses the Python style.
 			]]
-		if arg == nil or arg == 0 or arg == false or arg == "" 
-			or (type(arg) == 'table' and table.is_empty(arg)) then
+		if arg==nil or arg==0 or arg==false or arg == ""
+			or (type(arg)=='table' and table.is_empty(arg)) --empty table
+			or (type(arg)=='List'  and arg:len()==0 )		  --empty list
+		 then
 			return false
 		 else
 			return true
@@ -1588,9 +1592,19 @@
 
 			Uses python-style boolean evauation.
 
+			ALL({"!"})-->true
 			ALL({1,2,3})-->true
 			ALL({1,0,3})-->false
+			ALL({})-->false
+			ALL(List())-->false
+			ALL({"nope",""})-->false
 			]]
+		if type(args)=="table" and table.is_empty(args) then
+			return false
+		 end
+		if (type(args)=='List'  and args:len()==0 ) then 
+			return false
+		 end
 		for _,arg in ipairs(args) do
 			if not BOOL(arg) then return false end
 		 end
@@ -3209,6 +3223,49 @@ if MAIN() then
 
 	if TEST then
 		local test=import("gambiarra.lua")
+
+		local test_ALL=function()
+			test("ALL",function()
+				local cases={
+					--arg	 expected
+					{ {1,0,1},      false },--zero is false
+					{ {"nope",""},  false },--empty string is false
+					{ List(),       false },--empty List is false
+					{ {},           false },--empty table is false
+					{ {1,2,3},      true  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=ALL( cc[1] )
+					local expected=cc[2]
+					ok(eq(resulted,expected))--use eq when comparing tables.
+				 end
+			 end)
+		 end
+
+
+		local test_BOOL=function()
+			test("BOOL",function()
+				local cases={
+					--arg	 expected
+					{false,      false},
+					{0,          false},
+					{"",         false},
+					{{},         false},
+					{List(),     false},
+					{{false},    true },
+					{List(false),true },
+					{1,          true },
+					{true,       true },
+					{"!",        true },
+				 }
+				ok(eq(BOOL(nil),false))--check nil
+				for _,cc in ipairs(cases) do
+					local resulted=BOOL(cc[1])
+					local expected=cc[2]
+					ok(eq(resulted,expected))--use eq when comparing tables.
+				 end
+			 end)
+		 end
 		local test_os_path_split=function()
 			test("os.path.split",function()
 				local cases={
@@ -3226,7 +3283,7 @@ if MAIN() then
 					local expected=cc[2]
 					ok(eq(resulted,expected))--use eq when comparing tables.
 				 end
-			end)
+			 end)
 		 end
 		local test_os_path_join=function()
 			test("os.path.join",function()
@@ -3418,8 +3475,8 @@ if MAIN() then
 				 end
 			 end)
 		 end
-		--new tests here
-		local test_dogma=function()
+		--
+		local test_dogma=function()--an example
 			test('Check dogma', function()--[[Syntax examples]]
 				ok(eq({2+2},{4}))--use eq to check tables.
 				ok(eq(2+2==44,false))
@@ -3428,6 +3485,8 @@ if MAIN() then
 			end)
 		 end
 		local tests={
+			test_ALL,
+			test_BOOL,
 			test_os_path_split,
 			test_os_path_join,
 			test_os_path_splitext,

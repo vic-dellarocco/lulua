@@ -1,4 +1,4 @@
-Lulua Standard Library 0.5.0
+Lulua Standard Library 0.5.14
 =======================
 
 PACKAGE.BASE
@@ -119,7 +119,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.5.0
+  The Lulua version number. Currently: 0.5.14
   
 MAXINT
   The largest int.
@@ -872,8 +872,12 @@ ALL
   
   Uses python-style boolean evauation.
   
+  ALL({"!"})-->true
   ALL({1,2,3})-->true
   ALL({1,0,3})-->false
+  ALL({})-->false
+  ALL(List())-->false
+  ALL({"nope",""})-->false
   
 ANY
   Returns true if true for any argument.
@@ -895,10 +899,12 @@ BOOL
   Python style boolean function.
   BOOL(arg)
   
-  return false if arg in [nil,zero,false,"",{}] else return true
+  return false if arg in
+      [nil,zero,false,"",{},List()] else return true
   
-  BOOL("")-->false
-  BOOL({})-->false
+  In Lua only nil and false are false, but Python is more
+  permissive, where zero,empty strings,empty lists and dicts,
+  all evaulate as false. This function uses the Python style.
   
 BSIEVE
   Binary sieve: separates the haves from the have-nots.
@@ -1339,8 +1345,12 @@ all
   
   Uses python-style boolean evauation.
   
+  ALL({"!"})-->true
   ALL({1,2,3})-->true
   ALL({1,0,3})-->false
+  ALL({})-->false
+  ALL(List())-->false
+  ALL({"nope",""})-->false
   
 any
   Returns true if true for any argument.
@@ -1354,10 +1364,12 @@ bool
   Python style boolean function.
   BOOL(arg)
   
-  return false if arg in [nil,zero,false,"",{}] else return true
+  return false if arg in
+      [nil,zero,false,"",{},List()] else return true
   
-  BOOL("")-->false
-  BOOL({})-->false
+  In Lua only nil and false are false, but Python is more
+  permissive, where zero,empty strings,empty lists and dicts,
+  all evaulate as false. This function uses the Python style.
   
 bsieve
   Binary sieve: separates the haves from the have-nots.

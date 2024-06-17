@@ -51,6 +51,11 @@ Code:
 	  Are the strings properly null terminated?
 	  Is your error checking sufficient?
 
+	  I want to look at the memory layout using gdb. This will
+	  require compiling with debug info enabled (gcc -g). Add this
+	  as a build option (use an env var). Requires modification of
+	  Makefile and build scripts.
+
 Modules:
 	* Make a script that checks for updates for each module. Put in
 	  the Makefile.
@@ -111,12 +116,12 @@ Testing:
 	* Make submodule example programs runnable from the Makefile.
 
 	* Write tests for the stdlib.
-	  TEST CHECKLIST: Put a * in front when it has tests.
-		*ALL
+	  TEST CHECKLIST: remove the '*' when it has tests.
+		ALL
 		*ANY
 		*APPLY
 		*Array
-		*BOOL
+		BOOL
 		*BSIEVE
 		*CALL
 		*CONCAT

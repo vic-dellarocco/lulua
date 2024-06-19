@@ -118,8 +118,8 @@ Testing:
 	* Write tests for the stdlib.
 	  TEST CHECKLIST: remove the '*' when it has tests.
 		ALL
-		*ANY
-		*APPLY
+		ANY
+		APPLY
 		*Array
 		BOOL
 		*BSIEVE

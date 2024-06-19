@@ -1580,7 +1580,17 @@
 			Uses python-style boolean evauation.
 
 			ANY({true, false})-->true
+			ANY({true, true}) -->true
+			ANY({false,false})-->false
+			ANY({})           -->false
+			ANY(List())       -->false
 			]]
+		if type(args)=="table" and table.is_empty(args) then
+			return false
+		 end
+		if (type(args)=='List'  and args:len()==0 ) then 
+			return false
+		 end
 		for _,arg in ipairs(args) do
 			if BOOL(arg) then return true end
 		 end
@@ -1592,11 +1602,11 @@
 
 			Uses python-style boolean evauation.
 
-			ALL({"!"})-->true
-			ALL({1,2,3})-->true
-			ALL({1,0,3})-->false
-			ALL({})-->false
-			ALL(List())-->false
+			ALL({"!"})      -->true
+			ALL({1,2,3})    -->true
+			ALL({1,0,3})    -->false
+			ALL({})         -->false
+			ALL(List())     -->false
 			ALL({"nope",""})-->false
 			]]
 		if type(args)=="table" and table.is_empty(args) then
@@ -3241,8 +3251,43 @@ if MAIN() then
 				 end
 			 end)
 		 end
-
-
+		local test_ANY=function()
+			test("ANY",function()
+				local cases={
+					--arg	 expected
+					{ List(),       false },
+					{ {},           false },
+					{ {0},          false },
+					{ {""},         false },
+					{ {0,0,1},      true  },
+					{ {"yup",""},   true  },
+					{ {1},          true  },
+					{ {1,2,3},      true  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=ANY( cc[1] )
+					local expected=cc[2]
+					ok(eq(resulted,expected))--use eq when comparing tables.
+				 end
+			 end)
+		 end
+		local test_APPLY=function()
+			test("APPLY",function()
+				local function mul(a,b) return a*b;end
+				local cases={
+					--arg	 expected
+					{ {2,2}, 4 },
+					{ {2,3}, 6 },
+					{ {2,4}, 8 },
+				 }
+				ok(eq(APPLY(math.sqrt,16),4))
+				for _,cc in ipairs(cases) do
+					local resulted=APPLY(mul,unpack(cc[1]) )
+					local expected=cc[2]
+					ok(eq(resulted,expected))--use eq when comparing tables.
+				 end
+			 end)
+		 end
 		local test_BOOL=function()
 			test("BOOL",function()
 				local cases={
@@ -3486,6 +3531,8 @@ if MAIN() then
 		 end
 		local tests={
 			test_ALL,
+			test_ANY,
+			test_APPLY,
 			test_BOOL,
 			test_os_path_split,
 			test_os_path_join,

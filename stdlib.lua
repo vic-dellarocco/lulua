@@ -1903,7 +1903,7 @@
 		 end
 		return haves,havenots
 	 end
-		bsieve=BSIEVE
+	 bsieve=BSIEVE
 	function ZIP(seq1,seq2)--Python zip. Stops at length of shortest sequence.
 		local doc=[[Interleave two sequences into pairs.
 			ZIP(seq1, seq2)
@@ -3311,6 +3311,26 @@ if MAIN() then
 				 end
 			 end)
 		 end
+
+		local test_BSIEVE=function()
+			test("BSIEVE",function()
+				local function isODD(n) return intmod(n,2)~=0;end
+				local cases={
+					--arg	 expected
+					{{1,2,3} ,{{1,3},{2} } },
+					{{1}     ,{{1}  ,{ } } },
+					{{8}     ,{{}   ,{8} } },
+					{{}      ,{{}   ,{ } } },
+				 }
+				for _,cc in ipairs(cases) do
+					local haves,havenots=BSIEVE(isODD,cc[1])
+					local resulted={haves,havenots}
+					local expected=cc[2]
+					ok(eq(resulted,expected))--use eq when comparing tables.
+				 end
+			 end)
+		 end
+
 		local test_os_path_split=function()
 			test("os.path.split",function()
 				local cases={
@@ -3534,6 +3554,7 @@ if MAIN() then
 			test_ANY,
 			test_APPLY,
 			test_BOOL,
+			test_BSIEVE,
 			test_os_path_split,
 			test_os_path_join,
 			test_os_path_splitext,

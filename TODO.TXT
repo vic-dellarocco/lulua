@@ -122,7 +122,7 @@ Testing:
 		APPLY
 		*Array
 		BOOL
-		*BSIEVE
+		BSIEVE
 		*CALL
 		*CONCAT
 		*CURRY

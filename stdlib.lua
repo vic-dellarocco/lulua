@@ -3183,6 +3183,12 @@ function swap(a,b)
 	a,b=b,a;
 	return a,b;
  end
+function isalpha(s)
+	return string.match(s,"%a*")
+ end
+function isdigit(s)
+	return string.match(s,"%d*")
+ end
 
 --[[Main]]
 local USAGE=[[Usage: lua stdlib.lua [OPTIONS]

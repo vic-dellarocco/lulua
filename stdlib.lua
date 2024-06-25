@@ -796,7 +796,7 @@
 			]]
 		table.insert(tbl,1,val); return tbl; end
 	function pop(tbl)
-		local doc=[[Removes and returns the first element of the table.
+		local doc=[[Removes and returns the last element of the table.
 			pop(tbl)
 			]]
 		val=tbl[#tbl]; tbl[#tbl]=nil; return val; end
@@ -1543,7 +1543,7 @@
 		 end
 	 end
 	function CALL(f,_args)--Call function f if f not nil
-		local doc=[[Calls the function f if it is not nil.
+		local doc=[[Calls f if it is a function and is not nil.
 			CALL(f,_args)
 
 			If args is nil, calls f() directly;
@@ -1551,13 +1551,14 @@
 			CALL(function() print("Hello") end, {})-->prints "Hello"
 			CALL(function(a) print(a) end, {"World"})-->prints "World"
 			]]
-		if f~=nil then
+		if type(f)=="function" then
 			if _args==nil then 
 				return f()--can't unpack nil.
 			 else
 				return f(unpack(_args))
 			 end
-		end
+		 end
+		return nil
 	 end
 	function DYNAMIC(name)--Dynamic scoping function.
 		local doc=[[Dynamic scoping function.
@@ -3317,7 +3318,6 @@ if MAIN() then
 				 end
 			 end)
 		 end
-
 		local test_BSIEVE=function()
 			test("BSIEVE",function()
 				local function isODD(n) return intmod(n,2)~=0;end
@@ -3334,6 +3334,28 @@ if MAIN() then
 					local expected=cc[2]
 					ok(eq(resulted,expected))--use eq when comparing tables.
 				 end
+			 end)
+		 end
+		local test_CALL=function()
+			test("CALL",function()
+				local function isODD(n) return intmod(n,2)~=0;end
+
+				local resulted=CALL("nope",{3})
+				local expected=nil
+				ok(eq(resulted==nil,expected==nil),"nil if first arg is not a function.")
+
+				local resulted=pcall(CALL(isODD,{"1"}))--should produce error
+				local expected=false
+				ok(eq(resulted,expected),"function called, should produce intentional error")
+
+				local resulted=CALL(isODD,{1})
+				local expected=true
+				ok(eq(resulted,expected),"function call: OK")
+
+				local resulted=CALL(isODD,{2})
+				local expected=false
+				ok(eq(resulted,expected),"function call: OK")
+
 			 end)
 		 end
 
@@ -3561,6 +3583,7 @@ if MAIN() then
 			test_APPLY,
 			test_BOOL,
 			test_BSIEVE,
+			test_CALL,
 			test_os_path_split,
 			test_os_path_join,
 			test_os_path_splitext,

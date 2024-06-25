@@ -110,6 +110,21 @@ Modules:
 		utf8:            bash.
 		zlib:            Cmake?, configure script, Makefiles.
 
+	* Possibly include:
+		luasocket
+
+	* Probably not happening:
+		* torch: nvidia removed some necessary function from the
+				gpu drivers.
+		* openCV: I tried 2 bindings from github and they just
+				wouldn't compile. What I want is a binding to
+				the functions that allow me to get frames from
+				a video file and to write frames to another
+				video file. I am currently using Python for
+				processing videos, but Lua would be better.
+				I might write the binding to just the functions
+				that I need for this task.
+
 Testing:
 	* Make submodule tests runnable from the Makefile.
 
@@ -123,7 +138,7 @@ Testing:
 		*Array
 		BOOL
 		BSIEVE
-		*CALL
+		CALL
 		*CONCAT
 		*CURRY
 		*DEPTH

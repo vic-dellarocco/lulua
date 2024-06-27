@@ -643,32 +643,37 @@
 			if n<s then return n,tbl[n] end
 		 end
 	 end
-	function CONCAT(...)--pass in one or more tables, iterates over each.
+	function CONCAT(...)
 		local doc=[[Concatenation iterator.
 			CONCAT(...)
-			Pass in one or more tables, it iterates over each.
+			Pass in one or more lists, it iterates over each.
+
+			Accepts tables as lists or the List() type.
 
 			for v in CONCAT({1},{2,3}) do print(v);end
 				--{1,2,3}
 			]]
-		local tbl={...}
-		local tmp={...}
-		if #tmp==0 then
-			return function() end,nil,nil
-		 end
-		local function _CONCAT(tbl,i)
-			i=i+1
-			for j=1,#tbl do
-				local v=tbl[j][i]
-				if v~=nil then
-					tmp[j]=val
-				 else
-					return nil
-				 end
+		local tbls={...}
+		local cats={}
+
+		-- Yup, it makes another table.
+		for i,t in ipairs(tbls) do
+			for j,v in ipairs(t) do
+				cats[#cats+1]=v
 			 end
-			return i,unpack(tmp)
 		 end
-		return _CONCAT,tbl,0
+
+		-- Return cats iterator:
+		local i=nil
+		return function()
+			local v
+			i,v=next(cats,i)
+			if i==nil then
+				return nil
+			 else
+				return i+1,v
+			 end
+		 end
 	 end
 	function REVERSE(tbl)--reverse ipairs
 		local doc=[[Reverse ipairs iterator
@@ -3358,7 +3363,41 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_CONCAT=function()
+			test("CONCAT",function()
+				local resulted,expected
 
+				resulted={}
+				for k,v in CONCAT({11},{22,33}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={11,22,33}
+				ok(eq(resulted,expected),"CONCAT({11},{22,33})-->{11,22,33}")
+
+				resulted={}
+				for k,v in CONCAT({},{22,33}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={22,33}
+				ok(eq(resulted,expected),"CONCAT({},{22,33})-->{22,33}")
+
+				resulted={}
+				for k,v in CONCAT({},{},{}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={}
+				ok(eq(resulted,expected),"CONCAT({},{},{})-->{}")
+
+				resulted={}
+				for k,v in CONCAT({11,22,33}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={11,22,33}
+				ok(eq(resulted,expected),"CONCAT({11,22,33})-->{11,22,33}")
+
+			 end)
+		 end
+		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
 				local cases={
@@ -3584,6 +3623,8 @@ if MAIN() then
 			test_BOOL,
 			test_BSIEVE,
 			test_CALL,
+			test_CONCAT,
+			--
 			test_os_path_split,
 			test_os_path_join,
 			test_os_path_splitext,

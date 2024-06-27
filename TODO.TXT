@@ -139,7 +139,7 @@ Testing:
 		BOOL
 		BSIEVE
 		CALL
-		*CONCAT
+		CONCAT
 		*CURRY
 		*DEPTH
 		*DEPTHFIRST

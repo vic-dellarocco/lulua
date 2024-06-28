@@ -1797,10 +1797,6 @@
 			This function is designed to implement currying in Lua.
 			Currying is a technique in functional programming where a
 			function with multiple arguments is transformed into a
-			sequence of functions, each with a single argument.
-			This transformation allows for partial application,
-			enabling the creation of new functions by fixing a certain
-			number of arguments to the original function.
 
 			Parameters:
 				f: The original function to be curried. Expected to be a
@@ -1816,7 +1812,7 @@
 				To use this function, pass the original function as the
 				argument. The resulting curried function can then be
 				called with the required number of arguments, either all
-				at once or partially applied over multiple calls.
+				at once or over multiple calls.
 
 			function add(a,b)
 				return a+b
@@ -1827,13 +1823,13 @@
 			print(cad(1)(2))--> 3
 
 			--one at a time:
-			c =cad(32)
+			c =cad(2^5)
 			cc=c(1)
 			print(cc)-->33
 			]]
 		return function(x)
 			return function(y)
-				local args={x,y}
+				local args={x,y}--gotta do this or else x is not in scope.
 				return f(unpack(args))
 			 end
 		 end
@@ -3397,6 +3393,26 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_CURRY=function()
+			test("CURRY",function()
+				local resulted,expected
+
+				function add(a,b)
+					return a+b
+				 end
+
+				resulted=CURRY(add)(1)(2)
+				expected=3
+				ok(eq(resulted,expected),"CURRY(add)(1)(2)--> 3")
+
+				resulted=CURRY(add)
+				resulted=resulted(2^5)
+				resulted=resulted(1)
+				expected=33
+				ok(eq(resulted,expected),"CURRY, args applied over 2 calls.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -3624,6 +3640,7 @@ if MAIN() then
 			test_BSIEVE,
 			test_CALL,
 			test_CONCAT,
+			test_CURRY,
 			--
 			test_os_path_split,
 			test_os_path_join,

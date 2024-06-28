@@ -1758,23 +1758,8 @@
 		local doc=[[--Depth-first traversal: f(arg) for arg in args.
 			DEPTH(f,args)
 
-			Performs a depth-first traversal on the given args. For each
-			argument in args, if the argument is a table, it recursively
-			performs a depth-first traversal on that table.
-
-			Otherwise, it applies the function f to the argument.
-			
-			Parameters:
-				f: A function that will be applied to each element in
-				   args during the traversal.
-				args: A sequence of elements, potentially including
-				   nested tables, over which the function f should be
-				   applied in a depth-first order.
-
-			Returns:
-				The original args sequence after performing the
-				depth-first traversal and applying the function
-				f to each element.
+			Depth-first traversal, applies function f as it goes.
+			Returns the arg sequence unchanged.
 
 			Example:
 				t = {1,2,{3,{4}},5}
@@ -1797,22 +1782,16 @@
 			This function is designed to implement currying in Lua.
 			Currying is a technique in functional programming where a
 			function with multiple arguments is transformed into a
+			weirdo function structure that represents the curried form
+			of the input function. Each level of nesting corresponds to
+			a fixed argument of the original function.
 
-			Parameters:
-				f: The original function to be curried. Expected to be a
-				   function that takes 2 arguments.
+			To use this function, pass the original function as the
+			argument. The resulting curried function can then be called
+			with the required number of arguments, either all at once or
+			over multiple calls.
 
-			Returns:
-				Weirdo function structure that represents the curried
-				form of the input function. Each level of nesting
-				corresponds to a fixed argument of the original
-				function.
-
-			Usage:
-				To use this function, pass the original function as the
-				argument. The resulting curried function can then be
-				called with the required number of arguments, either all
-				at once or over multiple calls.
+			This is curry2, so it needs a function with 2 arguments.
 
 			function add(a,b)
 				return a+b
@@ -3186,9 +3165,15 @@ function swap(a,b)
 	return a,b;
  end
 function isalpha(s)
+	local doc=[[True if s is only alphabetic chars.
+		isaplha(s)-->bool
+		]]
 	return string.match(s,"%a*")
  end
 function isdigit(s)
+	local doc=[[True if s is only numeric chars.
+		isdigit(s)-->bool
+		]]
 	return string.match(s,"%d*")
  end
 
@@ -3410,6 +3395,32 @@ if MAIN() then
 				resulted=resulted(1)
 				expected=33
 				ok(eq(resulted,expected),"CURRY, args applied over 2 calls.")
+
+			 end)
+		 end
+		local test_DEPTH=function()
+			test("DEPTH",function()
+				local resulted,expected
+
+				local ss={}
+				local f=function(x) ss[#ss+1]=x*2;end
+				DEPTH(f,{11,22,{33,{44}},55} )
+				resulted=ss
+				expected={22,44,66,88,110}
+				ok(eq(resulted,expected),"DEPTH first traversal.")
+
+				local ss={}
+				local f=function(x) ss[#ss+1]=x*2;end
+				DEPTH(f,{})
+				resulted=ss
+				expected={}
+				ok(eq(resulted,expected),"DEPTH first traversal,empty list.")
+
+				local ss={}
+				local f=function(x) ss[#ss+1]=x*2;end
+				resulted=DEPTH(f,{11,22,{33,{44}},55})
+				expected={11,22,{33,{44}},55}
+				ok(eq(resulted,expected),"DEPTH: returns args unchanged")
 
 			 end)
 		 end
@@ -3641,6 +3652,7 @@ if MAIN() then
 			test_CALL,
 			test_CONCAT,
 			test_CURRY,
+			test_DEPTH,
 			--
 			test_os_path_split,
 			test_os_path_join,

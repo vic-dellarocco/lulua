@@ -141,8 +141,8 @@ Testing:
 		CALL
 		CONCAT
 		CURRY
-		*DEPTH
-		*DEPTHFIRST
+		DEPTH
+		DEPTHFIRST
 		*DYNAMIC
 		*Deque
 		*Enum

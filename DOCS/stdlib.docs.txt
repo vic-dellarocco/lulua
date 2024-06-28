@@ -1,4 +1,4 @@
-Lulua Standard Library 0.5.14
+Lulua Standard Library 0.5.28
 =======================
 
 PACKAGE.BASE
@@ -54,6 +54,14 @@ ezpath
   It even detects MacOS and uses /Users for /home
   
   It probably won't work on windows.
+  
+isalpha
+  True if s is only alphabetic chars.
+  isaplha(s)-->bool
+  
+isdigit
+  True if s is only numeric chars.
+  isdigit(s)-->bool
   
 optionator
   A rather permissive option parser.
@@ -119,7 +127,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.5.14
+  The Lulua version number. Currently: 0.5.28
   
 MAXINT
   The largest int.
@@ -425,7 +433,9 @@ Iterators
 CONCAT
   Concatenation iterator.
   CONCAT(...)
-  Pass in one or more tables, it iterates over each.
+  Pass in one or more lists, it iterates over each.
+  
+  Accepts tables as lists or the List() type.
   
   for v in CONCAT({1},{2,3}) do print(v);end
       --{1,2,3}
@@ -620,7 +630,7 @@ list
       List{n,default=v}     --create list of size n, value v.
   
 pop
-  Removes and returns the first element of the table.
+  Removes and returns the last element of the table.
   pop(tbl)
   
 popleft
@@ -872,11 +882,11 @@ ALL
   
   Uses python-style boolean evauation.
   
-  ALL({"!"})-->true
-  ALL({1,2,3})-->true
-  ALL({1,0,3})-->false
-  ALL({})-->false
-  ALL(List())-->false
+  ALL({"!"})      -->true
+  ALL({1,2,3})    -->true
+  ALL({1,0,3})    -->false
+  ALL({})         -->false
+  ALL(List())     -->false
   ALL({"nope",""})-->false
   
 ANY
@@ -886,6 +896,10 @@ ANY
   Uses python-style boolean evauation.
   
   ANY({true, false})-->true
+  ANY({true, true}) -->true
+  ANY({false,false})-->false
+  ANY({})           -->false
+  ANY(List())       -->false
   
 APPLY
   APPLY function.
@@ -935,7 +949,7 @@ BSIEVE
       print("<=10:", unpack(under)) --{9, 10}
   
 CALL
-  Calls the function f if it is not nil.
+  Calls f if it is a function and is not nil.
   CALL(f,_args)
   
   If args is nil, calls f() directly;
@@ -950,26 +964,16 @@ CURRY
   This function is designed to implement currying in Lua.
   Currying is a technique in functional programming where a
   function with multiple arguments is transformed into a
-  sequence of functions, each with a single argument.
-  This transformation allows for partial application,
-  enabling the creation of new functions by fixing a certain
-  number of arguments to the original function.
+  weirdo function structure that represents the curried form
+  of the input function. Each level of nesting corresponds to
+  a fixed argument of the original function.
   
-  Parameters:
-      f: The original function to be curried. Expected to be a
-         function that takes 2 arguments.
+  To use this function, pass the original function as the
+  argument. The resulting curried function can then be called
+  with the required number of arguments, either all at once or
+  over multiple calls.
   
-  Returns:
-      Weirdo function structure that represents the curried
-      form of the input function. Each level of nesting
-      corresponds to a fixed argument of the original
-      function.
-  
-  Usage:
-      To use this function, pass the original function as the
-      argument. The resulting curried function can then be
-      called with the required number of arguments, either all
-      at once or partially applied over multiple calls.
+  This is curry2, so it needs a function with 2 arguments.
   
   function add(a,b)
       return a+b
@@ -980,7 +984,7 @@ CURRY
   print(cad(1)(2))--> 3
   
   --one at a time:
-  c =cad(32)
+  c =cad(2^5)
   cc=c(1)
   print(cc)-->33
   
@@ -988,23 +992,8 @@ DEPTH
   --Depth-first traversal: f(arg) for arg in args.
   DEPTH(f,args)
   
-  Performs a depth-first traversal on the given args. For each
-  argument in args, if the argument is a table, it recursively
-  performs a depth-first traversal on that table.
-  
-  Otherwise, it applies the function f to the argument.
-  
-  Parameters:
-      f: A function that will be applied to each element in
-         args during the traversal.
-      args: A sequence of elements, potentially including
-         nested tables, over which the function f should be
-         applied in a depth-first order.
-  
-  Returns:
-      The original args sequence after performing the
-      depth-first traversal and applying the function
-      f to each element.
+  Depth-first traversal, applies function f as it goes.
+  Returns the arg sequence unchanged.
   
   Example:
       t = {1,2,{3,{4}},5}
@@ -1014,23 +1003,8 @@ DEPTHFIRST
   --Depth-first traversal: f(arg) for arg in args.
   DEPTH(f,args)
   
-  Performs a depth-first traversal on the given args. For each
-  argument in args, if the argument is a table, it recursively
-  performs a depth-first traversal on that table.
-  
-  Otherwise, it applies the function f to the argument.
-  
-  Parameters:
-      f: A function that will be applied to each element in
-         args during the traversal.
-      args: A sequence of elements, potentially including
-         nested tables, over which the function f should be
-         applied in a depth-first order.
-  
-  Returns:
-      The original args sequence after performing the
-      depth-first traversal and applying the function
-      f to each element.
+  Depth-first traversal, applies function f as it goes.
+  Returns the arg sequence unchanged.
   
   Example:
       t = {1,2,{3,{4}},5}
@@ -1345,11 +1319,11 @@ all
   
   Uses python-style boolean evauation.
   
-  ALL({"!"})-->true
-  ALL({1,2,3})-->true
-  ALL({1,0,3})-->false
-  ALL({})-->false
-  ALL(List())-->false
+  ALL({"!"})      -->true
+  ALL({1,2,3})    -->true
+  ALL({1,0,3})    -->false
+  ALL({})         -->false
+  ALL(List())     -->false
   ALL({"nope",""})-->false
   
 any
@@ -1359,6 +1333,10 @@ any
   Uses python-style boolean evauation.
   
   ANY({true, false})-->true
+  ANY({true, true}) -->true
+  ANY({false,false})-->false
+  ANY({})           -->false
+  ANY(List())       -->false
   
 bool
   Python style boolean function.
@@ -1406,26 +1384,16 @@ curry
   This function is designed to implement currying in Lua.
   Currying is a technique in functional programming where a
   function with multiple arguments is transformed into a
-  sequence of functions, each with a single argument.
-  This transformation allows for partial application,
-  enabling the creation of new functions by fixing a certain
-  number of arguments to the original function.
+  weirdo function structure that represents the curried form
+  of the input function. Each level of nesting corresponds to
+  a fixed argument of the original function.
   
-  Parameters:
-      f: The original function to be curried. Expected to be a
-         function that takes 2 arguments.
+  To use this function, pass the original function as the
+  argument. The resulting curried function can then be called
+  with the required number of arguments, either all at once or
+  over multiple calls.
   
-  Returns:
-      Weirdo function structure that represents the curried
-      form of the input function. Each level of nesting
-      corresponds to a fixed argument of the original
-      function.
-  
-  Usage:
-      To use this function, pass the original function as the
-      argument. The resulting curried function can then be
-      called with the required number of arguments, either all
-      at once or partially applied over multiple calls.
+  This is curry2, so it needs a function with 2 arguments.
   
   function add(a,b)
       return a+b
@@ -1436,7 +1404,7 @@ curry
   print(cad(1)(2))--> 3
   
   --one at a time:
-  c =cad(32)
+  c =cad(2^5)
   cc=c(1)
   print(cc)-->33
   

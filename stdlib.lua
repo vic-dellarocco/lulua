@@ -718,11 +718,15 @@
 		 end
 		local ss=_flatten(tbl)
 
-		local n=0
-		local s=#ss
+		local i=nil
 		return function()
-			n=n+1
-			if n<s then return n,ss[n] end
+			local v
+			i,v=next(ss,i)
+			if i==nil then
+				return nil
+			 else
+				return i+1,v
+			 end
 		 end
 	 end
 	function UNROLL(tbl)--Iterator to completely flatten a list (Lua5.1)
@@ -3455,6 +3459,26 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_FLATTEN=function()
+			test("FLATTEN",function()
+				local resulted,expected
+
+				resulted={}
+				for k,v in FLATTEN({1,{2},{3,{4}},5}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={1,2,3,{4},5}
+				ok(eq(resulted,expected) )
+
+				resulted={}
+				for k,v in FLATTEN({}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={}
+				ok(eq(resulted,expected) )
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -3686,6 +3710,7 @@ if MAIN() then
 			test_DEPTH,
 			test_DYNAMIC,
 			test_FILTER,
+			test_FLATTEN,
 			--
 			test_os_path_split,
 			test_os_path_join,

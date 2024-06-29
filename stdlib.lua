@@ -1695,7 +1695,7 @@
 			iter=ipairs
 		 end
 		for k,v in iter(args) do
-			ss[#ss+1]=f(v)
+			ss[k]=f(v)
 		 end
 		if type(args)=="List" then
 			ss=List(ss)
@@ -3479,6 +3479,35 @@ if MAIN() then
 
 			 end)
 		 end
+		--FOREACH is MAP
+		--
+		local test_MAP=function()
+			test("MAP",function()
+				local resulted,expected
+				function double(x) return x*2;end
+
+				-- MAP(f,args)
+				resulted=MAP(double,{11,22,33})
+				expected={22,44,66}
+				ok(eq(resulted,expected) )
+
+				-- MAP{f,args}
+				resulted=MAP{double,{11,22,33}}
+				expected={22,44,66}
+				ok(eq(resulted,expected) )
+
+				-- MAP(f,args,iter)
+				resulted=MAP(double,{[0]=11,22,33,44},pairs)
+				expected={[0]=22,44,66,88}
+				ok(eq(resulted,expected) )
+
+				-- MAP{f,args,iter=pairs}--alternate syntax allows named arg.
+				resulted=MAP{double,{[0]=11,22,33,44},iter=pairs}
+				expected={[0]=22,44,66,88}
+				ok(eq(resulted,expected) )
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -3711,6 +3740,7 @@ if MAIN() then
 			test_DYNAMIC,
 			test_FILTER,
 			test_FLATTEN,
+			test_MAP,
 			--
 			test_os_path_split,
 			test_os_path_join,

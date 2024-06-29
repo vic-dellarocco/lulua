@@ -148,7 +148,7 @@ Testing:
 		*Enum
 		FILTER
 		FLATTEN
-		*FOREACH
+		FOREACH
 		*FULLINTERLEAVE
 		*FULLZIP
 		*IARRAY
@@ -160,7 +160,7 @@ Testing:
 		*IRANGE0
 		*List
 		*MAIN
-		*MAP
+		MAP
 		*MAX
 		*MIN
 		*NOT

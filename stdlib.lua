@@ -3424,6 +3424,16 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_DYNAMIC=function()
+			test("DYNAMIC",function()
+				local resulted,expected
+
+				resulted=DYNAMIC("print")()-->returns the current print function.
+				expected=print
+				ok(eq(resulted,expected),"DYNAMIC: function lookup.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -3653,6 +3663,7 @@ if MAIN() then
 			test_CONCAT,
 			test_CURRY,
 			test_DEPTH,
+			test_DYNAMIC,
 			--
 			test_os_path_split,
 			test_os_path_join,

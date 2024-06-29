@@ -1815,34 +1815,27 @@
 	 end
 		curry=CURRY
 	function FILTER(f,args)
-		local doc=[[Filters a given table based on a predicate function (f).
-			FILTER(f,args)
+		local doc=[[Filters a table or List based on a predicate function, f.
 
-			It iterates through each element in the table and applies
-			the predicate function to each element. If the predicate
-			function returns true for an element, that element is added
-			to the result set (ss).
+			Returns a table or List containing the items where
+			f(item) is true.
 
-			Parameters:
-				f:  A predicate function that takes one argument and
-					returns a boolean indicating whether the element
-					should be included in the filtered result.
-				args: A table containing elements to be filtered.
-
-			Returns:
-				A table containing the filtered elements.
-
-			Example usage:
+			Ex:
 				even=function(n) return n % 2 == 0;end
 				nn=FILTER(even, {1, 2, 3, 4, 5})
-				print(nn) -- Output: {2, 4}
+				print(nn) --> {2, 4}
 			]]
+		local is_list=false
+		if type(args)=="List" then
+			is_list=true
+		 end
 		local ss={}
 		for k,v in ipairs(args) do
 			if f(v) then
 				ss[#ss+1]=v
 			 end
 		 end
+		if is_list==true then ss=List(ss);end
 		return ss
 	 end
 	function BSIEVE(f,args)--Binary sieve: separates the haves from the have-nots.
@@ -3430,7 +3423,35 @@ if MAIN() then
 
 				resulted=DYNAMIC("print")()-->returns the current print function.
 				expected=print
-				ok(eq(resulted,expected),"DYNAMIC: function lookup.")
+				ok(eq(resulted,expected) )
+
+			 end)
+		 end
+		local test_FILTER=function()
+			test("FILTER",function()
+				local resulted,expected
+
+				even=function(n) return n % 2 == 0;end
+				resulted=FILTER(even, {1, 2, 3, 4, 5})
+				expected={2,4}
+				ok(eq(resulted,expected),"filter table")
+
+				even=function(n) return n % 2 == 0;end
+				resulted=FILTER(even, List{1, 2, 3, 4, 5})
+				expected=List{2,4}
+				ok(eq(type(resulted)=="List",true),"result is List if arg is List.")
+
+				even=function(n) return n % 2 == 0;end
+				resulted=FILTER(even,List{1, 2, 3, 4, 5})
+				expected=List{2,4}
+				local function list_equal(a,b)--compare only list parts of tables
+					if len(a)~=len(b) then return false;end
+					for i=1,#a do
+						if a[i]~=b[i] then return false;end
+					 end
+					return true
+				 end
+				ok(eq(list_equal(resulted,expected),true),"filter List.")
 
 			 end)
 		 end
@@ -3664,6 +3685,7 @@ if MAIN() then
 			test_CURRY,
 			test_DEPTH,
 			test_DYNAMIC,
+			test_FILTER,
 			--
 			test_os_path_split,
 			test_os_path_join,

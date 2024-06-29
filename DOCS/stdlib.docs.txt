@@ -1,4 +1,4 @@
-Lulua Standard Library 0.5.30
+Lulua Standard Library 0.5.32
 =======================
 
 PACKAGE.BASE
@@ -127,7 +127,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.5.30
+  The Lulua version number. Currently: 0.5.32
   
 MAXINT
   The largest int.
@@ -1020,27 +1020,15 @@ DYNAMIC
   DYNAMIC("print")()-->returns the current print function.
   
 FILTER
-  Filters a given table based on a predicate function (f).
-  FILTER(f,args)
+  Filters a table or List based on a predicate function, f.
   
-  It iterates through each element in the table and applies
-  the predicate function to each element. If the predicate
-  function returns true for an element, that element is added
-  to the result set (ss).
+  Returns a table or List containing the items where
+  f(item) is true.
   
-  Parameters:
-      f:  A predicate function that takes one argument and
-          returns a boolean indicating whether the element
-          should be included in the filtered result.
-      args: A table containing elements to be filtered.
-  
-  Returns:
-      A table containing the filtered elements.
-  
-  Example usage:
+  Ex:
       even=function(n) return n % 2 == 0;end
       nn=FILTER(even, {1, 2, 3, 4, 5})
-      print(nn) -- Output: {2, 4}
+      print(nn) --> {2, 4}
   
 FOREACH
   Applies the function f to every item in the list args.
@@ -1409,27 +1397,15 @@ curry
   print(cc)-->33
   
 filter
-  Filters a given table based on a predicate function (f).
-  FILTER(f,args)
+  Filters a table or List based on a predicate function, f.
   
-  It iterates through each element in the table and applies
-  the predicate function to each element. If the predicate
-  function returns true for an element, that element is added
-  to the result set (ss).
+  Returns a table or List containing the items where
+  f(item) is true.
   
-  Parameters:
-      f:  A predicate function that takes one argument and
-          returns a boolean indicating whether the element
-          should be included in the filtered result.
-      args: A table containing elements to be filtered.
-  
-  Returns:
-      A table containing the filtered elements.
-  
-  Example usage:
+  Ex:
       even=function(n) return n % 2 == 0;end
       nn=FILTER(even, {1, 2, 3, 4, 5})
-      print(nn) -- Output: {2, 4}
+      print(nn) --> {2, 4}
   
 map
   Applies the function f to every item in the list args.

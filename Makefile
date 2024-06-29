@@ -90,7 +90,7 @@ FORCE:
 .PHONY:   docs clean archive release tarball test
 .PHONY:   base64 curses lfs linenoise lpeg luaglut
 .PHONY:   posix sdl signal sqlite utf8 zlib
-.PHONY:   dirinfo
+.PHONY:   dirinfo progress
 
 default:  lulua
 all:      lulua modules
@@ -174,6 +174,8 @@ docs: # underspecified: does require lua to be built.
 	&& ./lua stdlib.lua --docs > DOCS/stdlib.docs.txt || { echo "Lua script failed."; exit 1; } \
 	&& awk '{if (length($$0) > 64) {exit 1;}}' DOCS/stdlib.docs.txt || { echo 'stdlib.docs.txt: lines too long.'; exit 1; } \
 	;
+progress: # Get a count of remaining todo items.
+	@echo $$(fgrep '*' TODO.TXT | wc -l ) items remaining
 
 #%%
 # Conditional dependencies based on the OS variable

@@ -3536,6 +3536,20 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_IF=function()
+			test("IF",function()
+				local resulted,expected
+
+				resulted=IF(true,"true","false")-->"true"
+				expected="true"
+				ok(eq(resulted,expected),'IF(true, "true","false")-->"true"')
+
+				resulted=IF(false,"true","false")-->"false
+				expected="false"
+				ok(eq(resulted,expected),'IF(false,"true","false")-->"false')
+
+			 end)
+		 end
 		--
 		local test_MAP=function()
 			test("MAP",function()
@@ -3799,6 +3813,7 @@ if MAIN() then
 			test_FULLINTERLEAVE,
 			test_FULLZIP,
 			test_IARRAY,
+			test_IF,
 			--
 			test_MAP,
 			--

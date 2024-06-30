@@ -691,7 +691,8 @@
 		local doc=[[Reverse order iterator for zero-based arrays.
 			REVERSEARRAY(tbl)
 			]]
-		local n=#tbl
+		local n=#tbl+1
+		if tbl[0]~=nil then n=n+1;end
 		local s=-1
 		return function()
 			n=n-1
@@ -3878,6 +3879,40 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_REVERSEARRAY=function()
+			test("REVERSEARRAY",function()
+				local resulted,expected
+
+				resulted={}
+				for k,v in REVERSEARRAY({[0]=11,22,33}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={33,22,11}
+				ok(eq(resulted,expected),"reverse iterate.")
+
+				resulted={}
+				for k,v in REVERSEARRAY({[0]=11}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={11}
+				ok(eq(resulted,expected),"reverse iterate.")
+
+				resulted={}
+				for k,v in REVERSEARRAY({}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={}
+				ok(eq(resulted,expected),"reverse iterate.")
+
+				resulted={}
+				for k,v in REVERSEARRAY({[0]=1}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={1}
+				ok(eq(resulted,expected),"reverse iterate.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4073,6 +4108,7 @@ if MAIN() then
 			test_PARTIAL,
 			test_PARTITION,
 			test_REVERSE,
+			test_REVERSEARRAY,
 			--
 			test_os_path_split,
 			test_os_path_join,

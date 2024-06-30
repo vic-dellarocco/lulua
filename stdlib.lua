@@ -1933,39 +1933,30 @@
 		return ss
 	 end
 	function FULLZIP(seq1,seq2,placeholder)--Python zip but uses the longest sequence with a non-nil placeholder for missing data.
-		local doc=[[Python zip but uses the longest sequence.
+		local doc=[[Makes a sequence of pairs from 2 sequences.
 			FULLZIP(seq1,seq2,placeholder)
 
-			This function interleaves two sequences (seq1 and seq2),
-			filling in missing values with a specified placeholder.
-			The interleaving continues to the length of the longest
-			sequence, and the placeholder is used to fill in gaps in the
-			shorter sequence.
+			Python zip but uses the longest sequence.
 
-			Parameters:
-				seq1: The first sequence.
-				seq2: The second sequence.
-				placeholder: A non-nil value used to fill in gaps in the
-							 shorter sequence.
+			The placeholder cannot be nil.
 
-			Returns:
-				A sequence of tuples, where each tuple consists of a
-				pair of corresponding elements from seq1 and seq2,
-				including using the placeholder for missing values in
-				the shorter sequence.
-
-			Example usage:
+			Ex:
 				seq1 = {1, 2, 3, 4}
 				seq2 = {'a', 'b'}
 				placeholder = 'X'
 				zippy = FULLZIP(seq1, seq2, placeholder)
-				print(zippy)--Output:{{1,'a'},{2,'b'},{3,'X'},{4,'X'}}
+				--zippy-->{{1,'a'},{2,'b'},{3,'X'},{4,'X'}}
 			]]
+		local islist=false
+		if type(seq1)=="List" or type(seq2)=="List" then
+			uselist=true
+		 end
 		assert(placeholder~=nil,"placeholder can't be nil.")
 		local ss={}
 		local i=1
 		while true do
 			if seq1[i]==nil and seq2[i]==nil then
+				if uselist==true then ss=List(ss);end
 				return ss
 			 end
 			if seq1[i]==nil then
@@ -1977,7 +1968,6 @@
 			end
 			i=i+1
 		 end
-		return ss
 	 end
 	function INTERLEAVE(seq1,seq2)--True interleave. Stops at length of shortest sequence.
 		local doc=[[Interleave 2 sequences.
@@ -3481,28 +3471,48 @@ if MAIN() then
 				placeholder='X'
 				resulted=FULLINTERLEAVE(seq1,seq2,placeholder)
 				expected={1,'a',2,'b',3,'X',4,'X'}
-				ok(eq(resulted,expected) )
+				ok(eq(resulted,expected),"placeholders generated.")
 
 				local seq1 = {1,2,3,4}
 				local seq2 = {'a','b','c','d'}
 				placeholder='X'
 				resulted=FULLINTERLEAVE(seq1,seq2,placeholder)
 				expected={1,'a',2,'b',3,'c',4,'d'}
-				ok(eq(resulted,expected) )
-
-				local seq2 = {1,2,3,4}
-				local seq1 = {'a','b'}
-				placeholder='X'
-				resulted=FULLINTERLEAVE(seq1,seq2,placeholder)
-				expected={'a',1,'b',2,'X',3,'X',4}
-				ok(eq(resulted,expected) )
+				ok(eq(resulted,expected),"same length sequences.")
 
 				local seq2 = {1,2,3,4}
 				local seq1 = List{'a','b'}
 				placeholder='X'
 				resulted=FULLINTERLEAVE(seq1,seq2,placeholder)
 				expected={'a',1,'b',2,'X',3,'X',4}
-				ok(eq(type(resulted),"List") )
+				ok(eq(type(resulted),"List"),"produces List.")
+
+			 end)
+		 end
+		local test_FULLZIP=function()
+			test("FULLZIP",function()
+				local resulted,expected
+
+				local seq1 = {1,2,3,4}
+				local seq2 = {'a','b'}
+				placeholder='X'
+				resulted=FULLZIP(seq1,seq2,placeholder)
+				expected={{1,'a'},{2,'b'},{3,'X'},{4,'X'}}
+				ok(eq(resulted,expected),"placeholders generated.")
+
+				local seq1 = {1,2,3,4}
+				local seq2 = {'a','b','c','d'}
+				placeholder='X'
+				resulted=FULLZIP(seq1,seq2,placeholder)
+				expected={{1,'a'},{2,'b'},{3,'c'},{4,'d'}}
+				ok(eq(resulted,expected),"same length sequences.")
+
+				local seq1 = {1,2,3,4}
+				local seq2 = List{'a','b'}
+				placeholder='X'
+				resulted=FULLZIP(seq1,seq2,placeholder)
+				expected={{1,'a'},{2,'b'},{3,'X'},{4,'X'}}
+				ok(eq(type(resulted),"List"),"produces List.")
 
 			 end)
 		 end
@@ -3767,6 +3777,7 @@ if MAIN() then
 			test_FILTER,
 			test_FLATTEN,
 			test_FULLINTERLEAVE,
+			test_FULLZIP,
 			--
 			test_MAP,
 			--

@@ -1,4 +1,4 @@
-Lulua Standard Library 0.5.40
+Lulua Standard Library 0.5.42
 =======================
 
 PACKAGE.BASE
@@ -127,7 +127,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.5.40
+  The Lulua version number. Currently: 0.5.42
   
 MAXINT
   The largest int.
@@ -1073,33 +1073,19 @@ FULLINTERLEAVE
       --interleaved-->{1,'a',2,'b',3,'X',4,'X'}
   
 FULLZIP
-  Python zip but uses the longest sequence.
+  Makes a sequence of pairs from 2 sequences.
   FULLZIP(seq1,seq2,placeholder)
   
-  This function interleaves two sequences (seq1 and seq2),
-  filling in missing values with a specified placeholder.
-  The interleaving continues to the length of the longest
-  sequence, and the placeholder is used to fill in gaps in the
-  shorter sequence.
+  Python zip but uses the longest sequence.
   
-  Parameters:
-      seq1: The first sequence.
-      seq2: The second sequence.
-      placeholder: A non-nil value used to fill in gaps in the
-                   shorter sequence.
+  The placeholder cannot be nil.
   
-  Returns:
-      A sequence of tuples, where each tuple consists of a
-      pair of corresponding elements from seq1 and seq2,
-      including using the placeholder for missing values in
-      the shorter sequence.
-  
-  Example usage:
+  Ex:
       seq1 = {1, 2, 3, 4}
       seq2 = {'a', 'b'}
       placeholder = 'X'
       zippy = FULLZIP(seq1, seq2, placeholder)
-      print(zippy)--Output:{{1,'a'},{2,'b'},{3,'X'},{4,'X'}}
+      --zippy-->{{1,'a'},{2,'b'},{3,'X'},{4,'X'}}
   
 IF
   if BOOL(bool) v1 else v2

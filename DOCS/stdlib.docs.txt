@@ -1,4 +1,4 @@
-Lulua Standard Library 0.5.50
+Lulua Standard Library 0.5.52
 =======================
 
 PACKAGE.BASE
@@ -127,7 +127,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.5.50
+  The Lulua version number. Currently: 0.5.52
   
 MAXINT
   The largest int.
@@ -452,8 +452,9 @@ IARRAY
 IPAIRS
   Pairs iterator.
   IPAIRS(tbl)
+  
   Reference implementation of a stateless iterator.
-  This has the same functionality as pairs()
+  This has the same functionality as ipairs()
   
 IRANGE
   Inclusive range iterator.

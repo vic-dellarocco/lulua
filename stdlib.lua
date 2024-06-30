@@ -617,8 +617,9 @@
 	function IPAIRS(tbl)--Use as a reference of how to make a stateless iterator.
 		local doc=[[Pairs iterator.
 			IPAIRS(tbl)
+
 			Reference implementation of a stateless iterator.
-			This has the same functionality as pairs()
+			This has the same functionality as ipairs()
 			]]
 		local function _IPAIRS(tbl,i)
 			i=i+1
@@ -3607,6 +3608,26 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_IPAIRS=function()
+			test("IPAIRS",function()
+				local resulted,expected
+
+				resulted={}
+				for k,v in IPAIRS({11,22,33}) do
+					resulted[k]=v
+				 end
+				expected={11,22,33}
+				ok(eq(resulted,expected),"ipairs iterate.")
+
+				resulted={}
+				for k,v in IPAIRS({[0]=11,22,33}) do
+					resulted[k]=v
+				 end
+				expected={22,33}
+				ok(eq(resulted,expected),"zero index is excluded.")
+
+			 end)
+		 end
 		--
 		local test_MAP=function()
 			test("MAP",function()
@@ -3873,6 +3894,7 @@ if MAIN() then
 			test_IF,
 			test_IFF,
 			test_INTERLEAVE,
+			test_IPAIRS,
 			--
 			test_MAP,
 			--

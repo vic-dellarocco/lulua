@@ -155,7 +155,7 @@ Testing:
 		IF
 		IFF
 		INTERLEAVE
-		*IPAIRS
+		IPAIRS
 		*IRANGE
 		*IRANGE0
 		*List

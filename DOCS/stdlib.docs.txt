@@ -1,4 +1,4 @@
-Lulua Standard Library 0.5.66
+Lulua Standard Library 0.5.68
 =======================
 
 PACKAGE.BASE
@@ -127,7 +127,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.5.66
+  The Lulua version number. Currently: 0.5.68
   
 MAXINT
   The largest int.
@@ -1203,7 +1203,7 @@ PARTITION
   f is a boolean function that determines the separator
   item.
   
-  _retain has 3 modes: set it to "sep" and it will retain
+  _retain has 3 modes: set it to "keep" and it will retain
   the separator item as it's own subsequence. Set it to
   any other non-false value and it will begin the next
   sub-sequence starting with the separator item.

@@ -2048,7 +2048,7 @@
 			f is a boolean function that determines the separator
 			item.
 
-			_retain has 3 modes: set it to "sep" and it will retain
+			_retain has 3 modes: set it to "keep" and it will retain
 			the separator item as it's own subsequence. Set it to
 			any other non-false value and it will begin the next
 			sub-sequence starting with the separator item.
@@ -2071,7 +2071,7 @@
 				subsequence = {}
 				if _retain then
 					table.insert(subsequence, item)--retain the partition item.
-					if _retain=="sep" then
+					if _retain=="keep" then
 						table.insert(result, subsequence)
 						subsequence={}
 					 end
@@ -3777,6 +3777,80 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_PARTITION=function()
+			test("PARTITION",function()
+
+				local resulted,expected
+				local function iscolon(c) return c==":";end
+
+				resulted=PARTITION(iscolon,{1,2,3,':',4,5,6})
+				expected={{1,2,3},{4,5,6}}
+				ok(eq(resulted,expected) )
+
+				resulted=PARTITION(iscolon,{1,2,3,4,5,6})
+				expected={{1,2,3,4,5,6}}
+				ok(eq(resulted,expected) )
+
+				resulted=PARTITION(iscolon,{1,2,3,':',4,5,6},"keep")
+				expected={{1,2,3},{':'},{4,5,6}}
+				ok(eq(resulted,expected) )
+
+				resulted=PARTITION(iscolon,{1,2,3,':',4,5,6},true)
+				expected={{1,2,3},{':',4,5,6}}
+				ok(eq(resulted,expected) )
+
+				local odd=function(n)
+					return n % 2 ~= 0
+				 end
+				local str2chars=function(s)--convert string s to sequence of chars
+					local cc = {}
+					s:gsub(".",function(c) table.insert(cc,c);end)
+					return cc
+				 end
+				local cases={
+					{{odd,{1,2,3,4,5}      },{{2},{4}}},
+					{{odd,{1,2,3,4,5},true },{{1,2},{3,4},{5}}},
+					{{odd,{1,2,3,4,5},"keep"},{{1},{2},{3},{4},{5}}},
+
+					{{function(v) return v==":" end,
+						str2chars("foo:bar:baz"),"keep"},
+						{{"f","o","o"},{":"},{"b","a","r"},{":"},{"b","a","z"}}},
+
+					{{function(v) return v==":" end,
+						str2chars("a:b:c"),"keep"},
+						{{"a"},{":"},{"b"},{":"},{"c"}}},
+					{{function(v) return v==":" end,
+						str2chars("a:b:c"),     },
+						{{"a"},{"b"},{"c"}}},
+
+					{{function(v) return v==":" end,
+						str2chars(":b:c"),true},
+						{{":","b"},{":","c"}}},
+					{{function(v) return v==":" end,
+						str2chars("a:b:"),true},
+						{{"a"},{":","b"},{":"}}},
+
+					{{function(v) return v==":" end,
+						str2chars(":b:c"),"keep"},
+						{{":"},{"b"},{":"},{"c"}}},
+					{{function(v) return v==":" end,
+						str2chars("a:b:"),"keep"},
+						{{"a"},{":"},{"b"},{":"}}},
+
+					{{function(v) return v==":" end,
+						str2chars(":b:c"),     },
+						{{"b"},{"c"}}},
+					{{function(v) return v==":" end,
+						str2chars("a:b:"),     },
+						{{"a"},{"b"}}},
+				 }
+				for _, cc in ipairs(cases) do
+					local args,expected=unpack(cc)
+					local resulted=PARTITION(table.unpack(args))
+					ok(eq(resulted,expected))
+				 end
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -3915,60 +3989,7 @@ if MAIN() then
 				 end
 			 end)
 		 end
-		local test_partition=function()
-			test("PARTITION",function()
-				local odd=function(n)
-					return n % 2 ~= 0
-				 end
-				local str2chars=function(s)--convert string s to sequence of chars
-					local cc = {}
-					s:gsub(".",function(c) table.insert(cc,c);end)
-					return cc
-				 end
-				local cases={
-					{{odd,{1,2,3,4,5}      },{{2},{4}}},
-					{{odd,{1,2,3,4,5},true },{{1,2},{3,4},{5}}},
-					{{odd,{1,2,3,4,5},"sep"},{{1},{2},{3},{4},{5}}},
 
-					{{function(v) return v==":" end,
-						str2chars("foo:bar:baz"),"sep"},
-						{{"f","o","o"},{":"},{"b","a","r"},{":"},{"b","a","z"}}},
-
-					{{function(v) return v==":" end,
-						str2chars("a:b:c"),"sep"},
-						{{"a"},{":"},{"b"},{":"},{"c"}}},
-					{{function(v) return v==":" end,
-						str2chars("a:b:c"),     },
-						{{"a"},{"b"},{"c"}}},
-
-					{{function(v) return v==":" end,
-						str2chars(":b:c"),true},
-						{{":","b"},{":","c"}}},
-					{{function(v) return v==":" end,
-						str2chars("a:b:"),true},
-						{{"a"},{":","b"},{":"}}},
-
-					{{function(v) return v==":" end,
-						str2chars(":b:c"),"sep"},
-						{{":"},{"b"},{":"},{"c"}}},
-					{{function(v) return v==":" end,
-						str2chars("a:b:"),"sep"},
-						{{"a"},{":"},{"b"},{":"}}},
-
-					{{function(v) return v==":" end,
-						str2chars(":b:c"),     },
-						{{"b"},{"c"}}},
-					{{function(v) return v==":" end,
-						str2chars("a:b:"),     },
-						{{"a"},{"b"}}},
-				 }
-				for _, cc in ipairs(cases) do
-					local args,expected=unpack(cc)
-					local resulted=PARTITION(table.unpack(args))
-					ok(eq(resulted,expected))
-				 end
-			 end)
-		 end
 		local test_table_slice=function()
 			test("table.slice",function()
 			-- function slice(tbl,first,last,step)--pythonic slice
@@ -4023,6 +4044,7 @@ if MAIN() then
 			test_MIN,
 			test_NOT,
 			test_PARTIAL,
+			test_PARTITION,
 			--
 			test_os_path_split,
 			test_os_path_join,
@@ -4030,7 +4052,6 @@ if MAIN() then
 			test_os_path_basename,
 			test_os_path_isfile,
 			test_basename,
-			test_partition,
 			test_table_slice,
 			-- test_dogma,
 		 }

@@ -159,7 +159,7 @@ Testing:
 		IRANGE
 		IRANGE0
 		*List
-		*MAIN
+		MAIN
 		MAP
 		*MAX
 		*MIN

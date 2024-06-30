@@ -2018,35 +2018,29 @@
 		local doc=[[Interleave 2 sequences, with placeholder values.
 			FULLINTERLEAVE(seq1, seq2, placeholder)
 
-			This function interleaves two sequences (seq1 and seq2),
-			filling in missing values with a specified placeholder.
-			The interleaving continues until the length of the longest
-			sequence, and the placeholder is used to fill in gaps in the
+			Returns a sequence containing alternating elements from seq1
+			and seq2, using the placeholder for missing values in the
 			shorter sequence.
 
-			Parameters:
-				seq1: The first sequence.
-				seq2: The second sequence.
-				placeholder: A value used to fill in gaps in the shorter
-							 sequence.
+			Returns a List if seq1 and/or seq2 is a List.
 
-			Returns:
-				A sequence containing alternating elements from seq1 and
-				seq2, including using the placeholder for missing values
-				in the shorter sequence.
-
-			Example usage:
-				seq1 = {1, 2, 3, 4}
-				seq2 = {'a', 'b'}
-				placeholder = 'X'
-				interleaved = FULLINTERLEAVE(seq1,seq2,placeholder)
-				print(interleaved)--Output:{1,'a',2,'b',3,'X',4,'X'}
+			Ex:
+				seq1 = {1,2,3,4}
+				seq2 = {'a','b'}
+				placeholder='X'
+				interleaved=FULLINTERLEAVE(seq1,seq2,placeholder)
+				--interleaved-->{1,'a',2,'b',3,'X',4,'X'}
 			]]
+		local uselist=false
+		if type(seq1)=="List" or type(seq2)=="List" then
+			uselist=true
+		 end
 		assert(placeholder~=nil,"placeholder can't be nil.")
 		local ss={}
 		local i=1
 		while true do
 			if seq1[i]==nil and seq2[i]==nil then
+				if uselist==true then ss=List(ss);end
 				return ss
 			 end
 			if seq1[i]==nil then
@@ -2061,7 +2055,6 @@
 			end
 			i=i+1
 		 end
-		return ss
 	 end
 	function PARTITION(f,seq,_retain)
 		local doc=[[Partition a sequence.
@@ -3479,7 +3472,40 @@ if MAIN() then
 
 			 end)
 		 end
-		--FOREACH is MAP
+		local test_FULLINTERLEAVE=function()
+			test("FULLINTERLEAVE",function()
+				local resulted,expected
+
+				local seq1 = {1,2,3,4}
+				local seq2 = {'a','b'}
+				placeholder='X'
+				resulted=FULLINTERLEAVE(seq1,seq2,placeholder)
+				expected={1,'a',2,'b',3,'X',4,'X'}
+				ok(eq(resulted,expected) )
+
+				local seq1 = {1,2,3,4}
+				local seq2 = {'a','b','c','d'}
+				placeholder='X'
+				resulted=FULLINTERLEAVE(seq1,seq2,placeholder)
+				expected={1,'a',2,'b',3,'c',4,'d'}
+				ok(eq(resulted,expected) )
+
+				local seq2 = {1,2,3,4}
+				local seq1 = {'a','b'}
+				placeholder='X'
+				resulted=FULLINTERLEAVE(seq1,seq2,placeholder)
+				expected={'a',1,'b',2,'X',3,'X',4}
+				ok(eq(resulted,expected) )
+
+				local seq2 = {1,2,3,4}
+				local seq1 = List{'a','b'}
+				placeholder='X'
+				resulted=FULLINTERLEAVE(seq1,seq2,placeholder)
+				expected={'a',1,'b',2,'X',3,'X',4}
+				ok(eq(type(resulted),"List") )
+
+			 end)
+		 end
 		--
 		local test_MAP=function()
 			test("MAP",function()
@@ -3740,6 +3766,8 @@ if MAIN() then
 			test_DYNAMIC,
 			test_FILTER,
 			test_FLATTEN,
+			test_FULLINTERLEAVE,
+			--
 			test_MAP,
 			--
 			test_os_path_split,

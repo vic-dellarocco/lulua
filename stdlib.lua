@@ -3731,6 +3731,29 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_NOT=function()
+			test("NOT",function()
+				local cases={
+					--arg	 expected
+					{false,      true},
+					{0,          true},
+					{"",         true},
+					{{},         true},
+					{List(),     true},
+					{{false},    false },
+					{List(false),false },
+					{1,          false },
+					{true,       false },
+					{"!",        false },
+				 }
+				ok(eq(NOT(nil),true))--check nil
+				for _,cc in ipairs(cases) do
+					local resulted=NOT(cc[1])
+					local expected=cc[2]
+					ok(eq(resulted,expected))
+				 end
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -3975,6 +3998,7 @@ if MAIN() then
 			test_MAP,
 			test_MAX,
 			test_MIN,
+			test_NOT,
 			--
 			test_os_path_split,
 			test_os_path_join,

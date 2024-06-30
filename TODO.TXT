@@ -163,7 +163,7 @@ Testing:
 		MAP
 		MAX
 		MIN
-		*NOT
+		NOT
 		*PARTIAL
 		*PARTITION
 		*REVERSE

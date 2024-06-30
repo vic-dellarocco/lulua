@@ -161,7 +161,7 @@ Testing:
 		*List
 		MAIN
 		MAP
-		*MAX
+		MAX
 		*MIN
 		*NOT
 		*PARTIAL

@@ -3668,7 +3668,6 @@ if MAIN() then
 
 			 end)
 		 end
-		--
 		local test_MAP=function()
 			test("MAP",function()
 				local resulted,expected
@@ -3692,6 +3691,24 @@ if MAIN() then
 				-- MAP{f,args,iter=pairs}--alternate syntax allows named arg.
 				resulted=MAP{double,{[0]=11,22,33,44},iter=pairs}
 				expected={[0]=22,44,66,88}
+				ok(eq(resulted,expected) )
+
+			 end)
+		 end
+		local test_MAX=function()
+			test("MAX",function()
+				local resulted,expected
+
+				resulted=MAX({10,20,30})
+				expected=30
+				ok(eq(resulted,expected) )
+
+				resulted=MAX({10,70,30})
+				expected=70
+				ok(eq(resulted,expected) )
+
+				resulted=MAX({})
+				expected=nil
 				ok(eq(resulted,expected) )
 
 			 end)
@@ -3937,8 +3954,8 @@ if MAIN() then
 			test_IPAIRS,
 			test_IRANGE,
 			test_IRANGE0,
-			--
 			test_MAP,
+			test_MAX,
 			--
 			test_os_path_split,
 			test_os_path_join,

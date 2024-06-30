@@ -156,8 +156,8 @@ Testing:
 		IFF
 		INTERLEAVE
 		IPAIRS
-		*IRANGE
-		*IRANGE0
+		IRANGE
+		IRANGE0
 		*List
 		*MAIN
 		MAP

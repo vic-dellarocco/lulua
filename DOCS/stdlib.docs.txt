@@ -1,4 +1,4 @@
-Lulua Standard Library 0.5.52
+Lulua Standard Library 0.5.56
 =======================
 
 PACKAGE.BASE
@@ -127,7 +127,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.5.52
+  The Lulua version number. Currently: 0.5.56
   
 MAXINT
   The largest int.
@@ -463,8 +463,8 @@ IRANGE
   Ex:
       for i in IRANGE(3) do print(i);end
       --{1,2,3}
-      for i in IRANGE(10,15) do print(i);end
-      --{10,11,12,13,14,15}
+      for i in IRANGE(11,15) do print(i);end
+      --{11,12,13,14,15}
   
 IRANGE0
   Zero based iterator. open right interval.
@@ -498,8 +498,8 @@ irange
   Ex:
       for i in IRANGE(3) do print(i);end
       --{1,2,3}
-      for i in IRANGE(10,15) do print(i);end
-      --{10,11,12,13,14,15}
+      for i in IRANGE(11,15) do print(i);end
+      --{11,12,13,14,15}
   
 irange0
   Zero based iterator. open right interval.

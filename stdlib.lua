@@ -577,8 +577,8 @@
 			Ex:
 				for i in IRANGE(3) do print(i);end
 				--{1,2,3}
-				for i in IRANGE(10,15) do print(i);end
-				--{10,11,12,13,14,15}
+				for i in IRANGE(11,15) do print(i);end
+				--{11,12,13,14,15}
 			]]
 		if finish==nil then--irange(3)-->{1,2,3}
 			finish=start
@@ -3628,6 +3628,46 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_IRANGE=function()
+			test("IRANGE",function()
+				local resulted,expected
+
+				resulted={}
+				for i in IRANGE(3) do
+					resulted[#resulted+1]=i
+				 end
+				expected={1,2,3}
+				ok(eq(resulted,expected),"IRANGE(3)")
+
+				resulted={}
+				for i in IRANGE(11,15) do
+					resulted[#resulted+1]=i
+				 end
+				expected={11,12,13,14,15}
+				ok(eq(resulted,expected),"IRANGE(11,15)")
+
+			 end)
+		 end
+		local test_IRANGE0=function()
+			test("IRANGE0",function()
+				local resulted,expected
+
+				resulted={}
+				for i in IRANGE0(3) do
+					resulted[#resulted+1]=i
+				 end
+				expected={0,1,2}
+				ok(eq(resulted,expected),"IRANGE0(3)")
+
+				resulted={}
+				for i in IRANGE0(10,15) do
+					resulted[#resulted+1]=i
+				 end
+				expected={10,11,12,13,14}
+				ok(eq(resulted,expected),"IRANGE0(10,15)")
+
+			 end)
+		 end
 		--
 		local test_MAP=function()
 			test("MAP",function()
@@ -3895,6 +3935,8 @@ if MAIN() then
 			test_IFF,
 			test_INTERLEAVE,
 			test_IPAIRS,
+			test_IRANGE,
+			test_IRANGE0,
 			--
 			test_MAP,
 			--

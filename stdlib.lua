@@ -3851,6 +3851,33 @@ if MAIN() then
 				 end
 			 end)
 		 end
+		local test_REVERSE=function()
+			test("REVERSE",function()
+				local resulted,expected
+
+				resulted={}
+				for k,v in REVERSE({11,22,33}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={33,22,11}
+				ok(eq(resulted,expected),"reverse iterate.")
+
+				resulted={}
+				for k,v in REVERSE({11}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={11}
+				ok(eq(resulted,expected),"reverse iterate.")
+
+				resulted={}
+				for k,v in REVERSE({}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={}
+				ok(eq(resulted,expected),"reverse iterate.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4045,6 +4072,7 @@ if MAIN() then
 			test_NOT,
 			test_PARTIAL,
 			test_PARTITION,
+			test_REVERSE,
 			--
 			test_os_path_split,
 			test_os_path_join,

@@ -162,7 +162,7 @@ Testing:
 		MAIN
 		MAP
 		MAX
-		*MIN
+		MIN
 		*NOT
 		*PARTIAL
 		*PARTITION

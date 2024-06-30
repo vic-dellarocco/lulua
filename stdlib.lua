@@ -3713,6 +3713,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_MIN=function()
+			test("MIN",function()
+				local resulted,expected
+
+				resulted=MIN({10,20,30})
+				expected=10
+				ok(eq(resulted,expected) )
+
+				resulted=MIN({10,5,30})
+				expected=5
+				ok(eq(resulted,expected) )
+
+				resulted=MIN({})
+				expected=nil
+				ok(eq(resulted,expected) )
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -3956,6 +3974,7 @@ if MAIN() then
 			test_IRANGE0,
 			test_MAP,
 			test_MAX,
+			test_MIN,
 			--
 			test_os_path_split,
 			test_os_path_join,

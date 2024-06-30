@@ -3550,6 +3550,22 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_IFF=function()
+			test("IFF",function()
+				local resulted,expected
+				local function f1() return "f1";end
+				local function f2() return "f2";end
+
+				resulted=IFF(true,f1,f2)-->"f1"
+				expected="f1"
+				ok(eq(resulted,expected),'IFF(true, f1,f2)-->"f1"')
+
+				resulted=IFF(false,f1,f2)-->"f2"
+				expected="f2"
+				ok(eq(resulted,expected),'IFF(false,f1,f2)-->"f2"')
+
+			 end)
+		 end
 		--
 		local test_MAP=function()
 			test("MAP",function()
@@ -3814,6 +3830,7 @@ if MAIN() then
 			test_FULLZIP,
 			test_IARRAY,
 			test_IF,
+			test_IFF,
 			--
 			test_MAP,
 			--

@@ -3754,6 +3754,29 @@ if MAIN() then
 				 end
 			 end)
 		 end
+		local test_PARTIAL=function()
+			test("PARTIAL",function()
+				local resulted,expected
+				local function add(a,b)
+					return a+b
+				 end
+
+				local addten=PARTIAL(add,10)
+				resulted=addten(20)
+				expected=30
+				ok(eq(resulted,expected) )
+
+				local forty=PARTIAL(addten,30)
+				resulted=forty()
+				expected=40
+				ok(eq(resulted,expected) )
+
+				resulted=PARTIAL(addten,-20)()
+				expected=-10
+				ok(eq(resulted,expected) )
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -3999,6 +4022,7 @@ if MAIN() then
 			test_MAX,
 			test_MIN,
 			test_NOT,
+			test_PARTIAL,
 			--
 			test_os_path_split,
 			test_os_path_join,

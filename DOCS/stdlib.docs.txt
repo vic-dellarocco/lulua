@@ -1,4 +1,4 @@
-Lulua Standard Library 0.5.48
+Lulua Standard Library 0.5.50
 =======================
 
 PACKAGE.BASE
@@ -127,7 +127,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.5.48
+  The Lulua version number. Currently: 0.5.50
   
 MAXINT
   The largest int.
@@ -1116,24 +1116,14 @@ INTERLEAVE
   Interleave 2 sequences.
   INTERLEAVE(seq1, seq2)
   
-  This function interleaves two sequences (seq1 and seq2),
+  Interleaves two sequences (seq1 and seq2),
   stopping at the length of the shortest sequence.
-  Elements from both sequences are alternated in the resulting
-  sequence.
   
-  Parameters:
-      seq1: The first sequence.
-      seq2: The second sequence.
-  
-  Returns:
-      A sequence containing alternating elements from seq1 and
-      seq2, up to the length of the shorter sequence.
-  
-  Example usage:
-      seq1 = {1, 2, 3}
-      seq2 = {'a', 'b', 'c'}
+  Ex:
+      seq1 = {1,2,3}
+      seq2 = {'a','b','c'}
       interleaved = INTERLEAVE(seq1, seq2)
-      print(interleaved)--Output:{1,'a',2,'b',3,'c'}
+      --interleaved-->{1,'a',2,'b',3,'c'}
   
 MAP
   Applies the function f to every item in the list args.

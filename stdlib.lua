@@ -1973,36 +1973,30 @@
 		local doc=[[Interleave 2 sequences.
 			INTERLEAVE(seq1, seq2)
 
-			This function interleaves two sequences (seq1 and seq2),
+			Interleaves two sequences (seq1 and seq2),
 			stopping at the length of the shortest sequence.
-			Elements from both sequences are alternated in the resulting
-			sequence.
 
-			Parameters:
-				seq1: The first sequence.
-				seq2: The second sequence.
-
-			Returns:
-				A sequence containing alternating elements from seq1 and
-				seq2, up to the length of the shorter sequence.
-
-			Example usage:
-				seq1 = {1, 2, 3}
-				seq2 = {'a', 'b', 'c'}
+			Ex:
+				seq1 = {1,2,3}
+				seq2 = {'a','b','c'}
 				interleaved = INTERLEAVE(seq1, seq2)
-				print(interleaved)--Output:{1,'a',2,'b',3,'c'}
+				--interleaved-->{1,'a',2,'b',3,'c'}
 			]]
+		local uselist=false
+		if type(seq1)=="List" or type(seq2)=="List" then
+			uselist=true
+		 end
 		local ss={}
 		local i=1
 		while true do
 			if seq1[i]==nil or seq2[i]==nil then
+				if uselist==true then ss=List(ss);end
 				return ss
 			 end
 			ss[#ss+1]=seq1[i]
 			ss[#ss+1]=seq2[i]
 			i=i+1
 		 end
-		return ss
 	 end
 	function FULLINTERLEAVE(seq1,seq2,placeholder)--longest sequence, non-nil placeholder for missing data.
 		local doc=[[Interleave 2 sequences, with placeholder values.
@@ -3566,6 +3560,53 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_INTERLEAVE=function()
+			test("INTERLEAVE",function()
+				local resulted,expected
+
+				seq1 = {1,2,3}
+				seq2 = {'a','b','c'}
+				resulted=INTERLEAVE(seq1,seq2)
+				expected={1,'a',2,'b',3,'c'}
+				ok(eq(resulted,expected),"equal length sequences.")
+
+				seq1 = {1,2}
+				seq2 = {'a','b','c'}
+				resulted=INTERLEAVE(seq1,seq2)
+				expected={1,'a',2,'b'}
+				ok(eq(resulted,expected),"seq1 shorter.")
+
+				seq1 = {1,2,3}
+				seq2 = {'a','b'}
+				resulted=INTERLEAVE(seq1,seq2)
+				expected={1,'a',2,'b'}
+				ok(eq(resulted,expected),"seq2 shorter.")
+
+				seq1 = {}
+				seq2 = {'a','b','c'}
+				resulted=INTERLEAVE(seq1,seq2)
+				expected={}
+				ok(eq(resulted,expected),"seq1 empty.")
+
+				seq1 = {1,2,3}
+				seq2 = {}
+				resulted=INTERLEAVE(seq1,seq2)
+				expected={}
+				ok(eq(resulted,expected),"seq2 empty.")
+
+				seq1 = {}
+				seq2 = {}
+				resulted=INTERLEAVE(seq1,seq2)
+				expected={}
+				ok(eq(resulted,expected),"all empty.")
+
+				seq1 = {1,2,3}
+				seq2 = List{'a','b','c'}
+				resulted=INTERLEAVE(seq1,seq2)
+				ok(eq(type(resulted)=="List",true),"result is List type.")
+
+			 end)
+		 end
 		--
 		local test_MAP=function()
 			test("MAP",function()
@@ -3831,6 +3872,7 @@ if MAIN() then
 			test_IARRAY,
 			test_IF,
 			test_IFF,
+			test_INTERLEAVE,
 			--
 			test_MAP,
 			--

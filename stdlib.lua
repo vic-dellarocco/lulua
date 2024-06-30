@@ -3516,6 +3516,26 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_IARRAY=function()
+			test("IARRAY",function()
+				local resulted,expected
+
+				resulted={}
+				for k,v in IARRAY({[0]=11,22,33,44,55}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={11,22,33,44,55}
+				ok(eq(resulted,expected),"iterate over array.")
+
+				resulted={}
+				for k,v in IARRAY({}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={}
+				ok(eq(resulted,expected),"iterate over empty array.")
+
+			 end)
+		 end
 		--
 		local test_MAP=function()
 			test("MAP",function()
@@ -3778,6 +3798,7 @@ if MAIN() then
 			test_FLATTEN,
 			test_FULLINTERLEAVE,
 			test_FULLZIP,
+			test_IARRAY,
 			--
 			test_MAP,
 			--

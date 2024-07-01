@@ -184,7 +184,7 @@ Testing:
 		bsieve
 		callable
 		checkbit
-		*chomp
+		chomp
 		*chr
 		*circle_back
 		*clamp

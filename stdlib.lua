@@ -3010,6 +3010,7 @@ ezpath=function(path)--Less nonsense path resolver.
 function chomp(line)
 	local doc=[[Remove whitespace from the start of line.
 		chomp(line)-->string,string
+
 		returns whitespace,restofline
 		]]
 	if line==nil or line=="" then return "","";end
@@ -4052,6 +4053,38 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_chomp=function()
+			test("chomp",function()
+				local resulted,expected
+				local r1,r2
+
+				r1,r2=chomp(nil)
+				resulted={r1,r2}
+				expected={"",""}
+				ok(eq(resulted,expected),"nil value.")
+
+				r1,r2=chomp("")
+				resulted={r1,r2}
+				expected={"",""}
+				ok(eq(resulted,expected),"empty string")
+
+				r1,r2=chomp("chomp")
+				resulted={r1,r2}
+				expected={"chomp",""}
+				ok(eq(resulted,expected),"chomp")
+
+				r1,r2=chomp(" chomp")
+				resulted={r1,r2}
+				expected={"chomp"," "}
+				ok(eq(resulted,expected)," chomp")
+
+				r1,r2=chomp(" 	  chomp")
+				resulted={r1,r2}
+				expected={"chomp"," 	  "}
+				ok(eq(resulted,expected)," 	  chomp")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4237,6 +4270,7 @@ if MAIN() then
 			test_bot,
 			test_callable,
 			test_checkbit,
+			test_chomp,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

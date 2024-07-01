@@ -2091,16 +2091,6 @@
 
 		return result
 	 end
-	function THRICE(f,args)--Call function f, thrice.
-		local doc=[[Thrice call a function.
-			THRICE(f,args)
-
-			Call a function three times.
-			]]
-		f(args)
-		f(args)
-		f(args)
-	 end
 --[[Bitwise]]
 	function setbit(n,b)--Set bit b of number n.
 		local doc=[[Set bit b of number n.
@@ -4114,7 +4104,6 @@ if MAIN() then
 				 end
 			 end)
 		 end
-
 		local test_table_slice=function()
 			test("table.slice",function()
 			-- function slice(tbl,first,last,step)--pythonic slice

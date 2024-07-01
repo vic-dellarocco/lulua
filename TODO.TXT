@@ -171,7 +171,6 @@ Testing:
 		SSET
 		SUM
 		*Stack
-		*THRICE
 		*UNROLL
 		*ZIP
 		*all

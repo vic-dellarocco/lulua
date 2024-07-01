@@ -1223,12 +1223,6 @@ SUM
   SUM({10, 20, 30, 40, 50})-->150
   SUM({})-->0
   
-THRICE
-  Thrice call a function.
-  THRICE(f,args)
-  
-  Call a function three times.
-  
 ZIP
   Interleave two sequences into pairs.
   ZIP(seq1, seq2)

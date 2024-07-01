@@ -181,7 +181,7 @@ Testing:
 		bin
 		bool
 		bot
-		*bsieve
+		bsieve
 		*callable
 		*checkbit
 		*chomp

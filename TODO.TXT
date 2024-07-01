@@ -180,7 +180,7 @@ Testing:
 		basename
 		bin
 		bool
-		*bot
+		bot
 		*bsieve
 		*callable
 		*checkbit

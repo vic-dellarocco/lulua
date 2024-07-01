@@ -3992,6 +3992,20 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_bot=function()
+			test("bot",function()
+				local resulted,expected
+
+				resulted=bot({11,22,33})
+				expected=11
+				ok(eq(resulted,expected),"returns item at bottom of stack.")
+
+				resulted=bot({})
+				expected=nil
+				ok(eq(resulted,expected),"returns nil from empty stack.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4174,6 +4188,7 @@ if MAIN() then
 			test_ZIP,
 			test_basename,
 			test_bin,
+			test_bot,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

@@ -1747,7 +1747,8 @@
 		local doc=[[Sums a sequence of numbers.
 			SUM(args)
 
-			Returns the total sum of all numeric values in the sequence.
+			Returns the sum of all numeric values in the sequence.
+			The sequence must contain only numbers.
 			Returns 0 if args is empty.
 
 			SUM({1, 2, 3, 4, 5})-->15
@@ -3960,6 +3961,21 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_SUM=function()
+			test("SUM",function()
+				local cases={
+					--arg	 expected
+					{{1, 2, 3, 4, 5},       15},
+					{{10, 20, 30, 40, 50}, 150},
+					{{},                     0},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=SUM(cc[1])
+					local expected=cc[2]
+					ok(eq(resulted,expected))
+				 end
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4157,6 +4173,7 @@ if MAIN() then
 			test_REVERSE,
 			test_REVERSEARRAY,
 			test_SSET,
+			test_SUM,
 			--
 			test_os_path_split,
 			test_os_path_join,

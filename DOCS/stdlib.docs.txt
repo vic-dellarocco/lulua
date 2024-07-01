@@ -1,4 +1,4 @@
-Lulua Standard Library 0.5.72
+Lulua Standard Library 0.5.76
 =======================
 
 PACKAGE.BASE
@@ -127,7 +127,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.5.72
+  The Lulua version number. Currently: 0.5.76
   
 MAXINT
   The largest int.
@@ -1215,7 +1215,8 @@ SUM
   Sums a sequence of numbers.
   SUM(args)
   
-  Returns the total sum of all numeric values in the sequence.
+  Returns the sum of all numeric values in the sequence.
+  The sequence must contain only numbers.
   Returns 0 if args is empty.
   
   SUM({1, 2, 3, 4, 5})-->15
@@ -1420,7 +1421,8 @@ sum
   Sums a sequence of numbers.
   SUM(args)
   
-  Returns the total sum of all numeric values in the sequence.
+  Returns the sum of all numeric values in the sequence.
+  The sequence must contain only numbers.
   Returns 0 if args is empty.
   
   SUM({1, 2, 3, 4, 5})-->15
@@ -1511,9 +1513,9 @@ Misc
 
 SSET
   Safe set, disallow assignment of blank value.
-  SSET(arg)-->arg
+  SSET(arrg)-->arrg
   
-  Used to detect programming errors.
+  Used to detect programming errors and unitialized data.
   Usage: foo=SSET(val)
   Error on nil, empty string, or empty table.
   

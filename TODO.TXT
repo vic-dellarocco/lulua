@@ -169,7 +169,7 @@ Testing:
 		REVERSE
 		REVERSEARRAY
 		SSET
-		*SUM
+		SUM
 		*Stack
 		*THRICE
 		*UNROLL

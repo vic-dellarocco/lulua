@@ -2416,11 +2416,11 @@
 		local doc=[[Return true if obj is callable like a function.
 			callable(obj)-->bool
 			]]
-		if type(obj) == 'function' then
+		if type(obj)=="function" then
 			return true
-		elseif type(obj) == 'table' or type(obj) == 'List' then
-			local mt = debug.getmetatable(obj)
-			return (type(mt) == "table" or type(obj) == 'List') and type(mt.__call) == "function"
+		elseif type(obj)=="table" or type(obj)=="List" then
+			local mt=debug.getmetatable(obj)
+			return (type(mt)=="table" or type(obj)=="List") and type(mt.__call)=="function"
 		else
 			return false
 		end
@@ -4006,6 +4006,34 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_callable=function()
+			test("callable",function()
+				local resulted,expected
+
+				resulted=callable(print)
+				expected=true
+				ok(eq(resulted,expected),"functions are callable.")
+
+				resulted=callable({})
+				expected=false
+				ok(eq(resulted,expected),"tables are not callable.")
+
+				ex={}
+				ex_mt={}
+				function ex.new(foo)
+					local self={}
+					self.foo=foo
+					return self
+				 end
+				ex_mt.__call=ex.new
+				setmetatable(ex,ex_mt)
+
+				resulted=callable(ex)
+				expected=true
+				ok(eq(resulted,expected),"callable objects use the __call metamethod.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4189,6 +4217,7 @@ if MAIN() then
 			test_basename,
 			test_bin,
 			test_bot,
+			test_callable,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

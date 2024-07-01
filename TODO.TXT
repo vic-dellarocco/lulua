@@ -177,8 +177,6 @@ Testing:
 		*Stack
 		UNROLL
 		ZIP
-		*all
-		*any
 		*basename
 		*bin
 		*bin32

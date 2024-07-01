@@ -178,8 +178,7 @@ Testing:
 		UNROLL
 		ZIP
 		basename
-		*bin
-		*bin32
+		bin
 		*bool
 		*bot
 		*bsieve

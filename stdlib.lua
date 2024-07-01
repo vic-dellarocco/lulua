@@ -2334,78 +2334,12 @@
 	abs=math.abs
 	all=ALL
 	any=ANY
-	--Alternate implementation of bin():
-		-- bin=function(n,_width,_unsigned)--any lua.
-		-- 	local doc=[[Returns binary representation of signed int n as a string.
-		-- 		bin(n)
-
-		-- 		_width: byte width parameter. Default=4
-		-- 				_width 1 to 8 is allowed.
-
-		-- 		signed ints as large as  2^53-1 can be represented.
-		-- 		signed ints as small as -2^53+1 can be represented.
-
-		-- 		unsigned ints as large as  2^52-1 can be represented.
-		-- 		unsigned ints as small as -2^52+1 can be represented.
-
-		-- 		Of course, these will also be limited by the byte width.
-		-- 		]]
-		-- 	assert(n<=MAXINT,"int too large for bin()")
-		-- 	assert(n>=MININT,"negative int too negative for bin()")
-
-		-- 	if _width==nil then
-		-- 		_width=4
-		-- 	 end
-		-- 	if _width<=1 then _width=1;end
-		-- 	if _width>=8 then _width=8;end
-
-		-- 	local N=8*_width
-		-- 	if _unsigned then
-		-- 		assert(n<= 2^(N)-1)
-		-- 		assert(n>= 0      )
-		-- 	else
-		-- 		assert(n<= 2^(N-1)-1)
-		-- 		assert(n>=-2^(N-1)+1)
-		-- 	 end
-
-		-- 	local sign=n<0
-		-- 	local n=int(abs(n))
-		-- 	local ss={}
-		-- 	local s --the result
-
-		-- 	if sign then n=n-1; end--for 2s compliment
-
-		-- 	while n~=0 do
-		-- 		if n % 2 == 0 then
-		-- 			ss[#ss+1]="0"
-		-- 		 else
-		-- 			ss[#ss+1]="1"
-		-- 		 end
-		-- 		n=math.floor(n/2)
-		-- 	 end
-
-		-- 	local start=#ss+1
-		-- 	local limit=8*_width-1
-		-- 	for i=start,limit,1 do
-		-- 		ss[i]="0"
-		-- 	 end
-		-- 	s=table.concat(ss,""):reverse()
-		-- 	if sign then
-		-- 		s=s:gsub("1", "x")--2s compliment
-		-- 		s=s:gsub("0", "1")--2s compliment
-		-- 		s=s:gsub("x", "0")--2s compliment
-		-- 		s="1"..s
-		-- 	 else
-		-- 		s="0"..s
-		-- 	 end
-		-- 	return "0b"..s
-		--  end
-	bin=function(n,_width,_unsigned)--Lua5.1 only.
+	bin=function(n,_width,_unsigned)
 		local doc=[[Returns binary representation of signed int n as a string.
 			bin(n)
 
 			_width: byte width parameter. Default=4
-					_width 1 to 8 is allowed.
+					_width 1 through 8 is allowed.
 
 			signed ints as large as  2^53-1 can be represented.
 			signed ints as small as -2^53+1 can be represented.
@@ -2415,17 +2349,13 @@
 
 			Of course, these will also be limited by the byte width.
 			]]
-		--[[Lua5.1 converts negative hex ints to 2s-compliment 64 bit!
+		assert(n<=MAXINT,"int too large for bin()")
+		assert(n>=MININT,"negative int too negative for bin()")
 
-			Convert to hex then use a lookup table.
-			This is how I would do it by hand.
-
-			All you have to do is check ranges,
-			pad positive number strings!
-			and truncate negative number strings!
-			]]
-		assert(n<=int(MAXINT),"int too large for bin()")
-		assert(n>=int(MININT),"negative int too negative for bin()")
+		if _unsigned then
+			assert(n<=2^52-1,"unsigned int too large for bin()")
+			assert(n>=-2^52+1,"negative unsigned int too negative for bin()")
+		 end
 
 		if _width==nil then
 			_width=4
@@ -2443,39 +2373,34 @@
 		 end
 
 		local sign=n<0
-		local n=int(n)
+		local n=int(abs(n))
 		local ss={}
 		local s --the result
-		local pad="0000"
 
-		s=string.format("%X",n)
-		local bin_lookup = {
-			["0"] = "0000",
-			["1"] = "0001",
-			["2"] = "0010",
-			["3"] = "0011",
-			["4"] = "0100",
-			["5"] = "0101",
-			["6"] = "0110",
-			["7"] = "0111",
-			["8"] = "1000",
-			["9"] = "1001",
-			["A"] = "1010",
-			["B"] = "1011",
-			["C"] = "1100",
-			["D"] = "1101",
-			["E"] = "1110",
-			["F"] = "1111",
-			}
-		for i=1,#s do
-			local c=s:sub(i,i)
-			ss[#ss+1]=bin_lookup[c]
+		if sign then n=n-1; end--for 2s compliment
+
+		while n~=0 do
+			if n % 2 == 0 then
+				ss[#ss+1]="0"
+			 else
+				ss[#ss+1]="1"
+			 end
+			n=math.floor(n/2)
 		 end
-		s=table.concat(ss)
+
+		local start=#ss+1
+		local limit=8*_width-1
+		for i=start,limit,1 do
+			ss[i]="0"
+		 end
+		s=table.concat(ss,""):reverse()
 		if sign then
-			s=s:slice(1+8*( (#s/8)-_width) )
+			s=s:gsub("1", "x")--2s compliment
+			s=s:gsub("0", "1")--2s compliment
+			s=s:gsub("x", "0")--2s compliment
+			s="1"..s
 		 else
-			s=string.rep(pad,( (_width*2)-(#s/4)) )..s
+			s="0"..s
 		 end
 		return "0b"..s
 	 end
@@ -4012,6 +3937,61 @@ if MAIN() then
 				 end
 			 end)
 		 end
+		local test_bin=function()
+			test("bin",function()--shell style basename.
+				local cases={
+					--arg,expected
+					{ 5,        "0b00000000000000000000000000000101"},
+					{ 1,        "0b00000000000000000000000000000001"},
+					{ 0,        "0b00000000000000000000000000000000"},
+					{-1,        "0b11111111111111111111111111111111"},
+					{ (2^31)-1, "0b01111111111111111111111111111111"},
+					{-(2^31)+1, "0b10000000000000000000000000000001"},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=bin(cc[1])
+					local expected=cc[2]
+					ok(eq(resulted,expected))
+				 end
+
+				local resulted=bin(5,2)
+				local expected="0b0000000000000101"
+				ok(eq(resulted,expected),"16 bit.")
+
+				local resulted=bin(5,1)
+				local expected="0b00000101"
+				ok(eq(resulted,expected),"8 bit.")
+
+				local resulted=bin(5,8)
+				local expected="0b0000000000000000000000000000000000000000000000000000000000000101"
+				ok(eq(resulted,expected),"64 bit.")
+
+				local resulted=bin( (2^53)-1,8)
+				local expected="0b0000000000011111111111111111111111111111111111111111111111111111"
+				ok(eq(resulted,expected),"64 bit. MAXINT")
+
+				local resulted=bin( -(2^53)+1,8)
+				local expected="0b1111111111100000000000000000000000000000000000000000000000000001"
+				ok(eq(resulted,expected),"64 bit. MININT")
+
+				local resulted=bin( -1,8)
+				local expected="0b1111111111111111111111111111111111111111111111111111111111111111"
+				ok(eq(resulted,expected),"64 bit. -1")
+
+				local e,resulted=pcall(bin,2^53,8)
+				ok(eq(e,false),"64 bit. Fail if greater than MAXINT.")
+				--
+				local e,resulted=pcall(bin,-2^53,8)
+				ok(eq(e,false),"64 bit. Fail if less than MININT.")
+
+				local e,resulted=pcall(bin,2^52,8,true)
+				ok(eq(e,false),"64 bit. Fail if unsigned int greater than 2^52-1.")
+				--
+				local e,resulted=pcall(bin,-2^52,8,true)
+				ok(eq(e,false),"64 bit. Fail if unsigned int less than -2^52+1.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4193,6 +4173,7 @@ if MAIN() then
 			test_UNROLL,
 			test_ZIP,
 			test_basename,
+			test_bin,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

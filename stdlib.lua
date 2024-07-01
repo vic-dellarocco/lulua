@@ -2125,7 +2125,7 @@
 			]]
 		-- return n & (1 << b) ~= 0
 		assert(n~=nil and type(n)=="number")
-		return bit.band(n,bit.lshift(1,b-1) ) ~= 0
+		return bit.band(n,bit.lshift(1,b-1) )~=0
 	 end
 --[[Misc]]
 	function circle_back(pos,size,base0)
@@ -4034,6 +4034,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_checkbit=function()
+			test("checkbit",function()
+				local resulted,expected
+
+				resulted=checkbit(5,1)
+				expected=true
+				ok(eq(resulted,expected),"bit 1 of 5 is set.")
+
+				resulted=checkbit(5,2)
+				expected=false
+				ok(eq(resulted,expected),"bit 2 of 5 is not set.")
+
+				resulted=checkbit(5,3)
+				expected=true
+				ok(eq(resulted,expected),"bit 3 of 5 is set.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4218,6 +4236,7 @@ if MAIN() then
 			test_bin,
 			test_bot,
 			test_callable,
+			test_checkbit,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

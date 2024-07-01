@@ -183,7 +183,7 @@ Testing:
 		bot
 		bsieve
 		callable
-		*checkbit
+		checkbit
 		*chomp
 		*chr
 		*circle_back

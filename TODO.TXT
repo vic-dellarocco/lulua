@@ -176,7 +176,7 @@ Testing:
 		SUM
 		*Stack
 		UNROLL
-		*ZIP
+		ZIP
 		*all
 		*any
 		*basename

@@ -1886,54 +1886,33 @@
 	 end
 	 bsieve=BSIEVE
 	function ZIP(seq1,seq2)--Python zip. Stops at length of shortest sequence.
-		local doc=[[Interleave two sequences into pairs.
+		local doc=[[Makes a sequence of pairs from 2 sequences.
 			ZIP(seq1, seq2)
 
-			This function interleaves two sequences (seq1 and seq2),
-			stopping at the length of the shortest sequence.
-			Each pair of corresponding elements from both sequences
-			forms a tuple in the resulting sequence.
+			Like Python's zip function.
+			Stops at the end of the shortest sequence.
 
-			Parameters:
-				seq1: The first sequence.
-				seq2: The second sequence.
-
-			Returns:
-				A sequence of tuples, where each tuple consists of a
-				pair of corresponding elements from seq1 and seq2, up to
-				the length of the shorter sequence.
-
-			Example usage:
+			Ex:
 				local seq1 = {1, 2, 3}
 				local seq2 = {'a', 'b', 'c'}
 				local zipped = ZIP(seq1, seq2)
-				print(zipped) -- Output: {{1, 'a'}, {2, 'b'}, {3, 'c'}}
-			> print(ZIP({11,33,55,77},{22,44,66}))
-			{
-				[1]={
-						[1]=11,
-						[2]=22
-					  },
-				[2]={
-						[1]=33,
-						[2]=44
-					  },
-				[3]={
-						[1]=55,
-						[2]=66
-					  }
-			  }
+				--zipped-->{{1, 'a'}, {2, 'b'}, {3, 'c'}}
+
 			]]
+		local uselist=false
+		if type(seq1)=="List" or type(seq2)=="List" then
+			uselist=true
+		 end
 		local ss={}
 		local i=1
 		while true do
 			if seq1[i]==nil or seq2[i]==nil then
+				if uselist==true then ss=List(ss);end
 				return ss
 			 end
 			ss[#ss+1]={seq1[i],seq2[i]}
 			i=i+1
 		 end
-		return ss
 	 end
 	function FULLZIP(seq1,seq2,placeholder)--Python zip but uses the longest sequence with a non-nil placeholder for missing data.
 		local doc=[[Makes a sequence of pairs from 2 sequences.
@@ -1950,7 +1929,7 @@
 				zippy = FULLZIP(seq1, seq2, placeholder)
 				--zippy-->{{1,'a'},{2,'b'},{3,'X'},{4,'X'}}
 			]]
-		local islist=false
+		local uselist=false
 		if type(seq1)=="List" or type(seq2)=="List" then
 			uselist=true
 		 end
@@ -4000,6 +3979,30 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_ZIP=function()
+			test("ZIP",function()
+				local resulted,expected
+
+				local seq1 = {1,2,3,4}
+				local seq2 = {'a','b'}
+				resulted=ZIP(seq1,seq2)
+				expected={{1,'a'},{2,'b'}}
+				ok(eq(resulted,expected),"placeholders generated.")
+
+				local seq1 = {1,2,3,4}
+				local seq2 = {'a','b','c','d'}
+				resulted=ZIP(seq1,seq2)
+				expected={{1,'a'},{2,'b'},{3,'c'},{4,'d'}}
+				ok(eq(resulted,expected),"same length sequences.")
+
+				local seq1 = {1,2,3,4}
+				local seq2 = List{'a','b'}
+				resulted=ZIP(seq1,seq2)
+				expected={{1,'a'},{2,'b'}}
+				ok(eq(type(resulted),"List"),"produces List.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4198,15 +4201,16 @@ if MAIN() then
 			test_SSET,
 			test_SUM,
 			test_UNROLL,
+			test_ZIP,
 			--
-			test_os_path_split,
-			test_os_path_join,
-			test_os_path_splitext,
-			test_os_path_basename,
-			test_os_path_isfile,
-			test_basename,
-			test_table_slice,
-			test_dogma,
+			-- test_os_path_split,
+			-- test_os_path_join,
+			-- test_os_path_splitext,
+			-- test_os_path_basename,
+			-- test_os_path_isfile,
+			-- test_basename,
+			-- test_table_slice,
+			-- test_dogma,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

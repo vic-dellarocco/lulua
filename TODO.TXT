@@ -179,7 +179,7 @@ Testing:
 		ZIP
 		basename
 		bin
-		*bool
+		bool
 		*bot
 		*bsieve
 		*callable

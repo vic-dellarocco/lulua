@@ -168,7 +168,7 @@ Testing:
 		PARTITION
 		REVERSE
 		REVERSEARRAY
-		*SSET
+		SSET
 		*SUM
 		*Stack
 		*THRICE

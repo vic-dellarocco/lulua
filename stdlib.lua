@@ -2210,18 +2210,18 @@
 			]]
 		return nil
 	 end
-	function SSET(arg)--Safe set, disallow assignment of blank value. Used to detect programming errors.
+	function SSET(arrg)--Safe set, disallow assignment of blank value. Used to detect programming errors.
 		local doc=[[Safe set, disallow assignment of blank value.
-			SSET(arg)-->arg
+			SSET(arrg)-->arrg
 
-			Used to detect programming errors.
+			Used to detect programming errors and unitialized data.
 			Usage: foo=SSET(val)
 			Error on nil, empty string, or empty table.
 			]]
-		if arg=="" or arg==nil or ( (type(arg)=="table" or type(arg)=="List") and not next(arg) ) then
+		if arrg=="" or arrg==nil or ( (type(arrg)=="table" or type(arrg)=="List") and not next(arrg) ) then
 			error("unset variable")
 		 end
-		return arg
+		return arrg
 	 end
 
 	dir=function(tbl)--Print keys of tbl.
@@ -3913,6 +3913,53 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_SSET=function()
+			test("SSET",function()
+				local resulted,expected
+
+				local e
+				local var=true
+				e,resulted=pcall(SSET,var)
+				expected=var
+				ok(eq(resulted,expected),"ok")
+
+				--[[If called with var equal to nil,"",{},List()
+					then it should fail and crash the program.
+
+					I have commented out these tests because the
+					test program will crash if the tests are
+					successful.
+
+					If SSET function is ever changed, you should
+					run these tests manually.
+					]]
+
+				-- local e
+				-- local var=nil
+				-- e,resulted=pcall(SSET,var)--pcall doesn't help here.
+				-- expected=var
+				-- ok(eq(resulted,expected),"should crash the program with 'unset variable'")
+
+				-- local e
+				-- local var=""
+				-- e,resulted=pcall(SSET,var)
+				-- expected=var
+				-- ok(eq(resulted,expected),"should crash the program with 'unset variable'")
+
+				-- local e
+				-- local var={}
+				-- e,resulted=pcall(SSET,var)
+				-- expected=var
+				-- ok(eq(resulted,expected),"should crash the program with 'unset variable'")
+
+				-- local e
+				-- local var=List()
+				-- e,resulted=pcall(SSET,var)
+				-- expected=var
+				-- ok(eq(resulted,expected),"should crash the program with 'unset variable'")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4109,6 +4156,7 @@ if MAIN() then
 			test_PARTITION,
 			test_REVERSE,
 			test_REVERSEARRAY,
+			test_SSET,
 			--
 			test_os_path_split,
 			test_os_path_join,

@@ -2282,22 +2282,12 @@
 		local doc=[[Shell basename
 			basename(path,_sep)
 
-			This function extracts the base name (last component) from a
-			given path. It splits the path by the specified separator
-			(defaulting to the platform-specific path separator if none
-			is provided) and returns the last component of the split
-			path.
+			Returns the last path component from a given path.
 
-			Parameters:
-				path: A string representing a file path.
-				sep: An optional string specifying the path separator.
-					 Defaults to the platform-specific path separator.
+			The optional _sep argument can be used to set the
+			path separator.
 
-			Returns:
-				A string representing the base name extracted from the
-				path.
-
-			Example usage:
+			Ex:
 				base = basename("/home/user/documents/file.txt")
 				print(base)-->"file.txt"
 			]]
@@ -4003,6 +3993,25 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_basename=function()
+			test("basename",function()--shell style basename.
+				local cases={
+					--arg,expected
+					{"",""},
+					{"foo","foo"},
+					{"foo.","foo."},
+					{"foo.txt","foo.txt"},
+					{"/foo.txt","foo.txt"},
+					{"baz/foo.txt","foo.txt"},
+					{"baz/foo/","foo"},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=basename(cc[1])
+					local expected=cc[2]
+					ok(eq(resulted,expected))--use eq when comparing tables.
+				 end
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4105,25 +4114,6 @@ if MAIN() then
 				 end
 			 end)
 		 end
-		local test_basename=function()
-			test("basename",function()--shell style basename.
-				local cases={
-					--arg,expected
-					{"",""},
-					{"foo","foo"},
-					{"foo.","foo."},
-					{"foo.txt","foo.txt"},
-					{"/foo.txt","foo.txt"},
-					{"baz/foo.txt","foo.txt"},
-					{"baz/foo/","foo"},
-				 }
-				for _,cc in ipairs(cases) do
-					local resulted=basename(cc[1])
-					local expected=cc[2]
-					ok(eq(resulted,expected))--use eq when comparing tables.
-				 end
-			 end)
-		 end
 		local test_os_path_isfile=function()
 			test("os.path.isfile",function()
 				local cases={
@@ -4202,13 +4192,14 @@ if MAIN() then
 			test_SUM,
 			test_UNROLL,
 			test_ZIP,
+			test_basename,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,
 			-- test_os_path_splitext,
 			-- test_os_path_basename,
 			-- test_os_path_isfile,
-			-- test_basename,
+
 			-- test_table_slice,
 			-- test_dogma,
 		 }

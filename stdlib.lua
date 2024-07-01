@@ -736,9 +736,7 @@
 			UNROLL(tbl)
 
 			Makes an unrolled list, then returns an iterator over that.
-			The LuaJIT version is efficient, it uses goto though.
 			]]
-		-- Makes an unrolled list, then returns an iterator over that.
 		local function _unroll(_tbl) --get list of all leaf nodes,depth first
 			local ss={}
 			for k,v in ipairs(_tbl) do
@@ -751,16 +749,18 @@
 			if type(_tbl)=="List" then ss=List(ss) end
 			return ss
 		 end
-		local ss=_unroll(_tbl)
+		local ss=_unroll(tbl)
 
 		local n=0
-		local s=#ss
+		local s=#ss+1
+		if #ss==0 then s=0;end
 		return function()
 			n=n+1
 			if n<s then return n,ss[n] end
 		 end
 	 end
-		if jit then--UNROLL
+		if false then--UNROLL -- hasn't been tested.
+		-- if jit then--UNROLL
 			assert(loadstring([[
 			function UNROLL(tbl)
 				--iterator to completely flatten a list (luajit)
@@ -3966,6 +3966,40 @@ if MAIN() then
 				 end
 			 end)
 		 end
+		local test_UNROLL=function()
+			test("UNROLL",function()
+				local resulted,expected
+
+				resulted={}
+				for k,v in UNROLL({11,22,33}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={11,22,33}
+				ok(eq(resulted,expected),"un-nested.")
+
+				resulted={}
+				for k,v in UNROLL({11,22,33,{44,{{55,66},77},88},99}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={11,22,33,44,55,66,77,88,99}
+				ok(eq(resulted,expected),"deeply nested.")
+
+				resulted={}
+				for k,v in UNROLL({11}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={11}
+				ok(eq(resulted,expected),"one item.")
+
+				resulted={}
+				for k,v in UNROLL({}) do
+					resulted[#resulted+1]=v
+				 end
+				expected={}
+				ok(eq(resulted,expected),"no items.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4163,6 +4197,7 @@ if MAIN() then
 			test_REVERSEARRAY,
 			test_SSET,
 			test_SUM,
+			test_UNROLL,
 			--
 			test_os_path_split,
 			test_os_path_join,
@@ -4171,7 +4206,7 @@ if MAIN() then
 			test_os_path_isfile,
 			test_basename,
 			test_table_slice,
-			-- test_dogma,
+			test_dogma,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

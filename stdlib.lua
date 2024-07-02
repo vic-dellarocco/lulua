@@ -2433,6 +2433,8 @@
 
 			Only for ASCII.
 			n must be in range [0..255]
+
+			Empty string or 0 returns null char.
 			]]
 		return string.char(int(n))
 	 end
@@ -4085,6 +4087,21 @@ if MAIN() then
 
 			 end)
 		 end
+
+		local test_chr=function()
+			test("chr",function()
+				local resulted,expected
+
+				resulted=chr(65)
+				expected="A"
+				ok(eq(resulted,expected),"A")
+
+				resulted=chr(0)
+				expected="\000"
+				ok(eq(resulted,expected),"\\000")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4271,6 +4288,7 @@ if MAIN() then
 			test_callable,
 			test_checkbit,
 			test_chomp,
+			test_chr,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

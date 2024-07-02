@@ -1,4 +1,4 @@
-Lulua Standard Library 0.5.98
+Lulua Standard Library 0.6.04
 =======================
 
 PACKAGE.BASE
@@ -25,6 +25,7 @@ New
 chomp
   Remove whitespace from the start of line.
   chomp(line)-->string,string
+  
   returns whitespace,restofline
   
 ezpath
@@ -127,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.5.98
+  The Lulua version number. Currently: 0.6.04
   
 MAXINT
   The largest int.
@@ -1618,6 +1619,8 @@ chr
   
   Only for ASCII.
   n must be in range [0..255]
+  
+  Empty string or 0 returns null char.
   
 closed
   Return a table of local variables and closures.

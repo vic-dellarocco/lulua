@@ -185,7 +185,7 @@ Testing:
 		callable
 		checkbit
 		chomp
-		*chr
+		chr
 		*circle_back
 		*clamp
 		*classmethod

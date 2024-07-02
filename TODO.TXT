@@ -190,7 +190,7 @@ Testing:
 		clamp
 		coalesce
 		cons
-		*copy
+		copy
 		*curry
 		*dbg
 		*deepcopy

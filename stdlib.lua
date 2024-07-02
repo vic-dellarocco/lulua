@@ -71,6 +71,8 @@
 		]]
 	function copy(src)--Shallow copy of array. almost useless.
 		local doc=[[Shallow copy of array.
+			copy(src)-->srccopy
+
 			Ex:
 				foo=copy(bar)
 				bar=copy({11,22,33})--perfect for numbers and strings
@@ -4179,6 +4181,25 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_copy=function()
+			test("copy",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {2,5}   ,"shallow copy"  ,"shallow copy." },
+					{ {"foo"} ,"shallow copy"  ,"shallow copy." },
+
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=copy( cc[1] )
+					local expected=cc[1]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4370,6 +4391,7 @@ if MAIN() then
 			test_clamp,
 			test_coalesce,
 			test_cons,
+			test_copy,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

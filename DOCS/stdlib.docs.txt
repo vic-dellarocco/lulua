@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.16
+Lulua Standard Library 0.6.18
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.16
+  The Lulua version number. Currently: 0.6.18
   
 MAXINT
   The largest int.
@@ -197,6 +197,8 @@ Copy
 
 copy
   Shallow copy of array.
+  copy(src)-->srccopy
+  
   Ex:
       foo=copy(bar)
       bar=copy({11,22,33})--perfect for numbers and strings

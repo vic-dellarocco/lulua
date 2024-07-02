@@ -160,6 +160,8 @@
 	sqrt  =math.sqrt
 	clamp =function(n,lower,upper)
 		local doc=[[Return a number in the range [lower..upper]
+			clamp(n,lower,upper)
+
 			Ex: clamp(2,5,10) --> 5
 				clamp(20,5,10)-->10
 				clamp(7,5,10) --> 7
@@ -4127,6 +4129,26 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_clamp=function()
+			test("clamp",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ { 2, 5,10}, 5,"return lower bound when value less than lower bound." },
+					{ {20, 5,10},10,"return upper bound when value greater than upper bound."},
+					{ { 7, 5,10}, 7,"return n when n is in bounds."},
+					{ { 7,10, 5}, 7,"return n when n is in bounds. lower,upper swapped."},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=clamp( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4315,6 +4337,7 @@ if MAIN() then
 			test_chomp,
 			test_chr,
 			test_circle_back,
+			test_clamp,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

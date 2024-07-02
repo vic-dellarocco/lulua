@@ -187,7 +187,7 @@ Testing:
 		chomp
 		chr
 		circle_back
-		*clamp
+		clamp
 		*classmethod
 		*closed
 		*coalesce

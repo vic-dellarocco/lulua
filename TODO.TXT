@@ -188,7 +188,6 @@ Testing:
 		chr
 		circle_back
 		clamp
-		*closed
 		*coalesce
 		*cons
 		*copy

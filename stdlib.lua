@@ -2511,25 +2511,6 @@
 		 end
 		return vv
 	 end
-	closed=function()--get upvals, closures, captured vars, not a python function
-		local doc=[[Return a table of local variables and closures.
-			closed()-->table
-			]]
-		--todo: does this even work? I haven't tried it, but if it works, make a superdeepcopy function that can copy closures.
-		local vv={}
-		local i=1
-		local func=debug.getinfo(2,"f").func
-		while true do
-			local name,val=debug.getupvalue(func, i)
-			if name~=nil then
-				vv[name]=val
-			else
-				break
-			 end
-			i=i+1
-		 end
-		return vv
-	 end
 	map=MAP
 	max=MAX
 	min=MIN

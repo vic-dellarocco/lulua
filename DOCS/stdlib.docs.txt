@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.06
+Lulua Standard Library 0.6.10
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.06
+  The Lulua version number. Currently: 0.6.10
   
 MAXINT
   The largest int.
@@ -233,6 +233,8 @@ Math
 
 clamp
   Return a number in the range [lower..upper]
+  clamp(n,lower,upper)
+  
   Ex: clamp(2,5,10) --> 5
       clamp(20,5,10)-->10
       clamp(7,5,10) --> 7

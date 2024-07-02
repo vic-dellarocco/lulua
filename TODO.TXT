@@ -188,7 +188,6 @@ Testing:
 		chr
 		circle_back
 		clamp
-		*classmethod
 		*closed
 		*coalesce
 		*cons

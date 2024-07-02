@@ -925,7 +925,9 @@
 	 end
 	function coalesce(tbl,src)--Condenses sparse bucket arrays by merging them.
 		local doc=[[Condenses sparse bucket arrays by merging them.
-			coalesce(tbl,src)
+			coalesce(tbl,src)-->tbl
+			coalesce(src)-->tbl
+
 			Preserves the values but not the keys.
 
 			Order of elements may not be preserved.
@@ -943,6 +945,13 @@
 				cc=List({[-1]=22,[444]=321})
 				cc:coalesce()
 			]]
+
+		--allow one arg:
+		if src==nil and tbl~=nil then
+			src=tbl
+			tbl={}
+		 end
+
 		for k,v in pairs(src) do
 			if type(k)=="number" then
 				push(tbl,v)
@@ -4130,6 +4139,29 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_coalesce=function()
+			test("coalesce",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ { [222]=44,[100]=55, [-2]=11 }, {11,44,55},"ok."},
+					{ { [222]=44,[100]=11, [-2]=11 }, {11,11,44},"duplicate values: ok."},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=coalesce( cc[1] )--order is not preserved,
+					resulted=sort(resulted)--so it must be sorted.
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+				resulted=List{[512]=11,[1024]=22,[256]=33}:coalesce()
+				expected={11,22,33}
+				ok(eq(resulted,expected),"as List method.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4319,6 +4351,7 @@ if MAIN() then
 			test_chr,
 			test_circle_back,
 			test_clamp,
+			test_coalesce,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

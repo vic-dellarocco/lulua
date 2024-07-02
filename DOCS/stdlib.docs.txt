@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.12
+Lulua Standard Library 0.6.14
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.12
+  The Lulua version number. Currently: 0.6.14
   
 MAXINT
   The largest int.
@@ -540,7 +540,9 @@ bot
   
 coalesce
   Condenses sparse bucket arrays by merging them.
-  coalesce(tbl,src)
+  coalesce(tbl,src)-->tbl
+  coalesce(src)-->tbl
+  
   Preserves the values but not the keys.
   
   Order of elements may not be preserved.

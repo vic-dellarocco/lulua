@@ -188,7 +188,7 @@ Testing:
 		chr
 		circle_back
 		clamp
-		*coalesce
+		coalesce
 		*cons
 		*copy
 		*curry

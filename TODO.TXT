@@ -186,7 +186,7 @@ Testing:
 		checkbit
 		chomp
 		chr
-		*circle_back
+		circle_back
 		*clamp
 		*classmethod
 		*closed

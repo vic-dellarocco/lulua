@@ -4087,7 +4087,6 @@ if MAIN() then
 
 			 end)
 		 end
-
 		local test_chr=function()
 			test("chr",function()
 				local resulted,expected
@@ -4099,6 +4098,32 @@ if MAIN() then
 				resulted=chr(0)
 				expected="\000"
 				ok(eq(resulted,expected),"\\000")
+
+			 end)
+		 end
+		local test_circle_back=function()
+			test("circle_back",function()
+				local resulted,expected
+
+				seq={11,22,33}
+				resulted={}
+				pos=1
+				for i=1,6 do
+					resulted[#resulted+1]=seq[pos]
+					pos=circle_back(pos,#seq)
+				 end
+				expected={11,22,33,11,22,33}
+				ok(eq(resulted,expected),"twice through list.")
+
+				seq={[0]=11,22,33}
+				resulted={}
+				pos=0
+				for i=1,6 do
+					resulted[#resulted+1]=seq[pos]
+					pos=circle_back(pos,#seq+1,true)
+				 end
+				expected={11,22,33,11,22,33}
+				ok(eq(resulted,expected),"twice through array.")
 
 			 end)
 		 end
@@ -4289,6 +4314,7 @@ if MAIN() then
 			test_checkbit,
 			test_chomp,
 			test_chr,
+			test_circle_back,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

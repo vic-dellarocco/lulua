@@ -189,7 +189,7 @@ Testing:
 		circle_back
 		clamp
 		coalesce
-		*cons
+		cons
 		*copy
 		*curry
 		*dbg

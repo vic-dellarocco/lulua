@@ -1094,23 +1094,19 @@
 	 end
 	--[[not List methods:]]
 	function cons(a,b)--cons-entrate.
-		local doc=[[cons function, I think.
+		local doc=[[cons function.
 			cons(a,b)
-			Creates a new table that combines elements from two inputs,
-			`a` and `b`. If either `a` or `b` is already a List or a
-			table, it uses them directly. Otherwise, wraps `a` and `b`
-			in tables. Then, extends `a` with elements from `b`,
-			converting the result to a List either original inputs were
-			Lists.
+
+			Combine a,b into one list.
 
 			a,b-->{a,b}
 			{1,2},3->{1,2,3}
 			{1,2,3},{4,5}->{1,2,3,4,5}
 
 			]]
-		local useList=false
+		local uselist=false
 		if type(a)=="List" or type(b)=="List" then
-			useList=true
+			uselist=true
 		 end
 		if not (type(a)=="table" or type(a)=="List") then
 			a={a}
@@ -1119,7 +1115,7 @@
 			b={b}
 		 end
 		local ss=extend(a,b)
-		if useList then
+		if uselist then
 			ss=List(ss)
 		 end
 		return ss
@@ -4162,6 +4158,27 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_cons=function()
+			test("cons",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {2,5}            ,{2,5}        ,"2,5          -->{2,5}." },
+					{ {{1,2},5}        ,{1,2,5}      ,"{1,2},5      -->{1,2,5}." },
+					{ {{1,2,3},{4,5}}  ,{1,2,3,4,5}  ,"{1,2,3},{4,5}-->{1,2,3,4,5}." },
+					{ {nil}            ,{}           ,"nil          -->{}" },
+					{ {4}              ,{4}          ,"4            -->{4}" },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=cons( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4352,6 +4369,7 @@ if MAIN() then
 			test_circle_back,
 			test_clamp,
 			test_coalesce,
+			test_cons,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

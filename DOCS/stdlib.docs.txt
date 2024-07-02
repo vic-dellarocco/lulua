@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.14
+Lulua Standard Library 0.6.16
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.14
+  The Lulua version number. Currently: 0.6.16
   
 MAXINT
   The largest int.
@@ -561,14 +561,10 @@ coalesce
       cc:coalesce()
   
 cons
-  cons function, I think.
+  cons function.
   cons(a,b)
-  Creates a new table that combines elements from two inputs,
-  `a` and `b`. If either `a` or `b` is already a List or a
-  table, it uses them directly. Otherwise, wraps `a` and `b`
-  in tables. Then, extends `a` with elements from `b`,
-  converting the result to a List either original inputs were
-  Lists.
+  
+  Combine a,b into one list.
   
   a,b-->{a,b}
   {1,2},3->{1,2,3}

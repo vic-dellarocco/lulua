@@ -191,7 +191,6 @@ Testing:
 		coalesce
 		cons
 		copy
-		*curry
 		*dbg
 		*deepcopy
 		*def

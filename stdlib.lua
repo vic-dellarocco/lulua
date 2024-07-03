@@ -207,6 +207,8 @@
 --[[Datatypes]]
 	def 	 =function(f)--just syntax sugar for defining something.
 		local doc=[[Syntax sugar for defining something.
+			def(f)-->f
+
 			It just returns its arg.
 			It allows alternate syntax for define and call:
 				foo=(foo definition...in here)()
@@ -4228,6 +4230,17 @@ if MAIN() then
 
 			 end)
 		 end
+
+		local test_def=function()
+			test("def",function()
+				local resulted,expected
+
+				resulted=def(22)--it just returns its arg.
+				expected=22
+				ok(eq(resulted,expected),"ok.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4421,6 +4434,7 @@ if MAIN() then
 			test_cons,
 			test_copy,
 			test_deepcopy,
+			test_def,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

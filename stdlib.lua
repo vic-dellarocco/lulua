@@ -2296,7 +2296,7 @@
 	 end
 	function getext(path,_sep)--Return the file extension.
 		local doc=[[Return the file extension of path if it exists.
-			getext(path,_sep)-->file_ext
+			getext(path)-->file_ext
 
 			Returns an empty string if no file path exists.
 			Returns "." if path=="."
@@ -4372,6 +4372,28 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_getext=function()
+			test("getext",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {"/foo/bar/baz.txt"}   ,".txt"  ,".txt"  },
+					{ {"/foo/bar/baz"}       ,""      ,"no ext"  },
+					{ {"foo.jpeg"}           ,".jpeg" ,".jpeg"  },
+					{ {"foo."}               ,"."     ,"."  },
+					{ {"C:\\Settings\\foo.txt","\\"} ,".txt",".txt"  },--path sep
+					{ {"C:\\Settings\\foo.txt"} ,".txt"     ,".txt"  },--no path sep
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=getext( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4573,6 +4595,7 @@ if MAIN() then
 			test_flatten,
 			test_float,
 			test_getattr,
+			test_getext,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

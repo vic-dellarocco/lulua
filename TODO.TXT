@@ -200,7 +200,7 @@ Testing:
 		flatten
 		float
 		getattr
-		*getext
+		getext
 		*glob
 		*globals
 		*has

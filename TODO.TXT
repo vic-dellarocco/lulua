@@ -206,7 +206,7 @@ Testing:
 		has
 		hasattr
 		haskey
-		*hex
+		hex
 		*import
 		*indent
 		*input

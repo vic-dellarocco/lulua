@@ -4564,6 +4564,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_keys=function()
+			test("keys",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {11,22,33} ,{1,2,3}    ,"1,2,3"   },
+					{ {["foo"]=11,22,33} ,{1,2,"foo"}    ,"1,2,'foo'"   },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=keys( cc[1] )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4775,6 +4793,7 @@ if MAIN() then
 			test_indent,
 			test_int,
 			test_intmod,
+			test_keys,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

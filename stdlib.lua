@@ -4349,6 +4349,29 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_getattr=function()
+			test("getattr",function()
+				local resulted,expected
+
+				local foo={}
+				foo.bar=11
+				foo.baz=22
+
+				local cases={
+					--arg	 expected
+					{ {foo,"bar"}       ,11     ,"attribute 'foo'"   },
+					{ {foo,"baz"}       ,22     ,"attribute 'bar'"   },
+					{ {foo,"boo",false} ,false  ,"supply default value for missing atrribute."   },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=getattr( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4549,6 +4572,7 @@ if MAIN() then
 			test_ezpath,
 			test_flatten,
 			test_float,
+			test_getattr,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

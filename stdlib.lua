@@ -2510,6 +2510,7 @@
 			]]
 		if type(_prompt)=="string" then--woe unto ye who don't prompt for input.
 			io.write(prompt)
+			io.flush()
 		 end
 		local ss=io.read("*l")--read a line
 		return ss

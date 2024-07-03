@@ -208,7 +208,6 @@ Testing:
 		haskey
 		hex
 		indent
-		*input
 		*int
 		*intmod
 		*irange

@@ -4545,7 +4545,6 @@ if MAIN() then
 
 			 end)
 		 end
-
 		local test_intmod=function()
 			test("intmod",function()
 				local resulted,expected

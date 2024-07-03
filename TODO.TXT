@@ -209,7 +209,7 @@ Testing:
 		hex
 		indent
 		int
-		*intmod
+		intmod
 		*irange
 		*irange0
 		*keys

@@ -193,13 +193,16 @@
 		return math.max(lower,math.min(upper,n))
 	 end
 	intmod=function(x,m)--moduluo: x mod m, returns an int
-		local doc=[[Moduluo: x mod m, returns an int
+		local doc=[[Moduluo: x mod m, returns an int.
+			intmod(x,m)
+
 			Because mod is defined as this in lua:
 			a % b == a - math.floor(a/b)*b
 			if a is not an int, the result is not an int!
 
 			So use INTMOD to get an int result.
-			Ex: modulo(x,m)
+
+			Will return nan values.
 			]]
 		x=int(x)
 		m=int(m)
@@ -4542,6 +4545,26 @@ if MAIN() then
 
 			 end)
 		 end
+
+		local test_intmod=function()
+			test("intmod",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {10,2} ,0    ,"{10,2} ,0"   },
+					{ {10,3} ,1    ,"{10,3} ,1"   },
+					{ {2 ,3} ,2    ,"{2 ,3} ,2"   },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=intmod( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4752,6 +4775,7 @@ if MAIN() then
 			test_hex,
 			test_indent,
 			test_int,
+			test_intmod,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

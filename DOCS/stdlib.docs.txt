@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.70
+Lulua Standard Library 0.6.72
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.70
+  The Lulua version number. Currently: 0.6.72
   
 MAXINT
   The largest int.
@@ -277,13 +277,16 @@ int
   Can fail with an assertion error.
   
 intmod
-  Moduluo: x mod m, returns an int
+  Moduluo: x mod m, returns an int.
+  intmod(x,m)
+  
   Because mod is defined as this in lua:
   a % b == a - math.floor(a/b)*b
   if a is not an int, the result is not an int!
   
   So use INTMOD to get an int result.
-  Ex: modulo(x,m)
+  
+  Will return nan values.
   
 round
   Round n to _dp decimal places or nearest int.

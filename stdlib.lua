@@ -4268,7 +4268,6 @@ if MAIN() then
 
 			 end)
 		 end
-
 		local test_extend=function()
 			test("extend",function()
 				local resulted,expected
@@ -4287,6 +4286,23 @@ if MAIN() then
 
 			 end)
 		 end
+		-- local test_ezpath=function()
+		-- 	test("ezpath",function()
+		-- 		local resulted,expected
+
+		-- 		local cases={
+		-- 			--arg	 expected
+		-- 			{ "~/.bashrc"  ,"/home/vic/.bashrc"  ,"ok." },--path must exist.
+		-- 		 }
+		-- 		for _,cc in ipairs(cases) do
+		-- 			local resulted=ezpath(cc[1])
+		-- 			local expected=cc[2]
+		-- 			local descript=cc[3]
+		-- 			ok(eq(resulted,expected),descript)
+		-- 		 end
+
+		-- 	 end)
+		--  end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4484,6 +4500,8 @@ if MAIN() then
 			test_delattr,
 			test_exec,
 			test_extend,
+			-- test_ezpath,
+
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

@@ -196,7 +196,7 @@ Testing:
 		delattr
 		exec
 		extend
-		*ezpath
+		ezpath
 		*filter
 		*flatten
 		*float

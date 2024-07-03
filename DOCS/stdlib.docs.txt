@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.48
+Lulua Standard Library 0.6.52
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.48
+  The Lulua version number. Currently: 0.6.52
   
 MAXINT
   The largest int.
@@ -1539,7 +1539,7 @@ error
   
 getext
   Return the file extension of path if it exists.
-  getext(path,_sep)-->file_ext
+  getext(path)-->file_ext
   
   Returns an empty string if no file path exists.
   Returns "." if path=="."
@@ -1548,21 +1548,12 @@ glob
   Glob pattern matching using the posix.glob library.
   glob(pattern,_flags)
   
-  This function performs glob pattern matching using the
-  posix.glob library. It matches the provided pattern against
-  filenames in the current directory and returns a table of
-  matching filenames.
+  Glob pattern matching using the posix.glob library.
   
-  Parameters:
-      pattern: A string representing the glob pattern to match
-               against.
-      _flags: An optional integer specifying flags for the
-              glob operation. Defaults to 0.
-              See: posix/doc/modules/posix.glob.html
+  _flags is an optional integer specifying flags for the glob.
+      Defaults to 0. See: posix/doc/modules/posix.glob.html
   
-  Returns:
-      A table of strings representing filenames that match the
-      provided pattern.
+  Returns a table of filenames
   
   Example usage:
       matches = glob("*.*")

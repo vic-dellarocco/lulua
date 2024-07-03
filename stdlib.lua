@@ -2329,21 +2329,12 @@
 		local doc=[[Glob pattern matching using the posix.glob library.
 			glob(pattern,_flags)
 
-			This function performs glob pattern matching using the
-			posix.glob library. It matches the provided pattern against
-			filenames in the current directory and returns a table of
-			matching filenames.
+			Glob pattern matching using the posix.glob library.
 
-			Parameters:
-				pattern: A string representing the glob pattern to match
-						 against.
-				_flags: An optional integer specifying flags for the
-						glob operation. Defaults to 0.
-						See: posix/doc/modules/posix.glob.html
+			_flags is an optional integer specifying flags for the glob.
+				Defaults to 0. See: posix/doc/modules/posix.glob.html
 
-			Returns:
-				A table of strings representing filenames that match the
-				provided pattern.
+			Returns a table of filenames
 
 			Example usage:
 				matches = glob("*.*")
@@ -4394,6 +4385,22 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_glob=function()
+			test("glob",function()
+				local resulted,expected
+
+				local cases={
+					-- { {"*"}     },
+					{ {"*.lua"} },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=glob( unpack(cc[1]) )
+					local descript=str(resulted)
+					ok(eq(type(resulted)=="table",true),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4596,6 +4603,7 @@ if MAIN() then
 			test_float,
 			test_getattr,
 			test_getext,
+			test_glob,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

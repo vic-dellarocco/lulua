@@ -208,7 +208,7 @@ Testing:
 		haskey
 		hex
 		indent
-		*int
+		int
 		*intmod
 		*irange
 		*irange0

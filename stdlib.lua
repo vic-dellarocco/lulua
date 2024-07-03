@@ -140,10 +140,14 @@
 	MININT=-9007199254740991 --Assumes 64 bit IEEE 794, int(-2^53+1)
 	int   =function(n)
 		local doc=[[Convert n into an int by truncation.
+			int(n)-->i
+
 			Works on strings too.
+
 			Ex: i=int(n)
 				i=int(3.14)-->3.0
 				i=int("2.7")-->2.0
+
 			Can fail with an assertion error.
 			]]
 		if n==nil then return 0.0 end
@@ -4518,6 +4522,26 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_int=function()
+			test("int",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ int() ,0    ,"int()-->0"   },
+					{ 1       ,1    ,"1-->1"   },
+					{ 2.7     ,2  ,"2.7-->2" },
+					{ "3.14"  ,3 ,"'3.14'-->3"},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=int(cc[1])
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4727,6 +4751,7 @@ if MAIN() then
 			test_haskey,
 			test_hex,
 			test_indent,
+			test_int,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

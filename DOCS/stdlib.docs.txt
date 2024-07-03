@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.68
+Lulua Standard Library 0.6.70
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.68
+  The Lulua version number. Currently: 0.6.70
   
 MAXINT
   The largest int.
@@ -266,10 +266,14 @@ float
   
 int
   Convert n into an int by truncation.
+  int(n)-->i
+  
   Works on strings too.
+  
   Ex: i=int(n)
       i=int(3.14)-->3.0
       i=int("2.7")-->2.0
+  
   Can fail with an assertion error.
   
 intmod

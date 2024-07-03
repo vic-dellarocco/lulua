@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.44
+Lulua Standard Library 0.6.46
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.44
+  The Lulua version number. Currently: 0.6.46
   
 MAXINT
   The largest int.
@@ -248,10 +248,15 @@ clamp
   
 float
   Convert n into a float.
+  float(n)--number
+  
   Works on strings too.
-  Ex: i=int(n)
-      i=int(3.14)-->3.14
-      i=int("2.7")-->2.7
+  
+  Ex:
+      i=float()-->0
+      i=float(3.14)-->3.14
+      i=float("2.7")-->2.7
+  
   Can fail with an assertion error.
   
 int

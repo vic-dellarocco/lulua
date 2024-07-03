@@ -198,7 +198,7 @@ Testing:
 		extend
 		ezpath
 		flatten
-		*float
+		float
 		*getattr
 		*getext
 		*glob

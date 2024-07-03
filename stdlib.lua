@@ -4230,7 +4230,6 @@ if MAIN() then
 
 			 end)
 		 end
-
 		local test_def=function()
 			test("def",function()
 				local resulted,expected
@@ -4238,6 +4237,19 @@ if MAIN() then
 				resulted=def(22)--it just returns its arg.
 				expected=22
 				ok(eq(resulted,expected),"ok.")
+
+			 end)
+		 end
+		local test_delattr=function()
+			test("delattr",function()
+				local resulted,expected
+
+				resulted={}
+				resulted.bar=22
+
+				delattr(resulted,"bar")
+				expected=nil
+				ok(eq(resulted.bar,expected),"ok.")
 
 			 end)
 		 end
@@ -4435,6 +4447,7 @@ if MAIN() then
 			test_copy,
 			test_deepcopy,
 			test_def,
+			test_delattr,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

@@ -193,7 +193,7 @@ Testing:
 		copy
 		deepcopy
 		def
-		*delattr
+		delattr
 		*dir
 		*enumerate
 		*error

@@ -211,7 +211,6 @@ Testing:
 		int
 		intmod
 		keys
-		*left
 		*len
 		*list
 		*locals

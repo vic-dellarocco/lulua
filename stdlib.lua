@@ -556,8 +556,10 @@
 --[[Functions]]
 	len   =function(tbl)--Get the total number of keys in table.
 		local doc=[[Get the total number of keys in table.
-			len(tbl): counts all keys.
-			#tbl    : only counts consecutive ints starting at 1.
+			len(tbl)
+
+			len(tbl) counts all keys.
+			#tbl only counts consecutive ints starting at 1.
 			]]
 		local i=0
 		for k,v in pairs(tbl) do
@@ -4582,6 +4584,26 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_len=function()
+			test("len",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {11,22,33}             ,3  ,"3"  },
+					{ {11,22,33,["four"]=44} ,4  ,"4"  },
+					{ {}                     ,0  ,"0"  },
+					{ {["one"]=11}           ,1  ,"1"  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=len( cc[1] )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4794,6 +4816,7 @@ if MAIN() then
 			test_int,
 			test_intmod,
 			test_keys,
+			test_len,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

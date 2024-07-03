@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.80
+Lulua Standard Library 0.6.82
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.80
+  The Lulua version number. Currently: 0.6.82
   
 MAXINT
   The largest int.
@@ -442,8 +442,10 @@ exec
   
 len
   Get the total number of keys in table.
-  len(tbl): counts all keys.
-  #tbl    : only counts consecutive ints starting at 1.
+  len(tbl)
+  
+  len(tbl) counts all keys.
+  #tbl only counts consecutive ints starting at 1.
   
 range
   Inclusive range

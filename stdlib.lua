@@ -83,8 +83,11 @@
 	 end
 	function deepcopy(src,_seen)
 		local doc=[[Deep copy of table.
+			deepcopy(src)-->acopy
+
 			Will copy metatables.
 			Doesn't capture upvalues. You can't copy closures with this.
+
 			Ex:
 				dest=deepcopy(src)
 			]]
@@ -4201,6 +4204,30 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_deepcopy=function()
+			test("deepcopy",function()
+				local resulted,expected
+
+				ex={}
+				ex_mt={}
+				function ex.new(foo)
+					local self={}
+					self.foo=foo
+					self.bar=22
+					return self
+				 end
+				ex_mt.__call=ex.new
+				setmetatable(ex,ex_mt)
+
+				local resulted=deepcopy(ex)()
+				local expected=ex()
+				ok(eq(resulted.new==expected.new,true),"metatable is copied.")
+				ok(getmetatable(ex)~=getmetatable(deepcopy(ex)),"copied metatables are unique.")
+				ok(eq(resulted.bar==expected.bar,true),"values are copied.")
+				ok(eq(resulted==expected,false),"objects are different.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4393,6 +4420,7 @@ if MAIN() then
 			test_coalesce,
 			test_cons,
 			test_copy,
+			test_deepcopy,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

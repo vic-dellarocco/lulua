@@ -191,7 +191,7 @@ Testing:
 		coalesce
 		cons
 		copy
-		*deepcopy
+		deepcopy
 		*def
 		*delattr
 		*dir

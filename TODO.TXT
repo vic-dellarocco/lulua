@@ -194,7 +194,7 @@ Testing:
 		deepcopy
 		def
 		delattr
-		*exec
+		exec
 		*extend
 		*ezpath
 		*filter

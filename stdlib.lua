@@ -4254,6 +4254,18 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_exec=function()
+			test("exec",function()
+				local resulted,expected
+
+				i=1
+				exec("i=i+1;")--executes into global namespace.
+				resulted=i;i=nil
+				expected=2
+				ok(eq(resulted,expected),"ok.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4449,6 +4461,7 @@ if MAIN() then
 			test_deepcopy,
 			test_def,
 			test_delattr,
+			test_exec,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

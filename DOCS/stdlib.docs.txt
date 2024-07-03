@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.62
+Lulua Standard Library 0.6.64
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.62
+  The Lulua version number. Currently: 0.6.64
   
 MAXINT
   The largest int.
@@ -171,17 +171,22 @@ Import
 ----------
 
 import
+  Load a module.
+  import(module)-->mod
+  
   Load a module like require(),except:
   .lua file extension is ignored.
   Use '/' or '.' as module delimiter.
   The syntax is more permissive than require.
   imports are relative to package.base
+  
   Ex:
       mymodule=import("foo/bar/mymodule.lua")
       foo=import "foo_module"
       foo=import("foo_module")
       foo=import{"foo_module"}
       foo=import({"foo_module"})
+  
   Only loads one module.
   
 reload

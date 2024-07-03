@@ -207,7 +207,6 @@ Testing:
 		hasattr
 		haskey
 		hex
-		*import
 		*indent
 		*input
 		*int

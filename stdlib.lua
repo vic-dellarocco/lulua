@@ -29,17 +29,22 @@
 	 end
 --[[Import]]
 	function import(module)--load a module
-		local doc=[[Load a module like require(),except:
+		local doc=[[Load a module.
+			import(module)-->mod
+
+			Load a module like require(),except:
 			.lua file extension is ignored.
 			Use '/' or '.' as module delimiter.
 			The syntax is more permissive than require.
 			imports are relative to package.base
+
 			Ex:
 				mymodule=import("foo/bar/mymodule.lua")
 				foo=import "foo_module"
 				foo=import("foo_module")
 				foo=import{"foo_module"}
 				foo=import({"foo_module"})
+
 			Only loads one module.
 			]]
 		if type(module)=="table" or type(module)=="List" then module=module[1];end

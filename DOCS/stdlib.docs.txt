@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.38
+Lulua Standard Library 0.6.44
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.38
+  The Lulua version number. Currently: 0.6.44
   
 MAXINT
   The largest int.
@@ -588,6 +588,8 @@ extend
   
 flatten
   Flattens a table or List by one level.
+  flatten(tbl)-->tbl
+  
   Ex:
       flatten({1,{2,3},4})  -->{1,2,3,4}
       flatten({1,{2,{3}},4})-->{1,2,{3},4}
@@ -1031,6 +1033,7 @@ DYNAMIC
   
 FILTER
   Filters a table or List based on a predicate function, f.
+  FILTER(f,args)
   
   Returns a table or List containing the items where
   f(item) is true.
@@ -1343,6 +1346,7 @@ curry
   
 filter
   Filters a table or List based on a predicate function, f.
+  FILTER(f,args)
   
   Returns a table or List containing the items where
   f(item) is true.

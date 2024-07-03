@@ -970,6 +970,8 @@
 	 end
 	function flatten(tbl)--Flattens a table or List by one level.
 		local doc=[[Flattens a table or List by one level.
+			flatten(tbl)-->tbl
+
 			Ex:
 				flatten({1,{2,3},4})  -->{1,2,3,4}
 				flatten({1,{2,{3}},4})-->{1,2,{3},4}
@@ -4287,23 +4289,41 @@ if MAIN() then
 
 			 end)
 		 end
-		-- local test_ezpath=function()
-		-- 	test("ezpath",function()
-		-- 		local resulted,expected
+		local test_ezpath=function()
+			test("ezpath",function()
+				local resulted,expected
 
-		-- 		local cases={
-		-- 			--arg	 expected
-		-- 			{ "~/.bashrc"  ,"/home/vic/.bashrc"  ,"ok." },--path must exist.
-		-- 		 }
-		-- 		for _,cc in ipairs(cases) do
-		-- 			local resulted=ezpath(cc[1])
-		-- 			local expected=cc[2]
-		-- 			local descript=cc[3]
-		-- 			ok(eq(resulted,expected),descript)
-		-- 		 end
+				local cases={
+					--arg	 expected
+					{ "~/"  ,"/home/you"  ,"path must exist." },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=ezpath(cc[1])
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(resulted,resulted)--
+				 end
 
-		-- 	 end)
-		--  end
+			 end)
+		 end
+		local test_flatten=function()
+			test("flatten",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {1,{2,3},4}    ,{1,2,3,4}    ,"{1,{2,3},4}  -->{1,2,3,4}" },
+					{ {1,{2,{3}},4}  ,{1,2,{3},4}  ,"{1,{2,{3}},4}-->{1,2,{3},4}" },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=flatten(cc[1])
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4501,7 +4521,8 @@ if MAIN() then
 			test_delattr,
 			test_exec,
 			test_extend,
-			-- test_ezpath,
+			test_ezpath,
+			test_flatten,
 
 			--
 			-- test_os_path_split,

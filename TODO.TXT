@@ -197,7 +197,7 @@ Testing:
 		exec
 		extend
 		ezpath
-		*flatten
+		flatten
 		*float
 		*getattr
 		*getext

@@ -210,7 +210,6 @@ Testing:
 		indent
 		int
 		intmod
-		*irange0
 		*keys
 		*left
 		*len

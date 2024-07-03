@@ -195,7 +195,6 @@ Testing:
 		def
 		delattr
 		dir
-		*enumerate
 		*error
 		*exec
 		*extend

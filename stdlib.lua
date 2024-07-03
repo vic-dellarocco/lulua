@@ -888,7 +888,6 @@
 			Ex:
 				has(tbl,'bar')
 				has(tbl,'bar','baz')
-
 				has({11,22,33},88,22)-->true because of 22
 			]]
 		local args={...}
@@ -903,6 +902,8 @@
 	 end
 	function haskey(tbl,...)--like python's 'in' operator, for keys.
 		local doc=[[Check if a table has any item from a list of items.
+			haskey(tbl,...}
+			lst:haskey(...)--as a list method.
 
 			Checks if any value from a variadic argument list is present
 			in a table's keys. Similar to Python's in operator usage 
@@ -914,7 +915,6 @@
 			Ex:
 				haskey(tbl,'bar')
 				haskey(tbl,'bar','baz')
-
 				haskey({11,22,33},88,2)-->true because key 2 exists.
 			]]
 		local arrgs={...}
@@ -4452,6 +4452,27 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_haskey=function()
+			test("haskey",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {{["foo"]=11,22,33},"foo"}    ,true    ,"has foo."  },
+					{ {{["foo"]=11,22,33},"bar"}    ,false   ,"doesn't have bar."  },
+					{ {{["foo"]=11,22,33},   88}    ,false   ,"doesn't have 88."  },
+					{ {{["foo"]=11,22,33},    2}    ,true    ,"has 2."  },
+
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=haskey( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4658,6 +4679,7 @@ if MAIN() then
 			test_globals,
 			test_has,
 			test_hasattr,
+			test_haskey,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

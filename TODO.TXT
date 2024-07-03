@@ -205,7 +205,7 @@ Testing:
 		globals
 		has
 		hasattr
-		*haskey
+		haskey
 		*hex
 		*import
 		*indent

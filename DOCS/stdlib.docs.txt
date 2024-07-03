@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.58
+Lulua Standard Library 0.6.60
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.58
+  The Lulua version number. Currently: 0.6.60
   
 MAXINT
   The largest int.
@@ -613,11 +613,12 @@ has
   Ex:
       has(tbl,'bar')
       has(tbl,'bar','baz')
-  
       has({11,22,33},88,22)-->true because of 22
   
 haskey
   Check if a table has any item from a list of items.
+  haskey(tbl,...}
+  lst:haskey(...)--as a list method.
   
   Checks if any value from a variadic argument list is present
   in a table's keys. Similar to Python's in operator usage 
@@ -629,7 +630,6 @@ haskey
   Ex:
       haskey(tbl,'bar')
       haskey(tbl,'bar','baz')
-  
       haskey({11,22,33},88,2)-->true because key 2 exists.
   
 left

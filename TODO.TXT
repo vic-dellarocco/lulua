@@ -204,7 +204,7 @@ Testing:
 		glob
 		globals
 		has
-		*hasattr
+		hasattr
 		*haskey
 		*hex
 		*import

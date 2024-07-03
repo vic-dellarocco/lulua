@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.56
+Lulua Standard Library 0.6.58
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.56
+  The Lulua version number. Currently: 0.6.58
   
 MAXINT
   The largest int.
@@ -1648,7 +1648,7 @@ globals
   
 hasattr
   Check if obj has an attribute by name.
-  delattr(obj,name)
+  hasattr(obj,name)
   
 hex
   Return hex representation of int as string: '0xAF01'

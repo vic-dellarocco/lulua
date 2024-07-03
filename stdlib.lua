@@ -2486,7 +2486,7 @@
 	 end
 	hasattr=function(obj,name)
 		local doc=[[Check if obj has an attribute by name.
-			delattr(obj,name)
+			hasattr(obj,name)
 			]]
 		return getattr(obj,name)~=nil
 	 end
@@ -4431,6 +4431,27 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_hasattr=function()
+			test("hasattr",function()
+				local resulted,expected
+
+				local foo={}
+				foo.bar=22
+
+				local cases={
+					--arg	 expected
+					{ {foo,"bar"}    ,true    ,"has bar."  },
+					{ {foo,"baz"}    ,false   ,"doesn't have baz."  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=hasattr( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4636,6 +4657,7 @@ if MAIN() then
 			test_glob,
 			test_globals,
 			test_has,
+			test_hasattr,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

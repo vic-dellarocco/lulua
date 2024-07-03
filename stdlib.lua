@@ -1840,6 +1840,7 @@
 		curry=CURRY
 	function FILTER(f,args)
 		local doc=[[Filters a table or List based on a predicate function, f.
+			FILTER(f,args)
 
 			Returns a table or List containing the items where
 			f(item) is true.

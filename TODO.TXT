@@ -197,7 +197,6 @@ Testing:
 		exec
 		extend
 		ezpath
-		*filter
 		*flatten
 		*float
 		*getattr

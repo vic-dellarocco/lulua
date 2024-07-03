@@ -194,7 +194,7 @@ Testing:
 		deepcopy
 		def
 		delattr
-		*dir
+		dir
 		*enumerate
 		*error
 		*exec

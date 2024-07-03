@@ -194,8 +194,6 @@ Testing:
 		deepcopy
 		def
 		delattr
-		dir
-		*error
 		*exec
 		*extend
 		*ezpath

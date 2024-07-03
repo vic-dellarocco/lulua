@@ -2247,6 +2247,7 @@
 			]]
 		if msg ~="" and msg~=nil then
 			io.stderr:write("ERROR: "..msg.."\n")
+			io.stderr:flush()
 		 end
 		os.exit(_code or 1)
 	 end

@@ -878,6 +878,9 @@
 	 end
 	function has(tbl,...)--like python's 'in' operator.
 		local doc=[[Check if a table has any item from a list of items.
+			has(tbl,...}
+			lst:has(...)--as a list method.
+
 			Checks if any value from a variadic argument list is present
 			in a table. Similar to Python's in operator usage with lists.
 			Returns true if any value from {...} is in tbl, else false.
@@ -4408,6 +4411,26 @@ if MAIN() then
 				ok(eq(resulted,_G),"returns _G: ok.")
 			 end)
 		 end
+		local test_has=function()
+			test("has",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {{11,22,33},22}    ,true    ,"has 22"  },
+					{ {{11,22,33},88}    ,false   ,"doesn't have 88"  },
+					{ {{11,22,33},22,11} ,true    ,"has 22,11"  },
+					{ {{11,22,33},22,11,88} ,true ,"has 22,11,but not 88."  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=has( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4612,6 +4635,7 @@ if MAIN() then
 			test_getext,
 			test_glob,
 			test_globals,
+			test_has,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

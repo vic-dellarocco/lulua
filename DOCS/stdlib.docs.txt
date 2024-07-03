@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.54
+Lulua Standard Library 0.6.56
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.54
+  The Lulua version number. Currently: 0.6.56
   
 MAXINT
   The largest int.
@@ -603,6 +603,9 @@ flatten
   
 has
   Check if a table has any item from a list of items.
+  has(tbl,...}
+  lst:has(...)--as a list method.
+  
   Checks if any value from a variadic argument list is present
   in a table. Similar to Python's in operator usage with lists.
   Returns true if any value from {...} is in tbl, else false.

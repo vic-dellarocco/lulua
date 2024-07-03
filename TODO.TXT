@@ -203,7 +203,7 @@ Testing:
 		getext
 		glob
 		globals
-		*has
+		has
 		*hasattr
 		*haskey
 		*hex

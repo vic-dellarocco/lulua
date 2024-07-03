@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.36
+Lulua Standard Library 0.6.38
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.36
+  The Lulua version number. Currently: 0.6.38
   
 MAXINT
   The largest int.
@@ -581,8 +581,10 @@ cons
 extend
   Extends a table with elements from another table.
   extend(tbl,src)
-  Specifically designed for arrays. Copies elements
-  from src to tbl, preserving order.
+  
+  Copies items from src to tbl, preserving order.
+  
+  Can be used as a List method.
   
 flatten
   Flattens a table or List by one level.

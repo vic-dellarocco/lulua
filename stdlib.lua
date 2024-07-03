@@ -922,8 +922,10 @@
 	function extend(tbl,src)--Extends a table with elements from another table.
 		local doc=[[Extends a table with elements from another table.
 			extend(tbl,src)
-			Specifically designed for arrays. Copies elements
-			from src to tbl, preserving order.
+
+			Copies items from src to tbl, preserving order.
+
+			Can be used as a List method.
 			]]
 		for k,v in ipairs(src) do
 			push(tbl,v)
@@ -4266,6 +4268,25 @@ if MAIN() then
 
 			 end)
 		 end
+
+		local test_extend=function()
+			test("extend",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ { {},{2,5} }    ,{2,5}     ,"ok." },
+					{ { {11},{2,5} }  ,{11,2,5}  ,"ok." },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=extend(unpack(cc[1]))
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4462,6 +4483,7 @@ if MAIN() then
 			test_def,
 			test_delattr,
 			test_exec,
+			test_extend,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

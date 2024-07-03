@@ -195,7 +195,7 @@ Testing:
 		def
 		delattr
 		exec
-		*extend
+		extend
 		*ezpath
 		*filter
 		*flatten

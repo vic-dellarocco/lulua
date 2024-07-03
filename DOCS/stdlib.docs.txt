@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.64
+Lulua Standard Library 0.6.66
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.64
+  The Lulua version number. Currently: 0.6.66
   
 MAXINT
   The largest int.
@@ -759,6 +759,7 @@ dbg
 indent
   Indent string s by indentation level i.
   indent(i,s)
+  
   indent(1,"Hello world.")-->"    Hello world."
   
   An indentation level is 4 spaces.

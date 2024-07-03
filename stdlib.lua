@@ -1191,6 +1191,7 @@
 	function indent(s,i)--Indent string s by indentation level i.
 		local doc=[[Indent string s by indentation level i.
 			indent(i,s)
+
 			indent(1,"Hello world.")-->"    Hello world."
 
 			An indentation level is 4 spaces.
@@ -4497,6 +4498,25 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_indent=function()
+			test("indent",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {"foo",0}   ,"foo"           ,"0 levels."  },
+					{ {"foo",1}   ,"    foo"       ,"1 level."   },
+					{ {"foo",2}   ,"        foo"   ,"2 levels."  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=indent( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4705,6 +4725,7 @@ if MAIN() then
 			test_hasattr,
 			test_haskey,
 			test_hex,
+			test_indent,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

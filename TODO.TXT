@@ -202,7 +202,7 @@ Testing:
 		getattr
 		getext
 		glob
-		*globals
+		globals
 		*has
 		*hasattr
 		*haskey

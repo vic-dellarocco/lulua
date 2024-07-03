@@ -4401,6 +4401,13 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_globals=function()
+			test("globals",function()
+				local resulted=globals()
+				ok(eq(type(resulted)=="table",true),"returns a table: ok.")
+				ok(eq(resulted,_G),"returns _G: ok.")
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4604,6 +4611,7 @@ if MAIN() then
 			test_getattr,
 			test_getext,
 			test_glob,
+			test_globals,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

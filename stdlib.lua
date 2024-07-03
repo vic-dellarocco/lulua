@@ -1451,7 +1451,7 @@
 			args (table): A table containing arguments to print. The
 			table may contain a key `s` to specify a filter class
 			for the message.
-			
+
 			Usage:
 				dbg({"message", s="filter_class"})
 				dbg{"message",  s="filter_class"} --prefer this syntax.
@@ -1474,6 +1474,7 @@
 					io.stderr:write(str(v).." ")
 				 end
 				io.stderr:write("\n")
+				io.stderr:flush()
 			 end
 		 end
 	 end

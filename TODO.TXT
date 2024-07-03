@@ -191,7 +191,6 @@ Testing:
 		coalesce
 		cons
 		copy
-		*dbg
 		*deepcopy
 		*def
 		*delattr

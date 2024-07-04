@@ -5081,6 +5081,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_unsetbit=function()
+			test("unsetbit",function()
+				local resulted,expected
+
+				resulted=unsetbit(1,1)
+				expected=0
+				ok(eq(resulted,expected),"bit 1 unset.")
+
+				resulted=unsetbit(5,3)
+				expected=1
+				ok(eq(resulted,expected),"bit 3 unset.")
+
+				resulted=unsetbit(7,2)
+				expected=5
+				ok(eq(resulted,expected),"bit 2 unset.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5319,6 +5337,7 @@ if MAIN() then
 			test_top,
 			test_uniq,
 			test_unroll,
+			test_unsetbit,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

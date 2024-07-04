@@ -237,7 +237,7 @@ Testing:
 		top
 		uniq
 		unroll
-		*unsetbit
+		unsetbit
 		*values
 		*warn
 		*zip

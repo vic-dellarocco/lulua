@@ -234,7 +234,6 @@ Testing:
 		slice
 		sort
 		sprintf
-		*str
 		*sum
 		*tbl_repr
 		*tbl_str

@@ -5301,6 +5301,24 @@ if MAIN() then
 				 end
 			 end)
 		 end
+		local test_string_trim=function()
+			test("string.trim",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ "	foo " ,"foo" ,"trim leading and trailing ws."  },
+					{ "	foo \n" ,"foo" ,"trim leading and trailing ws."  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=cc[1]:trim()
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5405,6 +5423,7 @@ if MAIN() then
 			test_os_path_split,
 			test_os_path_splitext,
 			test_table_slice,
+			test_string_trim,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

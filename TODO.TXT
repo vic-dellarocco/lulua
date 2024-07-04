@@ -140,7 +140,6 @@ Testing:
 		*Deque
 		*Enum
 		*List
-		*string.trim
 		*string.ltrim
 		*string.rtrim
 		*string.trimall
@@ -152,4 +151,3 @@ Testing:
 		*swap
 		*table.is_empty
 		*table.is_blank
-		*trace

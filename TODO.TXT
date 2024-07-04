@@ -233,7 +233,7 @@ Testing:
 		settype
 		slice
 		sort
-		*sprintf
+		sprintf
 		*str
 		*sum
 		*tbl_repr

@@ -4988,7 +4988,6 @@ if MAIN() then
 
 			 end)
 		 end
-
 		local test_sort=function()
 			test("sort",function()
 				local resulted,expected
@@ -5002,6 +5001,29 @@ if MAIN() then
 				 }
 				for _,cc in ipairs(cases) do
 					local resulted=sort( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
+		local test_sprintf=function()
+			test("sprintf",function()
+				local resulted,expected
+
+				local foo={5,3,4,6,8,1}
+
+				local cases={
+					--arg	 expected
+					{ {"%d",42}  ,"42"  ,""  },
+					{ {"%i",42}  ,"42"  ,""  },
+					{ {"%o",42}  ,"52"  ,""  },
+					{ {"%x",42}  ,"2a"  ,""  },
+					{ {"%X",42}  ,"2A"  ,""  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=sprintf( unpack(cc[1]) )
 					local expected=cc[2]
 					local descript=cc[3]
 					ok(eq(resulted,expected),descript)
@@ -5243,6 +5265,7 @@ if MAIN() then
 			test_settype,
 			test_slice,
 			test_sort,
+			test_sprintf,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

@@ -836,6 +836,7 @@
 	function pushleft(tbl,val)
 		local doc=[[Inserts a value at the beginning of the table.
 			pushleft(tbl,val)
+
 			Returns the modified table.
 			]]
 		table.insert(tbl,1,val); return tbl; end
@@ -4803,6 +4804,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_pushleft=function()
+			test("pushleft",function()
+				local resulted,expected
+
+				local foo={11,22}
+				local resulted=pushleft(foo,33)
+				local expected={33,11,22}
+				local descript="push value."
+				ok(eq(resulted,expected),descript)
+
+				local foo={}
+				local resulted=pushleft(foo,11)
+				local expected={11}
+				local descript="push value into empty table."
+				ok(eq(resulted,expected),descript)
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5026,6 +5045,7 @@ if MAIN() then
 			test_popleft,
 			test_pow,
 			test_push,
+			test_pushleft,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

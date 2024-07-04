@@ -222,7 +222,7 @@ Testing:
 		popleft
 		pow
 		push
-		*pushleft
+		pushleft
 		*range
 		*range0
 		*reload

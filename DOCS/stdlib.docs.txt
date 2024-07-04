@@ -1,4 +1,4 @@
-Lulua Standard Library 0.7.16
+Lulua Standard Library 0.7.20
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.7.16
+  The Lulua version number. Currently: 0.7.20
   
 MAXINT
   The largest int.
@@ -680,11 +680,13 @@ popleft
 push
   Adds a value to the end of the table.
   push(tbl,val)
+  
   Returns the modified table.
   
 pushleft
   Inserts a value at the beginning of the table.
   pushleft(tbl,val)
+  
   Returns the modified table.
   
 right

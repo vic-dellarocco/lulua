@@ -4937,6 +4937,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_setbits=function()
+			test("setbits",function()
+				local resulted,expected
+
+				resulted=setbits(3,1)
+				expected=5
+				ok(eq(resulted,expected),"5")
+
+				resulted=setbits(1,2,3)
+				expected=7
+				ok(eq(resulted,expected),"7")
+
+				resulted=setbits(1,4,5,6,9,11)
+				expected=1337
+				ok(eq(resulted,expected),"1337")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5167,6 +5185,7 @@ if MAIN() then
 			test_round,
 			test_setattr,
 			test_setbit,
+			test_setbits,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

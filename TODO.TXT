@@ -229,7 +229,7 @@ Testing:
 		round
 		setattr
 		setbit
-		*setbits
+		setbits
 		*settype
 		*shell
 		*slice

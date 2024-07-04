@@ -235,7 +235,6 @@ Testing:
 		sort
 		sprintf
 		top
-		*type
 		*uniq
 		*unroll
 		*unsetbit

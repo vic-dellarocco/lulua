@@ -5319,6 +5319,42 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_string_ltrim=function()
+			test("string.ltrim",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ "	foo " ,"foo " ,"trim leading ws."  },
+					{ "	foo \n" ,"foo \n" ,"trim leading ws."  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=cc[1]:ltrim()
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
+		local test_string_rtrim=function()
+			test("string.rtrim",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ "	foo " ,"	foo" ,"trim trailing ws."  },
+					{ "	foo \n" ,"	foo" ,"trim trailing ws."  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=cc[1]:rtrim()
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5424,6 +5460,8 @@ if MAIN() then
 			test_os_path_splitext,
 			test_table_slice,
 			test_string_trim,
+			test_string_ltrim,
+			test_string_rtrim,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

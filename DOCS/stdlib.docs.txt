@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.90
+Lulua Standard Library 0.6.92
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.90
+  The Lulua version number. Currently: 0.6.92
   
 MAXINT
   The largest int.
@@ -224,16 +224,16 @@ merge
   Merge src to dst, will overwrite keys and values.
   merge(src,dst)
   dst=merge(src,dst)--same effect as the first form.
-                    --I just like to return my results.
+                    --I just like to return the results.
   
   Result is that dst is updated with k,v from src.
   
   If you don't want to update a table, then try this:
-  Usage:
       dst=merge(src)--shallow copy
   
   Don't:
       merge(src,foo.dst)--no result is realized.
+  
   Useless:
       merge(src)--no result is realized.
   

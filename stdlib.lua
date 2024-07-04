@@ -113,16 +113,16 @@
 		local doc=[[Merge src to dst, will overwrite keys and values.
 			merge(src,dst)
 			dst=merge(src,dst)--same effect as the first form.
-							  --I just like to return my results.
+							  --I just like to return the results.
 
 			Result is that dst is updated with k,v from src.
 
 			If you don't want to update a table, then try this:
-			Usage:
 				dst=merge(src)--shallow copy
 
 			Don't:
 				merge(src,foo.dst)--no result is realized.
+
 			Useless:
 				merge(src)--no result is realized.
 			]]
@@ -4618,6 +4618,26 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_merge=function()
+			test("merge",function()
+				local resulted,expected
+
+				local src={bar=33}
+				local dst={foo=22}
+				local resulted=merge(src,dst)
+				local expected={foo=22,bar=33}
+				local descript="copy merge."
+				ok(eq(resulted,expected),descript)
+
+				local src={bar=33,foo=55}
+				local dst={foo=22}
+				local resulted=merge(src,dst)
+				local expected={foo=55,bar=33}
+				local descript="update merge."
+				ok(eq(resulted,expected),descript)
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4832,6 +4852,7 @@ if MAIN() then
 			test_keys,
 			test_len,
 			test_locals,
+			test_merge,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

@@ -215,7 +215,7 @@ Testing:
 		locals
 		merge
 		method
-		*methodist
+		methodist
 		*min
 		*oct
 		*optionator

@@ -304,6 +304,8 @@
 	methodist=function(obj,ftab)--make functions in ftab methods of obj.
 		local doc=[[Make functions from the table ftab methods of obj.
 			methodist(obj,ftab)
+
+			Uses the object's metatable.
 			]]
 		local mt=getmetatable(obj) or {}
 		local index={}
@@ -4668,6 +4670,28 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_methodist=function()
+			test("methodist",function()
+				local resulted,expected
+
+				local foo={}
+				foo.bar=42
+
+				local ftab={
+					["baz"]=function(self)
+						return self.bar
+					 end
+				 }
+
+				methodist(foo,ftab)
+
+				local resulted=foo:baz()
+				local expected=42
+				local descript="call object method"
+				ok(eq(resulted,expected),descript)
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4884,6 +4908,7 @@ if MAIN() then
 			test_locals,
 			test_merge,
 			test_method,
+			test_methodist,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

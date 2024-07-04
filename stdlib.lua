@@ -4692,6 +4692,25 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_oct=function()
+			test("oct",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {5}   ,"0o5"   ,"0oF"  },
+					{ {1}   ,"0o1"   ,"0o1"  },
+					{ {8}   ,"0o10"  ,"0o10" },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=oct( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4909,6 +4928,7 @@ if MAIN() then
 			test_merge,
 			test_method,
 			test_methodist,
+			test_oct,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

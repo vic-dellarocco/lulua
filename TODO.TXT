@@ -234,8 +234,6 @@ Testing:
 		slice
 		sort
 		sprintf
-		*tbl_repr
-		*tbl_str
 		*top
 		*type
 		*uniq

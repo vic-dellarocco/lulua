@@ -212,7 +212,7 @@ Testing:
 		intmod
 		keys
 		len
-		*locals
+		locals
 		*map
 		*max
 		*merge

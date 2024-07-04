@@ -2530,6 +2530,7 @@
 	locals=function()
 		local doc=[[Return a table of local variables
 			locals()-->table
+
 			Does not get upvalues,closures,captured variables.
 			]]
 		local vv={}
@@ -4604,6 +4605,19 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_locals=function()
+			test("locals",function()
+				local resulted,expected
+
+				local s="hello"
+
+				local resulted=locals()
+				local expected={["s"]="hello"}
+				local descript="returns a table of local vars."
+				ok(eq(resulted,expected),descript)
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4817,6 +4831,7 @@ if MAIN() then
 			test_intmod,
 			test_keys,
 			test_len,
+			test_locals,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

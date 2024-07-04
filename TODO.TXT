@@ -228,7 +228,7 @@ Testing:
 		repr
 		round
 		setattr
-		*setbit
+		setbit
 		*setbits
 		*settype
 		*shell

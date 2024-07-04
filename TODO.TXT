@@ -239,11 +239,6 @@ Testing:
 		unroll
 		unsetbit
 		values
-		*DBG_SUPPRESS
-		*F
-		*LULUA_VERSION
-		*MAXINT
-		*MININT
 		*bit
 		*breakpoint
 		*f

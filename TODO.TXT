@@ -231,7 +231,6 @@ Testing:
 		setbit
 		setbits
 		settype
-		*shell
 		*slice
 		*sort
 		*sorted

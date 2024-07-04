@@ -1,4 +1,4 @@
-Lulua Standard Library 0.7.24
+Lulua Standard Library 0.7.26
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.7.24
+  The Lulua version number. Currently: 0.7.26
   
 MAXINT
   The largest int.
@@ -191,8 +191,8 @@ import
   
 reload
   Always load a module.
-  Ex:
-      foo=reload("foo_module")
+  foo=reload("foo_module")
+  
   It doesn't have to reload, you can use it the first time too.
   Uses same syntax as import.
   

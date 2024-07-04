@@ -54,8 +54,8 @@
 	 end
 	function reload(module)--always load module
 		local doc=[[Always load a module.
-			Ex:
-				foo=reload("foo_module")
+			foo=reload("foo_module")
+
 			It doesn't have to reload, you can use it the first time too.
 			Uses same syntax as import.
 			]]

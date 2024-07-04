@@ -213,7 +213,6 @@ Testing:
 		keys
 		len
 		locals
-		*map
 		*max
 		*merge
 		*method

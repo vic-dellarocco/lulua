@@ -239,7 +239,6 @@ Testing:
 		unroll
 		unsetbit
 		values
-		*warn
 		*zip
 		*DBG_SUPPRESS
 		*F

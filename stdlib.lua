@@ -2291,6 +2291,7 @@
 			]]
 		if msg ~="" and msg~=nil then
 			io.stderr:write("WARNING: "..msg.."\n")
+			io.stderr:flush()
 		 else
 			warn("warn() called with \"\" or nil.")
 		 end

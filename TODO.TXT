@@ -239,7 +239,6 @@ Testing:
 		unroll
 		unsetbit
 		values
-		*zip
 		*DBG_SUPPRESS
 		*F
 		*LULUA_VERSION

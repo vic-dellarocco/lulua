@@ -289,11 +289,13 @@
 		local doc=[[Call method name on object.
 			method(method_name,object,...)
 
-			Suppose
+			Suppose:
 				foo=Foo()
-			Ex: same as foo:dofoo() or foo.dofoo(foo),
+
+			Same as foo:dofoo() or foo.dofoo(foo):
 				method("dofoo",foo)
-			Ex: same as foo:dofoo(arg1,arg2),
+
+			Same as foo:dofoo(arg1,arg2):
 				method("dofoo",foo,arg1,arg2)
 			]]
 		local arrgs={...}
@@ -4638,6 +4640,34 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_method=function()
+			test("method",function()
+				local resulted,expected
+
+				local foo={}
+				foo.bar=42
+				foo.baz=function(self)
+					return self.bar
+				 end
+
+				local resulted=method("baz",foo)
+				local expected=42
+				local descript="call object method"
+				ok(eq(resulted,expected),descript)
+
+				local foo={}
+				foo.bar=42
+				foo.baz=function(self,b)
+					return self.bar+b
+				 end
+
+				local resulted=method("baz",foo,4)
+				local expected=46
+				local descript="call object method with additional arg"
+				ok(eq(resulted,expected),descript)
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4853,6 +4883,7 @@ if MAIN() then
 			test_len,
 			test_locals,
 			test_merge,
+			test_method,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

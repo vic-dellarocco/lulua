@@ -1,4 +1,4 @@
-Lulua Standard Library 0.6.92
+Lulua Standard Library 0.6.94
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.6.92
+  The Lulua version number. Currently: 0.6.94
   
 MAXINT
   The largest int.
@@ -343,11 +343,13 @@ method
   Call method name on object.
   method(method_name,object,...)
   
-  Suppose
+  Suppose:
       foo=Foo()
-  Ex: same as foo:dofoo() or foo.dofoo(foo),
+  
+  Same as foo:dofoo() or foo.dofoo(foo):
       method("dofoo",foo)
-  Ex: same as foo:dofoo(arg1,arg2),
+  
+  Same as foo:dofoo(arg1,arg2):
       method("dofoo",foo,arg1,arg2)
   
 methodist

@@ -214,7 +214,7 @@ Testing:
 		len
 		locals
 		merge
-		*method
+		method
 		*methodist
 		*min
 		*oct

@@ -220,7 +220,7 @@ Testing:
 		ord
 		pop
 		popleft
-		*pow
+		pow
 		*print
 		*printf
 		*push

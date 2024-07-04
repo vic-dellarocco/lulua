@@ -4765,6 +4765,26 @@ if MAIN() then
 
 			 end)
 		 end
+
+		local test_pow=function()
+			test("pow",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {2,5} ,32   ,"2^5-->32"   },
+					{ {2,1} ,2    ,"2^1-->2"   },
+					{ {2,0} ,1    ,"2^0-->1"   },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=pow( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4986,6 +5006,7 @@ if MAIN() then
 			test_ord,
 			test_pop,
 			test_popleft,
+			test_pow,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

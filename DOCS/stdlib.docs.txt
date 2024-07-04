@@ -1,4 +1,4 @@
-Lulua Standard Library 0.7.12
+Lulua Standard Library 0.7.16
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.7.12
+  The Lulua version number. Currently: 0.7.16
   
 MAXINT
   The largest int.

@@ -221,8 +221,6 @@ Testing:
 		pop
 		popleft
 		pow
-		*print
-		*printf
 		*push
 		*pushleft
 		*range

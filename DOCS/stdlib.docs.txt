@@ -1,4 +1,4 @@
-Lulua Standard Library 0.7.02
+Lulua Standard Library 0.7.04
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.7.02
+  The Lulua version number. Currently: 0.7.04
   
 MAXINT
   The largest int.
@@ -1692,11 +1692,13 @@ oct
 ord
   Return number for char c
   orc(c)-->int
+  
   ASCII only.
   
 pow
   Exponentiation: raise a to the b power.
   pow(a,b)-->number
+  
   math.pow in lua before version 5.3
   
 setattr

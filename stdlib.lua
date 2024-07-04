@@ -2566,6 +2566,7 @@
 	ord=function(c)
 		local doc=[[Return number for char c
 			orc(c)-->int
+
 			ASCII only.
 			]]
 		return string.byte(c)
@@ -2573,6 +2574,7 @@
 	pow=function(a,b)
 		local doc=[[Exponentiation: raise a to the b power.
 			pow(a,b)-->number
+
 			math.pow in lua before version 5.3
 			]]
 		return a^b
@@ -4711,6 +4713,20 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_ord=function()
+			test("ord",function()
+				local resulted,expected
+
+				resulted=ord("A")
+				expected=65
+				ok(eq(resulted,expected),"A-->65")
+
+				resulted=ord("\000")
+				expected=0
+				ok(eq(resulted,expected),"\\000-->0")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4929,6 +4945,7 @@ if MAIN() then
 			test_method,
 			test_methodist,
 			test_oct,
+			test_ord,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

@@ -5099,6 +5099,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_values=function()
+			test("values",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {11,22,33} ,{11,22,33}          ,"11,22,33"  },
+					{ {["foo"]=11,22,33} ,{22,33,11}  ,"11,22,33"  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=values( cc[1] )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5338,6 +5356,7 @@ if MAIN() then
 			test_uniq,
 			test_unroll,
 			test_unsetbit,
+			test_values,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

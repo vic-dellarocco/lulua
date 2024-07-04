@@ -238,7 +238,7 @@ Testing:
 		uniq
 		unroll
 		unsetbit
-		*values
+		values
 		*warn
 		*zip
 		*DBG_SUPPRESS

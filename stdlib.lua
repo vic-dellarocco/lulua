@@ -1187,8 +1187,7 @@
 --[[Strings]]
 	function repr(s)--string representation of basic types.
 		local doc=[[string representation of basic types.
-			Ex:
-				repr(foo)
+			repr(foo)
 			]]
 		--todo:more escape sequences for strings. or not.
 		local ss={}
@@ -4858,6 +4857,25 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_repr=function()
+			test("repr",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {3}       ,"3"          ,"3"  },
+					{ {"foo"}   ,"\"foo\""    ,"a string."  },
+					{ {{}}      ,"{}"         ,"a table"  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=repr( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5084,6 +5102,7 @@ if MAIN() then
 			test_pushleft,
 			test_range,
 			test_range0,
+			test_repr,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

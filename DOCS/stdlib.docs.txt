@@ -1,4 +1,4 @@
-Lulua Standard Library 0.7.26
+Lulua Standard Library 0.7.28
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.7.26
+  The Lulua version number. Currently: 0.7.28
   
 MAXINT
   The largest int.
@@ -794,8 +794,7 @@ printf
   
 repr
   string representation of basic types.
-  Ex:
-      repr(foo)
+  repr(foo)
   
 sprintf
   sprintf function.

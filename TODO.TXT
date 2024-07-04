@@ -225,7 +225,7 @@ Testing:
 		pushleft
 		range
 		range0
-		*repr
+		repr
 		*reversed
 		*right
 		*round

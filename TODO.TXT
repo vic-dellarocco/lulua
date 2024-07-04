@@ -221,7 +221,7 @@ Testing:
 		pop
 		popleft
 		pow
-		*push
+		push
 		*pushleft
 		*range
 		*range0

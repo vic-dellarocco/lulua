@@ -829,6 +829,7 @@
 	function push(tbl,val)
 		local doc=[[Adds a value to the end of the table.
 			push(tbl,val)
+
 			Returns the modified table.
 			]]
 		tbl[#tbl+1]=val; return tbl; end
@@ -4765,7 +4766,6 @@ if MAIN() then
 
 			 end)
 		 end
-
 		local test_pow=function()
 			test("pow",function()
 				local resulted,expected
@@ -4782,6 +4782,24 @@ if MAIN() then
 					local descript=cc[3]
 					ok(eq(resulted,expected),descript)
 				 end
+
+			 end)
+		 end
+		local test_push=function()
+			test("push",function()
+				local resulted,expected
+
+				local foo={11,22}
+				local resulted=push(foo,33)
+				local expected={11,22,33}
+				local descript="push value."
+				ok(eq(resulted,expected),descript)
+
+				local foo={}
+				local resulted=push(foo,11)
+				local expected={11}
+				local descript="push value into empty table."
+				ok(eq(resulted,expected),descript)
 
 			 end)
 		 end
@@ -5007,6 +5025,7 @@ if MAIN() then
 			test_pop,
 			test_popleft,
 			test_pow,
+			test_push,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

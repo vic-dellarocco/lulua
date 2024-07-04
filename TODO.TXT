@@ -216,7 +216,6 @@ Testing:
 		merge
 		method
 		methodist
-		*min
 		*oct
 		*optionator
 		*ord

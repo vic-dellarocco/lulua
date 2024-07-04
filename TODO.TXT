@@ -226,7 +226,6 @@ Testing:
 		range
 		range0
 		repr
-		*reversed
 		*right
 		*round
 		*setattr

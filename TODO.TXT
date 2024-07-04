@@ -224,7 +224,7 @@ Testing:
 		push
 		pushleft
 		range
-		*range0
+		range0
 		*reload
 		*repr
 		*reversed

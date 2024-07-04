@@ -4840,6 +4840,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_range0=function()
+			test("range0",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {3} ,{0,1,2}    ,"0,1,2"   },
+					{ {5,10} ,{5,6,7,8,9}    ,"5,6,7,8,9"   },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=range0( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5065,6 +5083,7 @@ if MAIN() then
 			test_push,
 			test_pushleft,
 			test_range,
+			test_range0,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

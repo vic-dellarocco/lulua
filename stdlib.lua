@@ -774,7 +774,7 @@
 			local ss={}
 			for k,v in ipairs(_tbl) do
 				if type(v)=="table" or type(v)=="List" then
-					extend(ss,unroll(v))
+					extend(ss,_unroll(v))
 				 else
 					push(ss,v)
 				 end
@@ -5043,6 +5043,44 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_uniq=function()
+			test("uniq",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {1,1,1,2}  ,{1,2}  ,"like unix uniq."  },
+					{ {1,1,1,2,1,1}  ,{1,2,1}  ,"expects sorted data."  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=uniq( cc[1] )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
+		local test_unroll=function()
+			test("unroll",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {11,22,33}  ,{11,22,33}  ,"un-nested."  },
+					{ {11,22,33,{44,{{55,66},77},88},99}  ,{11,22,33,44,55,66,77,88,99}  ,"deeply nested."  },
+					{ {11}  ,{11}  ,"one item."  },
+					{ {}  ,{}  ,"no items."  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=unroll( cc[1] )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5279,6 +5317,8 @@ if MAIN() then
 			test_sort,
 			test_sprintf,
 			test_top,
+			test_uniq,
+			test_unroll,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

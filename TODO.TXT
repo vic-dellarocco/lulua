@@ -218,7 +218,6 @@ Testing:
 		methodist
 		oct
 		ord
-		*pass
 		*pop
 		*popleft
 		*pow

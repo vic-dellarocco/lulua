@@ -4746,6 +4746,25 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_popleft=function()
+			test("popleft",function()
+				local resulted,expected
+
+				local foo={11,22,33}
+				local resulted=popleft(foo)
+				local expected=11
+				local descript="popleft({11,22,33}-->11)"
+				ok(eq(resulted,expected),descript)
+				ok(eq(foo,{22,33}),"verify item removed.")
+
+				local foo={}
+				local resulted=popleft(foo)
+				local expected=nil
+				local descript="popleft({}-->nil)"
+				ok(eq(resulted,expected),descript)
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -4966,6 +4985,7 @@ if MAIN() then
 			test_oct,
 			test_ord,
 			test_pop,
+			test_popleft,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

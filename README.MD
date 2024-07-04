@@ -3,7 +3,7 @@
   The Lulua Lua Distro provides a lua programming
   environment with a collection of additional modules.
 
-⚠️ **Work in Progress: This software is about 105 items from the
+⚠️ **Work in Progress: This software is about 104 items from the
      version 1.0 release. See TODO.TXT**
 
 This is for making application software. Use it as a base to

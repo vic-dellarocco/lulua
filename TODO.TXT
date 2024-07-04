@@ -219,7 +219,7 @@ Testing:
 		oct
 		ord
 		pop
-		*popleft
+		popleft
 		*pow
 		*print
 		*printf

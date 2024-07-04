@@ -231,7 +231,7 @@ Testing:
 		setbit
 		setbits
 		settype
-		*slice
+		slice
 		*sort
 		*sorted
 		*sprintf

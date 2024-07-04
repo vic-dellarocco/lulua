@@ -4966,6 +4966,28 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_slice=function()
+			test("slice",function()
+				local resulted,expected
+
+				local foo={11,22,33,44,55,66}
+
+				local cases={
+					--arg	 expected
+					{ {foo,1,3}  ,{11,22,33}  ,"slice."  },
+					{ {foo,2,4}  ,{22,33,44}  ,"slice."  },
+					{ {foo,1,5,2},{11,33,55}  ,"uses step."  },
+					{ {foo,1,6,2},{11,33,55}  ,"uses step."  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=slice( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5198,6 +5220,7 @@ if MAIN() then
 			test_setbit,
 			test_setbits,
 			test_settype,
+			test_slice,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

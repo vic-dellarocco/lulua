@@ -5426,6 +5426,25 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_string_startswith=function()
+			test("string.startswith",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {"foobar","f"}    ,true  ,"startswith f" },
+					{ {"foobar","foo" } ,true  ,"startswith foo" },
+					{ {"foobar","bar" } ,false ,"doesn't start with bar." },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=cc[1][1]:startswith(cc[1][2])
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5537,6 +5556,7 @@ if MAIN() then
 			test_string_split,
 			test_string_join,
 			test_string_slice,
+			test_string_startswith,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

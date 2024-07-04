@@ -140,7 +140,6 @@ Testing:
 		*Deque
 		*Enum
 		*List
-		*string.startswith
 		*sys.exit
 		*swap
 		*table.is_empty

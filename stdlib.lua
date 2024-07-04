@@ -5031,6 +5031,18 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_top=function()
+			test("top",function()
+				local resulted,expected
+
+				local foo={11,22,33}
+				local resulted=top(foo)
+				local expected=33
+				local descript="top({11,22,33}-->33)"
+				ok(eq(resulted,expected),descript)
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5266,6 +5278,7 @@ if MAIN() then
 			test_slice,
 			test_sort,
 			test_sprintf,
+			test_top,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

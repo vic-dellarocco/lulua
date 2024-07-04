@@ -234,7 +234,7 @@ Testing:
 		slice
 		sort
 		sprintf
-		*top
+		top
 		*type
 		*uniq
 		*unroll

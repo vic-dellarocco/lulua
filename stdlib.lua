@@ -5408,6 +5408,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_string_slice=function()
+			test("string.slice",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {"foobar",1,3 } ,"foo" ,"slice" },
+					{ {"foobar",4,7 } ,"bar" ,"slice" },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=cc[1][1]:slice(cc[1][2],cc[1][3])
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5518,6 +5536,7 @@ if MAIN() then
 			test_string_trimall,
 			test_string_split,
 			test_string_join,
+			test_string_slice,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

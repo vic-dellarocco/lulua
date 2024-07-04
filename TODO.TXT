@@ -140,7 +140,6 @@ Testing:
 		*Deque
 		*Enum
 		*List
-		*string.slice
 		*string.startswith
 		*sys.exit
 		*swap

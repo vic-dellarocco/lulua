@@ -223,7 +223,7 @@ Testing:
 		pow
 		push
 		pushleft
-		*range
+		range
 		*range0
 		*reload
 		*repr

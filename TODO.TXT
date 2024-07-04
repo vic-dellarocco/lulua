@@ -213,7 +213,6 @@ Testing:
 		keys
 		len
 		locals
-		*max
 		*merge
 		*method
 		*methodist

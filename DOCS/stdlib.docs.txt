@@ -1,4 +1,4 @@
-Lulua Standard Library 0.9.14
+Lulua Standard Library 0.9.16
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.9.14
+  The Lulua version number. Currently: 0.9.16
   
 MAXINT
   The largest int.
@@ -1806,7 +1806,7 @@ os.path.splitext
   
 sys.exit
   Alternative name for the os.exit function.
-  sys.exit()
+  sys.exit(code)
   
 sys.argv
   If you want to use sys.argv then you will have to set it in

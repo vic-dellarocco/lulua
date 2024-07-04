@@ -2938,11 +2938,11 @@
 		 end
 --[[sys]]
 	sys={}
-	sys.exit=function()
+	sys.exit=function(code)
 		local doc=[[Alternative name for the os.exit function.
-			sys.exit()
+			sys.exit(code)
 			]]
-		return os.exit()
+		return os.exit(code)
 	 end
 	sys.argv=arg--[[You will have to set this in every file you
 					want to use it in! arg is nil if this is not

@@ -212,7 +212,6 @@ Testing:
 		intmod
 		keys
 		len
-		*list
 		*locals
 		*map
 		*max

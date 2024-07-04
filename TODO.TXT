@@ -218,7 +218,7 @@ Testing:
 		methodist
 		oct
 		ord
-		*pop
+		pop
 		*popleft
 		*pow
 		*print

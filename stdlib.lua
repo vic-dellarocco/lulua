@@ -210,8 +210,10 @@
 	 end
 	round =function(n,_decimals)--round n to _decimals decimal places or nearest int.
 		local doc=[[Round n to _dp decimal places or nearest int.
+			round(3.14)  -->3
+
 			_decimals arg is optional.
-			Ex: round(3.14)  -->3
+			Ex:
 				round(3.14,1)-->3.1
 			]]
 		local dec=10^(_decimals or 0)
@@ -4876,6 +4878,26 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_round=function()
+			test("round",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {2.5} ,3,"3"  },
+					{ {0.3} ,0,"0"  },
+					{ {-1.5} ,-2,"-2"  },
+					{ {3.14159,2} ,3.14,"3.14"  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=round( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5103,6 +5125,7 @@ if MAIN() then
 			test_range,
 			test_range0,
 			test_repr,
+			test_round,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

@@ -226,7 +226,7 @@ Testing:
 		range
 		range0
 		repr
-		*round
+		round
 		*setattr
 		*setbit
 		*setbits

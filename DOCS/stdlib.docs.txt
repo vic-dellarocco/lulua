@@ -1,4 +1,4 @@
-Lulua Standard Library 0.7.32
+Lulua Standard Library 0.7.34
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.7.32
+  The Lulua version number. Currently: 0.7.34
   
 MAXINT
   The largest int.
@@ -290,8 +290,10 @@ intmod
   
 round
   Round n to _dp decimal places or nearest int.
+  round(3.14)  -->3
+  
   _decimals arg is optional.
-  Ex: round(3.14)  -->3
+  Ex:
       round(3.14,1)-->3.1
   
 

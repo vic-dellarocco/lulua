@@ -1,4 +1,4 @@
-Lulua Standard Library 0.9.06
+Lulua Standard Library 0.9.08
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.9.06
+  The Lulua version number. Currently: 0.9.08
   
 MAXINT
   The largest int.
@@ -871,7 +871,6 @@ string.split
   
   Ex:
       string.split("1-2-3", "-") --> {"1","2","3"}
-      string.split("1 2\3", "\n") --> {"1 2","3"}
   
 string.startswith
   Checks if a string starts with another.

@@ -1399,7 +1399,6 @@
 
 			Ex:
 				string.split("1-2-3", "-") --> {"1","2","3"}
-				string.split("1 2\3", "\n") --> {"1 2","3"}
 			]]
 		if sep=='' or sep==nil then
 			sep='%s+'--split on space chars
@@ -5373,6 +5372,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_string_split=function()
+			test("string.split",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {"foo bar"} ,{"foo","bar"} ,"split"  },
+					{ {"foo/bar","/"} ,{"foo","bar"} ,"split"  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=cc[1][1]:split(cc[1][2])
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5481,6 +5498,7 @@ if MAIN() then
 			test_string_ltrim,
 			test_string_rtrim,
 			test_string_trimall,
+			test_string_split,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

@@ -2729,6 +2729,7 @@
 				You can provide the path separator. If you don't, it
 				will be auto detected.
 				]]
+			if path=="" then return "";end
 			local sep; if _sep==nil then sep=package.config:sub(1,1) else sep=_sep;end
 			local ss=path:split(sep)
 			ss=ss[#ss]
@@ -2746,6 +2747,7 @@
 				separator char unless the directory string represents
 				the root directory.
 				]]
+			if path=="" then return "";end
 			local path,_=os.path.split(path,_sep)
 			return path
 		 end
@@ -2802,12 +2804,11 @@
 
 				Returns nil if called on a directory or an unreadable file.
 				]]
-			local file=io.open(filename,"rb")
-			if file then
-				local size = 0
-				file:seek("end")
-				size=file:tell()
-				file:close()
+			local ff=io.open(filename,"rb")
+			if ff then
+				local size=0
+				size=ff:seek("end")
+				ff:close()
 				return size
 			 else
 				return nil
@@ -5118,23 +5119,85 @@ if MAIN() then
 
 			 end)
 		 end
-		--
-		local test_os_path_split=function()
-			test("os.path.split",function()
+		local test_os_path_basename=function()
+			test("os.path.basename",function()
 				local cases={
-					--arg	 expected
-					{"/"	,{"/"	,""		}},
-					{"foo"	,{""	,"foo"	}},
-					{"foo/"	,{"foo"	,""		}},
-					{"/foo"	,{"/"	,"foo"	}},
+					--arg,expected
+					{"",""},
+					{"foo","foo"},
+					{"foo.","foo."},
+					{"foo.txt","foo.txt"},
+					{"/foo.txt","foo.txt"},
+					{"baz/foo.txt","foo.txt"},
+					{"baz/foo/",""},
 				 }
 				for _,cc in ipairs(cases) do
-					--Putting your resulted,expected into
-					--variables makes sense and is easy to read.
-					--this syntax works:
-					local resulted=table.pack(os.path.split(cc[1]))
+					local resulted=os.path.basename(cc[1])
 					local expected=cc[2]
 					ok(eq(resulted,expected))--use eq when comparing tables.
+				 end
+			 end)
+		 end
+		local test_os_path_dirname=function()
+			test("os.path.dirname",function()
+				local cases={
+					--arg,expected
+					{"",""},
+					{"foo",""},
+					{"/foo.txt","/"},
+					{"baz/foo.txt","baz"},
+					{"baz/foo/","baz/foo"},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=os.path.dirname(cc[1])
+					local expected=cc[2]
+					ok(eq(resulted,expected))
+				 end
+			 end)
+		 end
+		local test_os_path_expanduser=function()
+			test("os.path.expanduser",function()
+				local cases={
+					--arg,expected
+					-- {"~susan","/home/susan","linux"},
+					-- {"~/docs","/home/vic/docs","path must exist."},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=os.path.expanduser(cc[1])
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+			 end)
+		 end
+		local test_os_path_getsize=function()
+			test("os.path.getsize",function()
+				local cases={
+					--arg,expected,descript
+					-- {"/home/vic/.bashrc",9001,"file must exist."},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=os.path.getsize(cc[1])
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+			 end)
+		 end
+		local test_os_path_isfile=function()
+			test("os.path.isfile",function()
+				local cases={
+					-- arg          expected
+					{"./README.MD",    true},
+					{"README.MD",      true},
+					{"./flyingpig.txt",false},
+					{"./",             false},--directory is not a file
+					{"/dev/null",      false},--special file, not a regular file
+				 }
+				for _, cc in ipairs(cases) do
+					local path, expected = unpack(cc)
+					local resulted=os.path.isfile(os.path.realpath(path))
+					ok(eq(resulted,expected))
 				 end
 			 end)
 		 end
@@ -5176,6 +5239,25 @@ if MAIN() then
 				 end
 			 end)
 		 end
+		local test_os_path_split=function()
+			test("os.path.split",function()
+				local cases={
+					--arg	 expected
+					{"/"	,{"/"	,""		}},
+					{"foo"	,{""	,"foo"	}},
+					{"foo/"	,{"foo"	,""		}},
+					{"/foo"	,{"/"	,"foo"	}},
+				 }
+				for _,cc in ipairs(cases) do
+					--Putting your resulted,expected into
+					--variables makes sense and is easy to read.
+					--this syntax works:
+					local resulted=table.pack(os.path.split(cc[1]))
+					local expected=cc[2]
+					ok(eq(resulted,expected))--use eq when comparing tables.
+				 end
+			 end)
+		 end
 		local test_os_path_splitext=function()
 			test("os.path.splitext",function()
 				local cases={
@@ -5201,42 +5283,6 @@ if MAIN() then
 				 end
 			 end)
 		 end
-		local test_os_path_basename=function()
-			test("os.path.basename",function()
-				local cases={
-					--arg,expected
-					{"",""},
-					{"foo","foo"},
-					{"foo.","foo."},
-					{"foo.txt","foo.txt"},
-					{"/foo.txt","foo.txt"},
-					{"baz/foo.txt","foo.txt"},
-					{"baz/foo/",""},
-				 }
-				for _,cc in ipairs(cases) do
-					local resulted=os.path.basename(cc[1])
-					local expected=cc[2]
-					ok(eq(resulted,expected))--use eq when comparing tables.
-				 end
-			 end)
-		 end
-		local test_os_path_isfile=function()
-			test("os.path.isfile",function()
-				local cases={
-					-- arg          expected
-					{"./README.MD",    true},
-					{"README.MD",      true},
-					{"./flyingpig.txt",false},
-					{"./",             false},--directory is not a file
-					{"/dev/null",      false},--special file, not a regular file
-				 }
-				for _, cc in ipairs(cases) do
-					local path, expected = unpack(cc)
-					local resulted=os.path.isfile(os.path.realpath(path))
-					ok(eq(resulted,expected))
-				 end
-			 end)
-		 end
 		local test_table_slice=function()
 			test("table.slice",function()
 			-- function slice(tbl,first,last,step)--pythonic slice
@@ -5256,14 +5302,6 @@ if MAIN() then
 			 end)
 		 end
 		--
-		local test_dogma=function()--an example
-			test('Check dogma', function()--[[Syntax examples]]
-				ok(eq({2+2},{4}))--use eq to check tables.
-				ok(eq(2+2==44,false))
-				ok(eq(1==9,false))
-				ok(11==11)
-			end)
-		 end
 		local tests={
 			test_ALL,
 			test_ANY,
@@ -5358,15 +5396,15 @@ if MAIN() then
 			test_unroll,
 			test_unsetbit,
 			test_values,
-			--
-			-- test_os_path_split,
-			-- test_os_path_join,
-			-- test_os_path_splitext,
-			-- test_os_path_basename,
-			-- test_os_path_isfile,
-
-			-- test_table_slice,
-			-- test_dogma,
+			test_os_path_basename,
+			test_os_path_dirname,
+			test_os_path_expanduser,
+			test_os_path_getsize,
+			test_os_path_isfile,
+			test_os_path_join,
+			test_os_path_split,
+			test_os_path_splitext,
+			test_table_slice,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

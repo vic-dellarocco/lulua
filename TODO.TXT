@@ -217,7 +217,6 @@ Testing:
 		method
 		methodist
 		oct
-		*optionator
 		*ord
 		*pass
 		*pop

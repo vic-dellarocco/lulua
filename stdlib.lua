@@ -5355,6 +5355,24 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_string_trimall=function()
+			test("string.trimall",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ "	f o o " ,"foo" ,"trim all ws."  },
+					{ "	f oo \n" ,"foo" ,"trim all ws."  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=cc[1]:trimall()
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5462,6 +5480,7 @@ if MAIN() then
 			test_string_trim,
 			test_string_ltrim,
 			test_string_rtrim,
+			test_string_trimall,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

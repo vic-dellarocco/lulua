@@ -140,7 +140,6 @@ Testing:
 		*Deque
 		*Enum
 		*List
-		*string.trimall
 		*string.split
 		*string.join
 		*string.slice

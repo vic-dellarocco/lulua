@@ -232,8 +232,7 @@ Testing:
 		setbits
 		settype
 		slice
-		*sort
-		*sorted
+		sort
 		*sprintf
 		*str
 		*sum

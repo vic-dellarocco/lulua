@@ -4988,6 +4988,27 @@ if MAIN() then
 
 			 end)
 		 end
+
+		local test_sort=function()
+			test("sort",function()
+				local resulted,expected
+
+				local foo={5,3,4,6,8,1}
+
+				local cases={
+					--arg	 expected
+					{ {foo}  ,{1,3,4,5,6,8}  ,"sort."  },
+					{ {{3,2,1}}  ,{1,2,3}  ,"1,2,3"  },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=sort( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5221,6 +5242,7 @@ if MAIN() then
 			test_setbits,
 			test_settype,
 			test_slice,
+			test_sort,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

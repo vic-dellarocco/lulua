@@ -1,4 +1,4 @@
-Lulua Standard Library 0.7.40
+Lulua Standard Library 0.7.42
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.7.40
+  The Lulua version number. Currently: 0.7.42
   
 MAXINT
   The largest int.
@@ -364,11 +364,10 @@ methodist
   
 settype
   Yes you can add new types.
-  
-  Ex:
-      settype(obj,typename)
+  settype(obj,typename)
   
   Uses the secret __type field that Lua5.1 wasn't using.
+  Uses the metatable.
   
 type
   Return the type of an object.

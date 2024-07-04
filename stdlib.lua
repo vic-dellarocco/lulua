@@ -249,11 +249,10 @@
 		local _type=type
 		local ss=function(tbl,t)
 			local doc=[[Yes you can add new types.
-
-				Ex:
-					settype(obj,typename)
+				settype(obj,typename)
 
 				Uses the secret __type field that Lua5.1 wasn't using.
+				Uses the metatable.
 				]]
 			assert(_type(tbl)=="table")
 			local mt=getmetatable(tbl) or {}
@@ -4955,6 +4954,18 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_settype=function()
+			test("settype",function()
+				local resulted,expected
+
+				local foo={}
+				settype(foo,"epic_type")
+				resulted=type(foo)
+				expected="epic_type"
+				ok(eq(resulted,expected),"make a new type.")
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5186,6 +5197,7 @@ if MAIN() then
 			test_setattr,
 			test_setbit,
 			test_setbits,
+			test_settype,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

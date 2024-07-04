@@ -230,7 +230,7 @@ Testing:
 		setattr
 		setbit
 		setbits
-		*settype
+		settype
 		*shell
 		*slice
 		*sort

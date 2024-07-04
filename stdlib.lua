@@ -4898,6 +4898,27 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_setattr=function()
+			test("setattr",function()
+				local resulted,expected
+
+				local foo={}
+				foo.bar=22
+
+				local cases={
+					--arg	 expected
+					{ {foo,"bar",42}    ,42    ,"set bar."  },
+					{ {foo,"bar",nil}   ,nil   ,"unset bar."  },
+				 }
+				for _,cc in ipairs(cases) do
+					setattr( unpack(cc[1]) )
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(foo.bar,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local test_os_path_split=function()
 			test("os.path.split",function()
@@ -5126,6 +5147,7 @@ if MAIN() then
 			test_range0,
 			test_repr,
 			test_round,
+			test_setattr,
 			--
 			-- test_os_path_split,
 			-- test_os_path_join,

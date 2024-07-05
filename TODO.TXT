@@ -138,4 +138,3 @@ Testing:
 	  TEST CHECKLIST: remove the '*' when it has tests.
 		*Array
 		*Deque
-		*List

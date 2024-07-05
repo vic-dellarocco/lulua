@@ -69,12 +69,9 @@
 		bit=import("bit")
 	 end
 --[[Copy]]
-	--[[NONE of these can copy closures because you can't copy something that
-		you don't have a reference to.
-		it might be possible able to copy closures with debug info to get
-		upvals.
+	--[[NONE of these can copy closures.
 		]]
-	function copy(src)--Shallow copy of array. almost useless.
+	function copy(src) --Shallow copy of array.
 		local doc=[[Shallow copy of array.
 			copy(src)-->srccopy
 
@@ -85,6 +82,13 @@
 				bar[2]=88--baz is now {00,{11,88,33},44}--beware.
 			]]
 		return {unpack(src)}
+	 end
+	function clone(tbl)--Shallow copy of array.
+		local t={}
+		for k,v in ipairs(tbl) do
+			t[k]=v
+		 end
+		return t
 	 end
 	function deepcopy(src,_seen)
 		local doc=[[Deep copy of table.
@@ -1113,6 +1117,7 @@
 				List{}       --create an empty list.
 				List{size=n,default=v}--create list of size n, value v.
 				List{v,size=n}        --create list of size n, value v.
+				List{v,s=n}           --s can be used instead of size.
 				List{n,default=v}     --create list of size n, value v.
 			]]
 		local self={}
@@ -5516,6 +5521,29 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_List=function()
+			test("List",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ { {42,s=3} } ,List{42,42,42} ,"List from {} args."},
+					{ { 11,22,33 } ,{11,22,33} ,"List from args."},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=List(unpack(cc[1]))
+					local expected=cc[2]
+					local descript=cc[3]
+
+					--convert to tables for comparision.
+					resulted=clone(resulted)
+					expected=clone(expected)
+
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5632,6 +5660,7 @@ if MAIN() then
 			test_string_startswith,
 			test_swap,
 			test_Enum,
+			test_List,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

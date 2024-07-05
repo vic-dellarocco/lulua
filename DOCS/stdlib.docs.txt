@@ -1,4 +1,4 @@
-Lulua Standard Library 0.9.24
+Lulua Standard Library 0.9.26
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.9.24
+  The Lulua version number. Currently: 0.9.26
   
 MAXINT
   The largest int.
@@ -200,6 +200,16 @@ reload
 Copy
 ----------
 
+clone
+  Deep copy of table.
+  deepcopy(src)-->acopy
+  
+  Will copy metatables.
+  Doesn't capture upvalues. You can't copy closures with this.
+  
+  Ex:
+      dest=deepcopy(src)
+  
 copy
   Shallow copy of array.
   copy(src)-->srccopy
@@ -573,6 +583,7 @@ List
       List{}       --create an empty list.
       List{size=n,default=v}--create list of size n, value v.
       List{v,size=n}        --create list of size n, value v.
+      List{v,s=n}           --s can be used instead of size.
       List{n,default=v}     --create list of size n, value v.
   
 bot
@@ -676,6 +687,7 @@ list
       List{}       --create an empty list.
       List{size=n,default=v}--create list of size n, value v.
       List{v,size=n}        --create list of size n, value v.
+      List{v,s=n}           --s can be used instead of size.
       List{n,default=v}     --create list of size n, value v.
   
 pop

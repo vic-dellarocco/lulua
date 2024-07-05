@@ -1,4 +1,4 @@
-Lulua Standard Library 0.9.16
+Lulua Standard Library 0.9.24
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.9.16
+  The Lulua version number. Currently: 0.9.24
   
 MAXINT
   The largest int.
@@ -309,6 +309,10 @@ Enum
   Pass in a list of names (strings) and get back
   something like this: { "name1"=1,"name2"=2, etc}
   
+  Don't try to add items later, it is designed to be
+  made all at once. So get your list of names together
+  and then make your enumeration.
+  
 classmethod
   Make functions from the table ftab methods of obj.
   methodist(obj,ftab)
@@ -342,6 +346,10 @@ enumerate
   
   Pass in a list of names (strings) and get back
   something like this: { "name1"=1,"name2"=2, etc}
+  
+  Don't try to add items later, it is designed to be
+  made all at once. So get your list of names together
+  and then make your enumeration.
   
 method
   Call method name on object.

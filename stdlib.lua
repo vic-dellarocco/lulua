@@ -330,12 +330,21 @@
 
 			Pass in a list of names (strings) and get back
 			something like this: { "name1"=1,"name2"=2, etc}
+
+			Don't try to add items later, it is designed to be
+			made all at once. So get your list of names together
+			and then make your enumeration.
 			]]
 		--[[pass a list of strings as args
 			or a {list} of strings
 		]]
 		local args={...}
 		local e={}
+
+		if len(args)<1 then
+			return {}
+		 end
+
 		if type(names)=="string" then
 			e[names]=1
 			for i=1,#args do
@@ -1081,8 +1090,13 @@
 				otherwise, returns false.
 				]]
 			for k,v in pairs(tbl) do
-				if (type(k)=='string' and string.trimall(v)~="") 
-				 or k ~= nil then
+				if type(v)=="string" then
+					if string.trimall(v)=="" then
+						pass()
+					 else
+						return false
+					 end
+				elseif v~=nil then
 					return false
 				end
 			 end
@@ -5300,6 +5314,36 @@ if MAIN() then
 				 end
 			 end)
 		 end
+		local test_table_is_empty=function()
+			test("table.is_empty",function()
+				local foo={}
+				local resulted=table.is_empty(foo)
+				ok(eq(resulted,true))
+
+				local foo={["bar"]=22}
+				local resulted=table.is_empty(foo)
+				ok(eq(resulted,false))
+			 end)
+		 end
+		local test_table_is_blank=function()
+			test("table.is_blank",function()
+				local foo={}
+				local resulted=table.is_blank(foo)
+				ok(eq(resulted,true))
+
+				local foo={""," ","	"}
+				local resulted=table.is_blank(foo)
+				ok(eq(resulted,true))
+
+				local foo={["bar"]=22}
+				local resulted=table.is_blank(foo)
+				ok(eq(resulted,false))
+
+				local foo={["bar"]=" "}
+				local resulted=table.is_blank(foo)
+				ok(eq(resulted,true))
+			 end)
+		 end
 		local test_string_trim=function()
 			test("string.trim",function()
 				local resulted,expected
@@ -5454,6 +5498,24 @@ if MAIN() then
 				ok(eq({a,b},expected),"a,b-->b,a")
 			 end)
 		 end
+		local test_Enum=function()
+			test("Enum",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {"foo","bar"} ,{["foo"]=1,["bar"]=2} ,"a simple enum."},
+					{ {} ,{} ,"empty enum, which is allowed, but doesn't make sense." },
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=Enum(unpack(cc[1]))
+					local expected=cc[2]
+					local descript=cc[3]
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5558,6 +5620,8 @@ if MAIN() then
 			test_os_path_split,
 			test_os_path_splitext,
 			test_table_slice,
+			test_table_is_empty,
+			test_table_is_blank,
 			test_string_trim,
 			test_string_ltrim,
 			test_string_rtrim,
@@ -5567,6 +5631,7 @@ if MAIN() then
 			test_string_slice,
 			test_string_startswith,
 			test_swap,
+			test_Enum,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

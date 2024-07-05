@@ -104,8 +104,3 @@ Testing:
 	* Make submodule tests runnable from the Makefile.
 
 	* Make submodule example programs runnable from the Makefile.
-
-	* Got an error testing stdlib under love2d:
-		FAIL coalesce: as List method.: Expected "table: 0x71b1a8020a30", but got "table: 0x71b1a80209b8".
-	  The funny thing is, this test doesn't always fail.
-	  Check to see if it is a table order issue.

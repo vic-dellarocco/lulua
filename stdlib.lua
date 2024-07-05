@@ -4233,6 +4233,7 @@ if MAIN() or sys.argv~=nil and sys.argv[2]=="LOVE2D" then
 				 end
 
 				resulted=List{[512]=11,[1024]=22,[256]=33}:coalesce()
+				resulted=sort(resulted)--order is not preserved
 				expected={11,22,33}
 				ok(eq(resulted,expected),"as List method.")
 

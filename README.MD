@@ -31,6 +31,7 @@ Modules:
 - lpeg:      parsing expression grammars for lua.
 - luaglut:   old-school openGL.
 - lunit:     a very complicated testing framework.
+- nativefs:  Love2d only: remove filesystem restrictions.
 - penlight:  another standard library for lua, already enabled
              imported as "penlight". Very good.
 - posix:     lua posix, 

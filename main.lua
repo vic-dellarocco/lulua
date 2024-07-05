@@ -6,7 +6,9 @@ if love~=nil then--[[A love2d example
 		love .
 	The debugger won't work if the cwd is not the base dir.
 	]]
-	require("init")
+	require("init")--You must get the batteries!
+	--Now we have the batteries included!
+	nfs=import("nativefs")--remove file restrictions!
 	NAME="Lulua example"
 	DEBUG=false
 

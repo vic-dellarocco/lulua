@@ -101,6 +101,12 @@ lunit
 	MIT License, See lunit/LICENSE
 	https://github.com/mrothNET/lunit
 
+nativefs
+	[Remove filesystem restrictions in Love2d.]
+	megagrump@pm.me, EngineerSmith
+	MIT License, see nativefs/LICENSE
+	https://github.com/EngineerSmith/nativefs
+
 penlight
 	[A standard library.]
 	Steve Donovan, David Manura

@@ -140,6 +140,5 @@ Testing:
 		*Deque
 		*Enum
 		*List
-		*swap
 		*table.is_empty
 		*table.is_blank

@@ -5445,6 +5445,15 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_swap=function()
+			test("swap",function()
+				local a=1
+				local b=2
+				local a,b=swap(a,b)
+				local expected={2,1}
+				ok(eq({a,b},expected),"a,b-->b,a")
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5557,6 +5566,7 @@ if MAIN() then
 			test_string_join,
 			test_string_slice,
 			test_string_startswith,
+			test_swap,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

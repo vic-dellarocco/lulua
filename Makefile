@@ -87,7 +87,8 @@ SHELL 	:=/bin/bash
 FORCE:
 
 .PHONY:   all lua lulua modules
-.PHONY:   docs clean archive release tarball test
+.PHONY:   docs clean archive release tarball 
+.PHONY:   tests test test-love
 .PHONY:   base64 curses lfs linenoise lpeg luaglut
 .PHONY:   posix sdl signal sqlite utf8 zlib
 .PHONY:   dirinfo progress
@@ -158,9 +159,13 @@ tarball: #devel:always makes a tarball, one directory above.
 	&& cd .. \
 	&& tar -czvf $$(date -u +%F_%H-%M-%S)"_${NAME}".tgz "${NAME}" \
 	;
-tests: FORCE test
+tests: ##target:run stdlib tests for lua and love2d.
+	make test
+	make test-love
 test:
 	./lua stdlib.lua -t
+test-love:
+	love . LOVE2D -t
 commit: clean
 	: \
 	&& git add --all \

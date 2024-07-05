@@ -97,7 +97,7 @@ Modules:
 				a video file and to write frames to another
 				video file. I am currently using Python for
 				processing videos, but Lua would be better.
-				I might write the binding to just the functions
+				I might write the binding to only the functions
 				that I need for this task.
 
 Testing:
@@ -105,6 +105,7 @@ Testing:
 
 	* Make submodule example programs runnable from the Makefile.
 
-	* Make tests runnable from love2d. UNROLL has a luajit
-	  implementation that is currently disabled because I have
-	  no working test for it.
+	* Got an error testing stdlib under love2d:
+		FAIL coalesce: as List method.: Expected "table: 0x71b1a8020a30", but got "table: 0x71b1a80209b8".
+	  The funny thing is, this test doesn't always fail.
+	  Check to see if it is a table order issue.

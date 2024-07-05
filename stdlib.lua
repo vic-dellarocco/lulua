@@ -827,8 +827,8 @@
 			if n<s then return n,ss[n] end
 		 end
 	 end
-		if false then--UNROLL -- hasn't been tested.
-		-- if jit then--UNROLL
+		-- if false then--UNROLL -- hasn't been tested.
+		if jit then--UNROLL
 			assert(loadstring([[
 			function UNROLL(tbl)
 				--iterator to completely flatten a list (luajit)
@@ -3119,7 +3119,7 @@ Lulua Standard Library.
 	-d, --docs       Generate docs: stdlib.docs.txt
 	-i, --info       Print some system info.
 	]]
-if MAIN() then
+if MAIN() or sys.argv~=nil and sys.argv[2]=="LOVE2D" then
 	local options,args=optionator(sys.argv)
 	local DOCS,TEST
 	if haskey(options,"h","help")    then

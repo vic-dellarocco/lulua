@@ -4,6 +4,8 @@
 if love~=nil then--[[A love2d example
 	Run with love2d:
 		love .
+	To run tests, run as:
+		love . LOVE2D -t
 	The debugger won't work if the cwd is not the base dir.
 	]]
 	require("init")--You must get the batteries!
@@ -16,14 +18,15 @@ if love~=nil then--[[A love2d example
 	black		 =rgb(  0,  0,  0)
 	deep_sky_blue=rgb(  0,191,255)
 
+	function love.conf(t)
+		t.console = true
+	 end
 	function love.mousepressed()
 		love.event.quit();
 	 end
-
 	function love.keypressed(key)
 		if key == "escape" then love.event.quit();return;end
 	 end
-
 	function love.load(argv)
 		local args=List(argv):slice(1)--command line args
 		if args:has('-d','--debug') then DEBUG=true;end

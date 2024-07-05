@@ -84,3 +84,4 @@ check_shift("ror", 302316761)
 
 check_binop_range("tohex", 47880306, -8, 8)
 
+print("bits tested.")

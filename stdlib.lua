@@ -2314,17 +2314,17 @@
 		return ss
 	 end
 
-	function error(msg,_code) --Exit program with error message.
-		local doc=[[Exit program with error message.
-			error(msg)
-			error(msg,code)--provide optional error code.
-			]]
-		if msg ~="" and msg~=nil then
-			io.stderr:write("ERROR: "..msg.."\n")
-			io.stderr:flush()
-		 end
-		os.exit(_code or 1)
-	 end
+	-- function ERROR(msg,_code) --Exit program with error message.
+	-- 	local doc=[[Exit program with error message.
+	-- 		ERROR(msg)
+	-- 		ERROR(msg,code)--provide optional error code.
+	-- 		]]
+	-- 	if msg ~="" and msg~=nil then
+	-- 		io.stderr:write("ERROR: "..msg.."\n")
+	-- 		io.stderr:flush()
+	-- 	 end
+	-- 	os.exit(_code or 1)
+	--  end
 	function warn(msg)--Print a warning to  stderr.
 		local doc=[[Print a warning to stderr.
 			warn(msg)

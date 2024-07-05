@@ -301,3 +301,19 @@ zlib:      lua ##module:linux,macos?          [file compression.]
 	&& cd zlib \
 	&& bash build-zlib.sh \
 	;
+
+
+# module tests:
+.PHONY: test-base64 test-bit test-curses
+
+test-base64:
+	./lua base64/test._lua
+test-bit:
+	./lua bit/contrib/bittest.lua
+test-curses: # is interactive. ctrl-c to exit.
+	./lua curses/test/test.lua
+# test-debug: # broken.
+# 	./lua debug/test/test.lua
+test-fstring:
+	./lua fstring/examples/demo.lua
+

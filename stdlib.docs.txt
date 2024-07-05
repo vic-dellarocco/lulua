@@ -1,4 +1,4 @@
-Lulua Standard Library 0.9.36
+Lulua Standard Library 0.9.38
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.9.36
+  The Lulua version number. Currently: 0.9.38
   
 MAXINT
   The largest int.
@@ -1579,11 +1579,6 @@ dir
   dir(tbl)
   
   Useful in interactive interpreter.
-  
-error
-  Exit program with error message.
-  error(msg)
-  error(msg,code)--provide optional error code.
   
 getext
   Return the file extension of path if it exists.

@@ -24,15 +24,6 @@ Docs:
 		* Show how to use require,import,or dofile
 
 Code:
-	* The MAP function shows how to allow named args.
-	  Adapt as many functions as it makes sense to use
-	  f{...} syntax and named args.
-		f(a,b,_foo)-->f{a,b} or f{a,b,foo="foo"}
-
-	* Make functions that accept tables also accept "List"s where
-	  appropriate, and they shall return "List"s if thats what they
-	  were provided, where appropriate.
-
 	* Make sure that path and cpath won't allow import of unintended
 	  .lua files. (example.lua,tests.lua,etc).
 	  Maybe rename like "test.lua"-->"test._lua".
@@ -88,26 +79,10 @@ Modules:
 
 	* Eliminate Cmake,autotools,and alternative-build system
 	  dependencies:
-		
-		base64:          bash.
-		bit:             pure lua, no build process.
-		curses:          bash.
-		debug:           pure lua, no build process.
-		fstring:         pure lua, no build process.
-		gambiarra:       pure lua, no build process.
-		lfs:             bash.
-		linenoise:       bash.
-		lpeg             Makefile.
 		luaglut:         Cmake.
-		lulua:lua5.1:    Makefiles.
-		lunit:           pure lua, no build process.
-		penlight         pure lua, no build process.
 		posix:           an alternative build system: 'luke',
 		                 requires a working lua interpreter.
 		sdl:             Cmake.
-		signal:          bash.
-		sqlite:          bash.
-		utf8:            bash.
 		zlib:            Cmake?, configure script, Makefiles.
 
 	* Possibly include:

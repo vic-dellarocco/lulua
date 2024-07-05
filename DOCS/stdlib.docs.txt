@@ -201,14 +201,14 @@ Copy
 ----------
 
 clone
-  Deep copy of table.
-  deepcopy(src)-->acopy
+  Shallow copy of numeric keys.
+  clone(src)-->tbl
   
-  Will copy metatables.
-  Doesn't capture upvalues. You can't copy closures with this.
+cloneiter
+  Shallow copy of numeric keys from iterator.
+  cloneiter(iter)-->tbl
   
-  Ex:
-      dest=deepcopy(src)
+  Expects a {k,v} type of iter such as ipairs.
   
 copy
   Shallow copy of array.
@@ -405,11 +405,14 @@ Structures
 
 Array
   A zero-based array type for numbers
+  myarray=Array(size)
+  myarray=Array(size,default)
+  myarray=Array{size,default}
+  myarray=Array{size=NUM}
+  myarray=Array{size,default=VAL}
+  myarray=Array{size=NUM,default=VAL}
   
-  myarray=Array(size,_default)
-  myarray=Array{size,_default}
-  
-  _default is optional, it is 0 if unset.
+  default is optional, it is 0 if unset.
   You can't use the brackets [] for anything but numbers.
   Number indices will be truncated to ints
   Ex: myarray[3.14]-->myarray[3.0]
@@ -420,7 +423,7 @@ Array
       len:  return the number of elements in the array.
       push: add an item to the end of the array. This
             grows the array.
-      iter: a zero-aware iterator.
+      iter: function that returns a zero-aware iterator.
   
   How to loop through the array:
       for i,v in myarray:iter() do

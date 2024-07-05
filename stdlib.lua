@@ -69,8 +69,7 @@
 		bit=import("bit")
 	 end
 --[[Copy]]
-	--[[NONE of these can copy closures.
-		]]
+	--[[NONE of these can copy closures.]]
 	function copy(src) --Shallow copy of array.
 		local doc=[[Shallow copy of array.
 			copy(src)-->srccopy
@@ -82,13 +81,6 @@
 				bar[2]=88--baz is now {00,{11,88,33},44}--beware.
 			]]
 		return {unpack(src)}
-	 end
-	function clone(tbl)--Shallow copy of array.
-		local t={}
-		for k,v in ipairs(tbl) do
-			t[k]=v
-		 end
-		return t
 	 end
 	function deepcopy(src,_seen)
 		local doc=[[Deep copy of table.
@@ -137,6 +129,32 @@
 		 end
 		return ss
 	 end--merge()
+	function clone(tbl)     --Shallow copy of numeric keys.
+		local doc=[[Shallow copy of numeric keys.
+			clone(src)-->tbl
+			]]
+		local t={}
+		for k,v in pairs(tbl) do
+			if type(k)=="number" then
+				t[k]=v
+			 end
+		 end
+		return t
+	 end
+	function cloneiter(iter)--Shallow copy of numeric keys from iterator.
+		local doc=[[Shallow copy of numeric keys from iterator.
+			cloneiter(iter)-->tbl
+
+			Expects a {k,v} type of iter such as ipairs.
+			]]
+		local t={}
+		for k,v in iter do
+			if type(k)=="number" then
+				t[k]=v
+			 end
+		 end
+		return t
+	 end
 --[[Math]]
 	--Why  2^53-1 and not  2^53? Because  2^53 and  2^53+1 are indistinguishable.
 	MAXINT= 9007199254740991 --Assumes 64 bit IEEE 794, int( 2^53-1)
@@ -362,13 +380,16 @@
 		return e
 	 end
 --[[Structures]]
-	Array=def(function(args)--A zero-based array type for numbers
+	Array=def(function(...)--A zero-based array type for numbers
 		local doc=[[A zero-based array type for numbers
+			myarray=Array(size)
+			myarray=Array(size,default)
+			myarray=Array{size,default}
+			myarray=Array{size=NUM}
+			myarray=Array{size,default=VAL}
+			myarray=Array{size=NUM,default=VAL}
 
-			myarray=Array(size,_default)
-			myarray=Array{size,_default}
-
-			_default is optional, it is 0 if unset.
+			default is optional, it is 0 if unset.
 			You can't use the brackets [] for anything but numbers.
 			Number indices will be truncated to ints
 			Ex: myarray[3.14]-->myarray[3.0]
@@ -379,7 +400,7 @@
 				len:  return the number of elements in the array.
 				push: add an item to the end of the array. This
 					  grows the array.
-				iter: a zero-aware iterator.
+				iter: function that returns a zero-aware iterator.
 
 			How to loop through the array:
 				for i,v in myarray:iter() do
@@ -392,7 +413,12 @@
 			Number indices will be truncated to ints
 			]]
 		local self={}
-		local size    = args[1] or args.size    or 0
+		local args={...}
+		if len(args)<1  then args[1]=0;end
+		if len(args)==1 and (type(args[1])=="table" or type(args[1])=="List") then
+			args=args[1]
+		 end
+		local size    = args[1] or args.size    or args.s or 0
 		local default = args[2] or args.default or 0
 		settype(self,"Array")
 		self._array={}
@@ -5544,6 +5570,36 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_Array=function()
+			test("Array",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{  3              ,{[0]=0,0,0}    ,"Array from args."},
+					{ {3}             ,{[0]=0,0,0}    ,"Array from {args}."},
+					{ {s=3}           ,{[0]=0,0,0}    ,"Array from {args}."},
+					{ {size=3}        ,{[0]=0,0,0}    ,"Array from {args}."},
+					{ {3,default=42 } ,{[0]=42,42,42} ,"Array from {args}."},
+					{ {3,1}           ,{[0]=1,1,1}    ,"Array from {args}."},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=Array( cc[1] )
+					local expected=cc[2]
+					local descript=cc[3]
+					--convert to table for comparision:
+					resulted=cloneiter(resulted:iter())
+					ok(eq(resulted,expected),descript)
+				 end
+
+				--test multiple args directly:
+				local resulted=Array(3,1)
+				local expected={[0]=1,1,1}
+				resulted=cloneiter(resulted:iter())
+				ok(eq(resulted,expected),"Array from multiple args.")
+
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5661,6 +5717,7 @@ if MAIN() then
 			test_swap,
 			test_Enum,
 			test_List,
+			test_Array,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

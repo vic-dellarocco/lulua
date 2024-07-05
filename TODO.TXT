@@ -133,7 +133,3 @@ Testing:
 	* Make tests runnable from love2d. UNROLL has a luajit
 	  implementation that is currently disabled because I have
 	  no working test for it.
-
-	* Write tests for the stdlib.
-	  TEST CHECKLIST: remove the '*' when it has tests.
-		*Deque

@@ -1,4 +1,4 @@
-Lulua Standard Library 0.9.26
+Lulua Standard Library 0.9.30
 =======================
 
 PACKAGE.BASE
@@ -128,7 +128,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.9.26
+  The Lulua version number. Currently: 0.9.30
   
 MAXINT
   The largest int.
@@ -433,8 +433,8 @@ Array
 Deque
   Fast deque from "Programming in Lua"
   
-  d=Deque()     --create an empty one
-  d=Deque(list) --create from a list
+  d=Deque()     --create an empty deque.
+  d=Deque(list) --create from a List or table.
   
   Methods:
       push(val)

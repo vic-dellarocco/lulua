@@ -481,8 +481,8 @@
 	Deque=def(function(args)--Fast deque from "Programming in Lua"
 		local doc=[[Fast deque from "Programming in Lua"
 
-			d=Deque()     --create an empty one
-			d=Deque(list) --create from a list
+			d=Deque()     --create an empty deque.
+			d=Deque(list) --create from a List or table.
 
 			Methods:
 				push(val)
@@ -559,10 +559,6 @@
 				if n<=s then return n,self[n] end
 			 end
 		 end
-		--[[todo --allow varargs: see List(), maybe...
-			(length,default)
-			(length) -- default val is 0
-			]]
 		--create the deque from the list args: deque(list)
 		if type(args)=="table" or type(args)=="List" then
 			for i=1,#args do
@@ -570,7 +566,7 @@
 			 end
 		 else
 			--creates empty deque.
-			pass()--todo allow args: length,default, maybe
+			pass()
 		 end
 		return self
 	 end)
@@ -5600,6 +5596,26 @@ if MAIN() then
 
 			 end)
 		 end
+		local test_Deque=function()
+			test("Deque",function()
+				local resulted,expected
+
+				local cases={
+					--arg	 expected
+					{ {33,22,11}  ,{[0]=33,22,11}    ,"Deque from args."},
+					{ {44}        ,{[0]=44}          ,"Deque from args."},
+				 }
+				for _,cc in ipairs(cases) do
+					local resulted=Deque(cc[1] )
+					local expected=cc[2]
+					local descript=cc[3]
+					--convert to table for comparision:
+					resulted=cloneiter(resulted:iter())
+					ok(eq(resulted,expected),descript)
+				 end
+
+			 end)
+		 end
 		--
 		local tests={
 			test_ALL,
@@ -5718,6 +5734,7 @@ if MAIN() then
 			test_Enum,
 			test_List,
 			test_Array,
+			test_Deque,
 		 }
 		for _,runtest in ipairs(tests) do runtest();end
 		test:report()

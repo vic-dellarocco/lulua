@@ -1,5 +1,5 @@
 --[[
-	Copyright (c) 2020 Scott Lembcke and Howling Moon Software
+	Copyright (c) 2023 Scott Lembcke and Howling Moon Software
 	
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
@@ -91,7 +91,7 @@ end
 -- Default dbg.write function
 local function dbg_write(str)
 	-- io.write(str)
-	io.stderr:write(str)--VV:don't write anything to std out, ever!
+	io.stderr:write(str)--VV:don't write anything to stdout, ever!
 end
 
 local function dbg_writeln(str, ...)
@@ -291,7 +291,7 @@ local function cmd_print(expr)
 	else
 		local output = ""
 		for i = 2, results.n do
-			output = output..(i ~= 2 and ", " or "")..pretty(results[i])
+			output = output..(i ~= 2 and ", " or "")..dbg.pretty(results[i])
 		end
 		
 		if output == "" then output = "<no result>" end
@@ -396,7 +396,7 @@ local function cmd_locals()
 		
 		-- Skip the debugger object itself, "(*internal)" values, and Lua 5.2's _ENV object.
 		if not rawequal(v, dbg) and k ~= "_ENV" and not k:match("%(.*%)") then
-			dbg_writeln("  "..COLOR_BLUE..k.. GREEN_CARET..pretty(v))
+			dbg_writeln("  "..COLOR_BLUE..k.. GREEN_CARET..dbg.pretty(v))
 		end
 	end
 	
@@ -405,20 +405,20 @@ end
 
 local function cmd_help()
 	dbg.write(""
-		.. COLOR_BLUE.."  <return>"..GREEN_CARET.."re-run last command\n"
-		.. COLOR_BLUE.."  c"..COLOR_YELLOW.."(ontinue)"..GREEN_CARET.."continue execution\n"
-		.. COLOR_BLUE.."  s"..COLOR_YELLOW.."(tep)"..GREEN_CARET.."step forward by one line (into functions)\n"
-		.. COLOR_BLUE.."  n"..COLOR_YELLOW.."(ext)"..GREEN_CARET.."step forward by one line (skipping over functions)\n"
-		.. COLOR_BLUE.."  f"..COLOR_YELLOW.."(inish)"..GREEN_CARET.."step forward until exiting the current function\n"
-		.. COLOR_BLUE.."  u"..COLOR_YELLOW.."(p)"..GREEN_CARET.."move up the stack by one frame\n"
-		.. COLOR_BLUE.."  d"..COLOR_YELLOW.."(own)"..GREEN_CARET.."move down the stack by one frame\n"
-		.. COLOR_BLUE.."  w"..COLOR_YELLOW.."(here) "..COLOR_BLUE.."[line count]"..GREEN_CARET.."print source code around the current line\n"
-		.. COLOR_BLUE.."  e"..COLOR_YELLOW.."(val) "..COLOR_BLUE.."[statement]"..GREEN_CARET.."execute the statement\n"
-		.. COLOR_BLUE.."  p"..COLOR_YELLOW.."(rint) "..COLOR_BLUE.."[expression]"..GREEN_CARET.."execute the expression and print the result\n"
-		.. COLOR_BLUE.."  t"..COLOR_YELLOW.."(race)"..GREEN_CARET.."print the stack trace\n"
-		.. COLOR_BLUE.."  l"..COLOR_YELLOW.."(ocals)"..GREEN_CARET.."print the function arguments, locals and upvalues.\n"
-		.. COLOR_BLUE.."  h"..COLOR_YELLOW.."(elp)"..GREEN_CARET.."print this message\n"
-		.. COLOR_BLUE.."  q"..COLOR_YELLOW.."(uit)"..GREEN_CARET.."halt execution\n"
+		..COLOR_BLUE.."  <return>"..GREEN_CARET.."re-run last command\n"
+		..COLOR_BLUE.."  c"..COLOR_YELLOW.."(ontinue)"..GREEN_CARET.."continue execution\n"
+		..COLOR_BLUE.."  s"..COLOR_YELLOW.."(tep)"..GREEN_CARET.."step forward by one line (into functions)\n"
+		..COLOR_BLUE.."  n"..COLOR_YELLOW.."(ext)"..GREEN_CARET.."step forward by one line (skipping over functions)\n"
+		..COLOR_BLUE.."  f"..COLOR_YELLOW.."(inish)"..GREEN_CARET.."step forward until exiting the current function\n"
+		..COLOR_BLUE.."  u"..COLOR_YELLOW.."(p)"..GREEN_CARET.."move up the stack by one frame\n"
+		..COLOR_BLUE.."  d"..COLOR_YELLOW.."(own)"..GREEN_CARET.."move down the stack by one frame\n"
+		..COLOR_BLUE.."  w"..COLOR_YELLOW.."(here) "..COLOR_BLUE.."[line count]"..GREEN_CARET.."print source code around the current line\n"
+		..COLOR_BLUE.."  e"..COLOR_YELLOW.."(val) "..COLOR_BLUE.."[statement]"..GREEN_CARET.."execute the statement\n"
+		..COLOR_BLUE.."  p"..COLOR_YELLOW.."(rint) "..COLOR_BLUE.."[expression]"..GREEN_CARET.."execute the expression and print the result\n"
+		..COLOR_BLUE.."  t"..COLOR_YELLOW.."(race)"..GREEN_CARET.."print the stack trace\n"
+		..COLOR_BLUE.."  l"..COLOR_YELLOW.."(ocals)"..GREEN_CARET.."print the function arguments, locals and upvalues.\n"
+		..COLOR_BLUE.."  h"..COLOR_YELLOW.."(elp)"..GREEN_CARET.."print this message\n"
+		..COLOR_BLUE.."  q"..COLOR_YELLOW.."(uit)"..GREEN_CARET.."halt execution\n"
 	)
 	return false
 end
@@ -518,7 +518,7 @@ dbg.writeln = dbg_writeln
 
 dbg.pretty_depth = 3
 dbg.pretty = pretty
-dbg.pp = function(value, depth) dbg_writeln(pretty(value, depth)) end
+dbg.pp = function(value, depth) dbg_writeln(dbg.pretty(value, depth)) end
 
 dbg.auto_where = false
 dbg.auto_eval = false
@@ -528,7 +528,7 @@ local lua_error, lua_assert = error, assert
 -- Works like error(), but invokes the debugger.
 function dbg.error(err, level)
 	level = level or 1
-	dbg_writeln(COLOR_RED.."ERROR: "..COLOR_RESET..pretty(err))
+	dbg_writeln(COLOR_RED.."ERROR: "..COLOR_RESET..dbg.pretty(err))
 	dbg(false, level, "dbg.error()")
 	
 	lua_error(err, level)
@@ -547,7 +547,7 @@ end
 -- Works like pcall(), but invokes the debugger on an error.
 function dbg.call(f, ...)
 	return xpcall(f, function(err)
-		dbg_writeln(COLOR_RED.."ERROR: "..COLOR_RESET..pretty(err))
+		dbg_writeln(COLOR_RED.."ERROR: "..COLOR_RESET..dbg.pretty(err))
 		dbg(false, 1, "dbg.call()")
 		
 		return err
@@ -557,7 +557,7 @@ end
 -- Error message handler that can be used with lua_pcall().
 function dbg.msgh(...)
 	if debug.getinfo(2) then
-		dbg_writeln(COLOR_RED.."ERROR: "..COLOR_RESET..pretty(...))
+		dbg_writeln(COLOR_RED.."ERROR: "..COLOR_RESET..dbg.pretty(...))
 		dbg(false, 1, "dbg.msgh()")
 	else
 		dbg_writeln(COLOR_RED.."debugger.lua: "..COLOR_RESET.."Error did not occur in Lua code. Execution will continue after dbg_pcall().")

@@ -1,7 +1,6 @@
 Lulua Lua Distro TODO:
 
 For version 1.0.0:
-	Pre 1.0: for each '*' item completed add 0.0.02 to version.
 
 	* *Most* features working on Linux.
 	* Test and document Love2d compatibility.
@@ -47,14 +46,13 @@ Code:
 Modules:
 
 	* Modules that can be updated and why:
-		debug,      new version, added some helpful documentation.
 		zlib-1.3.0, new version 1.3.1, bugfix release.
 
 	* Get sdl.net examples working. The module now loads, but
 	  I can't seem to get it to keep a socket open.
 	  (I think it is my firewall that is blocking it.)
 
-	* SDL on MacOS fails to link.
+	* SDL on MacOS fails to link. I Don't care.
 
 	* Eliminate Cmake,autotools,and alternative-build system
 	  dependencies:

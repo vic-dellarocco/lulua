@@ -45,9 +45,6 @@ Code:
 	  Makefile and build scripts.
 
 Modules:
-	* Make a script that checks for updates for each module. Put in
-	  the Makefile.
-
 	* Make a list of what Ubuntu/debian packages are needed for the
 	  submodules, like "libsdl2-dev" and such. Make script. Put in
 	  the Makefile.

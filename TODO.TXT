@@ -70,9 +70,6 @@ Modules:
 
 	* SDL on MacOS fails to link.
 
-	* update lfs url to:
-		https://github.com/lunarmodules/luafilesystem
-
 	* Eliminate Cmake,autotools,and alternative-build system
 	  dependencies:
 		luaglut:         Cmake.

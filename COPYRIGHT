@@ -75,7 +75,7 @@ lfs: lua filesystem
 	[Lua filesystem functions.]
 	Kepler Project
 	MIT License, See lfs/LICENSE
-	https://keplerproject.github.io/luafilesystem
+	https://github.com/lunarmodules/luafilesystem
 
 linenoise: lua-linenoise
 	[Terminal text input library.]

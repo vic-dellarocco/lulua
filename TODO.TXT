@@ -45,17 +45,6 @@ Code:
 	  Makefile and build scripts.
 
 Modules:
-	* Make a list of what Ubuntu/debian packages are needed for the
-	  submodules, like "libsdl2-dev" and such. Make script. Put in
-	  the Makefile.
-
-	  ldd can show what .so's are needed: ldd luaglut/luaglut.so
-	  Now you know that it needs libglut.so.3 and others.
-	  Now to find the package:
-	    sudo apt install apt-file
-	    sudo apt-file update
-	    apt-file search libglut.so.3
-	    -->freeglut3: /usr/lib/x86_64-linux-gnu/libglut.so.3
 
 	* Modules that can be updated and why:
 		debug,      new version, added some helpful documentation.

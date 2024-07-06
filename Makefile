@@ -308,12 +308,74 @@ zlib:      lua ##module:linux,macos?          [file compression.]
 
 test-base64:
 	./lua base64/test._lua
+
 test-bit:
 	./lua bit/contrib/bittest.lua
+
 test-curses: # is interactive. ctrl-c to exit.
 	./lua curses/test/test.lua
+
 # test-debug: # broken.
 # 	./lua debug/test/test.lua
+
 test-fstring:
 	./lua fstring/examples/demo.lua
+	./lua fstring/examples/env.lua
+	./lua fstring/examples/fahrenheit.lua
+	./lua fstring/examples/upvalue.lua
 
+test-gambiarra:
+	./lua gambiarra/examples/tap.lua
+
+test-lfs:
+	./lua lfs/tests/test.lua
+
+test-lpeg:
+	./lua lpeg/test._lua
+
+test-luaglut:
+	./lua luaglut/glut_test1.lua
+
+test-lunit:
+	./lua lunit/lua/lunit/selftest.lua
+
+# The test suite here seems exhaustive.
+# It isn't set up to run from 2 directories above (which is
+# where the Makefile is). I'm in no hurry to fix it because
+# it seems like it spews files.
+# test-nativefs: # love2d only
+# 	love nativefs/test
+
+# test-penlight: # pl.List conflicts with lulua List type.
+# pl.app tests fail too. Thats where I stopped.
+# 	./lua penlight/run._lua
+
+# joystick test needs a joystick.
+# sdl tcp and udp are broken or else my firewall is blocking it.
+test-sdl:
+# 	./lua sdl/examples/audio/audio.lua
+# 	./lua sdl/examples/font/font.lua
+	./lua sdl/examples/image/image.lua
+# 	./lua sdl/examples/joystick/joystick.lua
+# 	./lua sdl/examples/keyboard/keyboard.lua
+# 	./lua sdl/examples/paths/paths.lua
+# 	./lua sdl/examples/rwops/rwops.lua
+# 	./lua sdl/examples/threads/channel.lua
+
+# exits with SIGTERM on purpose:
+test-signal:
+	./lua signal/test._lua
+
+test-sqlite:
+	./lua sqlite/test/test.lua
+	./lua sqlite/test/tests-sqlite3.lua
+
+test-utf8:
+	./lua utf8/tests/test.lua
+
+# Spews out garbage files:
+test-zlib:
+	./lua zlib/test_prologue.lua
+	./lua zlib/test_gzip.lua
+	./lua zlib/test_zlib2.lua
+	./lua zlib/test_zlib3.lua

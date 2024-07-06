@@ -1,4 +1,4 @@
-local F = require("F")
+-- local F = require("F")
 
 local f = 99
 local c = (f-32)/9*5

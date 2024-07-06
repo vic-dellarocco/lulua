@@ -3,7 +3,7 @@ Lulua Lua Distro TODO:
 For version 1.0.0:
 	Pre 1.0: for each '*' item completed add 0.0.02 to version.
 
-	* All features working on Linux.
+	* *Most* features working on Linux.
 	* Test and document Love2d compatibility.
 	* Test and document MacOS  compatibility.
 	* Test and document Win64  compatibility.
@@ -24,9 +24,6 @@ Docs:
 		* Show how to use require,import,or dofile
 
 Code:
-	* Make sure that path and cpath won't allow import of unintended
-	  .lua files. (example.lua,tests.lua,etc).
-	  Maybe rename like "test.lua"-->"test._lua".
 
 	* Improve the example file, "main.lua". Have it run a program
 	  that demonstrates how the lulua distro can be used with both
@@ -98,8 +95,3 @@ Modules:
 				processing videos, but Lua would be better.
 				I might write the binding to only the functions
 				that I need for this task.
-
-Testing:
-	* Make submodule tests runnable from the Makefile.
-
-	* Make submodule example programs runnable from the Makefile.

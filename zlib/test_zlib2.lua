@@ -1,7 +1,7 @@
 
 local zlib = require 'zlib'
 
-local gzip = require 'gzip'
+local gzip = require 'zlib.gzip'
 
 local data = 'abcde'
 local cdata = zlib.compress(data)

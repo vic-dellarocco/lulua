@@ -18,7 +18,7 @@ for _, argument in ipairs(arg) do
 end
 
 if #directories == 0 then
-    directories = {"tests", "examples"}
+    directories = {"penlight/tests", "penlight/examples"}
 end
 
 local lua = "lua"

@@ -2,7 +2,7 @@
 -- audio.lua -- testing the SDL audio API
 --
 
-dir=os.path.dirname(package.file())
+dir=package.base.."sdl/examples/audio/"
 
 local SDL	= require "sdl"
 
@@ -16,7 +16,7 @@ local channel	= SDL.getChannel "Audio"
 
 -- Prepare the audio spec we want
 local spec	= {
-	callback	= dir.."/".."audio-processor.lua",
+	callback	= dir.."audio-processor.lua",
 	allowchanges	= true,
 	frequency	= 44100,
 	format		= SDL.audioFormat.S16,
@@ -24,7 +24,7 @@ local spec	= {
 	channels	= 2
 }
 
-local wav, err = SDL.loadWAV(dir.."/".."gun.wav")
+local wav, err = SDL.loadWAV(dir.."gun.wav")
 if not wav then
 	error(err)
 end

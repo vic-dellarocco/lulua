@@ -1,5 +1,5 @@
 
-local gzip = require 'gzip'
+local gzip = require 'zlib.gzip'
 
 local function line(header, c)
     header = header or ''

@@ -1,9 +1,12 @@
-local F = require("F")
+-- local F = require("F")
 
 local assert = assert
-local _ENV = {x = "foo"}
+local env = {x = "foo",F=F}
+setfenv(1, env)
+
 function gee()
    assert("foo" == x)
    assert("foo" == F'{x}')
 end
+
 gee()

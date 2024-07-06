@@ -1,10 +1,11 @@
 VV: Interpreter modifications
 
 	I have disabled the Lua interpreter's checks for environment
-	variables and I have modified the iterpreter so that it can find
-	itself in the filesystem. On startup the lulua lua interpreter
-	runs the file "init.lua" that is in the same directory as the
-	interpreter. This file must exist. It can be blank.
+	variables and I have modified the iterpreter so that it can
+	find itself in the filesystem. On startup the lulua lua
+	interpreter runs the file "init.lua" that is in the same
+	directory as the interpreter. This file must exist. It can
+	be blank.
 
 	package.base is the path to the lua interpreter's directory.
 
@@ -37,3 +38,14 @@ VV: Lua Numbers
 	  because one bit of precision has been lost.
 
 	I have defined MAXINT,MININT variables.
+
+VV: Penlight:
+
+	The test suite for penlight fails. First, I know that the
+	lulua List type conflicts with the pl.List type. Next,
+	the pl.app test fails. I haven't investigated further.
+	It may just be a configuration issue.
+	Personally, I don't use penlight. I'm leaving it in lulua
+	for now. Perhaps it may still be useful to someone. I am
+	tempted to remove it though.
+

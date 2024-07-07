@@ -3,15 +3,13 @@
   The Lulua Lua Distro provides a lua programming
   environment with a collection of additional modules.
 
-⚠️ **Work in Progress: This software is about 33 items from the
-     version 1.0 release. See TODO.TXT**
-
 This is for making application software. Use it as a base to
 make your own Lua project.
 
-Unlike Linux system software, lulua doesn't use hard-coded
-paths. You can move your lulua project almost anywhere on the
-filesystem and it will still work.
+Lulua doesn't use hard-coded paths. You can move your lulua
+project almost anywhere on the filesystem and it will still work.
+
+Alternatively, you can use the stdlib and modules with love2d.
 
 Lulua provides many useful functions in it's standard
 library, as well many useful preconfigured modules.
@@ -45,6 +43,7 @@ Modules:
 <summary>System Requirements</summary>
 
 "?" indicates untested on the system in question.
+Also, if it is macos, it means I don't care.
 
 -  base64    : linux,macos?
 -  bit       : all
@@ -57,6 +56,7 @@ Modules:
 -  lpeg      : linux,macos?
 -  luaglut   : linux,macos?
 -  lunit     : all
+-  nativefs  : love2d
 -  penlight  : all
 -  posix     : linux,macos?
 -  sdl       : linux

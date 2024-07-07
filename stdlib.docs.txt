@@ -1,7 +1,13 @@
-Lulua Standard Library 0.9.52
-=======================
+Lulua Standard Library 1.0.0
+============================
 
-PACKAGE.BASE
+Lua needs more functions. So here they are.
+
+============================
+
+The most important variable in all of lulua:
+
+    package.base
 
 package.base holds pathname of the directory where the lulua lua
 interpreter is. It ends in a path separator char.
@@ -14,6 +20,8 @@ Usage:
   package.cpath=package.cpath..package.base.."lpeg/?.so;"
   --Can your lua do this?
   dofile(package.base.."myfile.lua")
+
+============================
 
 Lulua is based on Lua version 5.1 . It provides these additional
 functions and variables:
@@ -128,7 +136,7 @@ F
   See fstring/README.md
   
 LULUA_VERSION
-  The Lulua version number. Currently: 0.9.52
+  The Lulua version number. Currently: 1.0.0
   
 MAXINT
   The largest int.
@@ -1853,8 +1861,9 @@ linenoise: a "readline" alternative that actually compiles.
 lpeg:      parsing expression grammars for lua.
 luaglut:   old-school openGL.
 lunit:     a very complicated testing framework.
+nativefs:  for love2d, gets rid of filesystem restrictions.
 penlight:  another standard library for lua, already enabled
-           imported as "penlight". Very good.
+           imported as "penlight".
 posix:     lua posix, 
 sdl:       simple direct media layer.
 signal:    raise and catch system signals.

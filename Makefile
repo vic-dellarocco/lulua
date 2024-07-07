@@ -179,8 +179,6 @@ docs: # underspecified: does require lua to be built.
 	&& ./lua stdlib.lua --docs > stdlib.docs.txt || { echo "Lua script failed."; exit 1; } \
 	&& awk '{if (length($$0) > 64) {exit 1;}}' stdlib.docs.txt || { echo 'stdlib.docs.txt: lines too long.'; exit 1; } \
 	;
-progress: # Get a count of remaining todo items.
-	@echo $$(fgrep '*' TODO.TXT | wc -l ) items remaining
 
 #%%
 # Conditional dependencies based on the OS variable
@@ -304,8 +302,6 @@ zlib:      lua ##module:linux,macos?          [file compression.]
 
 
 # module tests:
-.PHONY: test-base64 test-bit test-curses
-
 test-base64:
 	./lua base64/test._lua
 
@@ -315,6 +311,7 @@ test-bit:
 test-curses: # is interactive. ctrl-c to exit.
 	./lua curses/test/test.lua
 
+# Tests here were not designed to be run from one dir above:
 # test-debug: # broken.
 # 	./lua debug/test/test.lua
 
@@ -350,7 +347,7 @@ test-lunit:
 # pl.app tests fail too. Thats where I stopped.
 # 	./lua penlight/run._lua
 
-# joystick test needs a joystick.
+# The joystick test needs a joystick.
 # sdl tcp and udp are broken or else my firewall is blocking it.
 test-sdl:
 # 	./lua sdl/examples/audio/audio.lua
@@ -362,10 +359,11 @@ test-sdl:
 # 	./lua sdl/examples/rwops/rwops.lua
 # 	./lua sdl/examples/threads/channel.lua
 
-# exits with SIGTERM on purpose:
+# Exits with SIGTERM on purpose:
 test-signal:
 	./lua signal/test._lua
 
+# Spews out a database file:
 test-sqlite:
 	./lua sqlite/test/test.lua
 	./lua sqlite/test/tests-sqlite3.lua
@@ -373,7 +371,7 @@ test-sqlite:
 test-utf8:
 	./lua utf8/tests/test.lua
 
-# Spews out garbage files:
+# Spews out some garbage files:
 test-zlib:
 	./lua zlib/test_prologue.lua
 	./lua zlib/test_gzip.lua

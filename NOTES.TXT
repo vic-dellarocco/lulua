@@ -22,10 +22,29 @@ VV: Interpreter modifications
 	  _pgmptr is 'depreciated',but it still works.
 	  The second way uses <windows.h> and GetModuleFileNameA .
 
+	Somehow python can find itself on the filesystem. Why can't
+	Lua? C'mon Lua! Why? I mean, I fixed it, but still, why?
+
+VV: Is the Lulua Lua interpreter for me?
+
+	Probably not. You should probably use love2d. You can use
+	the pre-configured modules from Lulua in your love2d
+	program though. Might I recommend the 'sqlite'?
+
+	I modified the Lua interpreter because I want to ship
+	software to other people/computers. It just makes things
+	easier for that. I don't have to depend on their system
+	having a lua interpreter already and even if they do have
+	one, it won't effect the Lulua Lua interpreter as it is
+	designed to be self contained. The user can move the lulua
+	directory around their filesystem and it will still work
+	because lulua doesn't depend on hard coded paths.
+
+	So, if that is what you want, maybe it is for you.
+
 VV: Lua Numbers
 
-	Assume lua uses IEEE 754 double precision floating point
-	numbers.
+	Lulua uses IEEE 754 double precision floating point numbers.
 
 	The largest ints are over
 	9 quadrillion:
@@ -37,15 +56,46 @@ VV: Lua Numbers
 	  9007199254740992, 9007199254740993 are the same number
 	  because one bit of precision has been lost.
 
-	I have defined MAXINT,MININT variables.
+	I have defined MAXINT,MININT variables because people
+	actually expect such things. C'mon Lua! Why?
 
 VV: Penlight:
 
 	The test suite for penlight fails. First, I know that the
 	lulua List type conflicts with the pl.List type. Next,
 	the pl.app test fails. I haven't investigated further.
-	It may just be a configuration issue.
-	Personally, I don't use penlight. I'm leaving it in lulua
-	for now. Perhaps it may still be useful to someone. I am
-	tempted to remove it though.
+	It may just be a configuration issue. Penlight spews lots
+	of stuff into the global namespace by default. I have
+	modified penlight and its init.lua to put everything into
+	the "penlight" namespace. This is probably not in effect for
+	the penlight test scripts, thus one point of breakage.
+
+VV: sdl: simple directmedia layer.
+
+	Cursed, uses Cmake. If it works for you, good. I recommend
+	that you use love2d though.
+
+VV: glut: old school openGL programming.
+
+	I was happy to get this working, but it uses Cmake and the
+	old gl function based stuff so it is cursed. If it works for
+	you, good.
+
+VV: Cursed? What do you mean by that?
+
+	Cursed software works on my computer but not yours or vice
+	versa ...
+
+	or it relies on Cmake and it will never work ...
+	or it is a bunch of autotools garbage ...
+	or it has been "depreciated" ...
+
+	there are other software curses, so beware.
+
+VV: Why Lua5.1?
+
+	It is a good place to stop the upgrade treadmill at.
+
+	Realize that as long as anyone gets paid to make a new Lua
+	version, there will be another new version.
 

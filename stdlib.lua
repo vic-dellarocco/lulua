@@ -5743,6 +5743,7 @@ if MAIN() or sys.argv~=nil and sys.argv[2]=="LOVE2D" then
 
 	if DOCS then
 		--This might not be pretty...I expect this to be temporary.
+		--Nope, nothing last longer than a temporary fix.
 		local DOCS ={}    --The result will be stored in this var.
 		local LINES={}    --The lines of stdlib.lua
 		local FUNCTIONS={}--A list of function names.
@@ -6105,9 +6106,15 @@ if MAIN() or sys.argv~=nil and sys.argv[2]=="LOVE2D" then
 			print("----------\n")
 		 end
 		s=[[Lulua Standard Library %s
-			=======================
+			============================
 
-			PACKAGE.BASE
+			Lua needs more functions. So here they are.
+
+			============================
+
+			The most important variable in all of lulua:
+
+				package.base
 
 			package.base holds pathname of the directory where the lulua lua
 			interpreter is. It ends in a path separator char.
@@ -6120,6 +6127,8 @@ if MAIN() or sys.argv~=nil and sys.argv[2]=="LOVE2D" then
 			  package.cpath=package.cpath..package.base.."lpeg/?.so;"
 			  --Can your lua do this?
 			  dofile(package.base.."myfile.lua")
+
+			============================
 
 			Lulua is based on Lua version 5.1 . It provides these additional
 			functions and variables:
@@ -6224,8 +6233,9 @@ if MAIN() or sys.argv~=nil and sys.argv[2]=="LOVE2D" then
 			lpeg:      parsing expression grammars for lua.
 			luaglut:   old-school openGL.
 			lunit:     a very complicated testing framework.
+			nativefs:  for love2d, gets rid of filesystem restrictions.
 			penlight:  another standard library for lua, already enabled
-					   imported as "penlight". Very good.
+					   imported as "penlight".
 			posix:     lua posix, 
 			sdl:       simple direct media layer.
 			signal:    raise and catch system signals.

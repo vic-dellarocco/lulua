@@ -1,0 +1,56 @@
+# Lulua howto.
+
+Lulua includes source code for everything, but you don't need to
+distribute the source. When it is time to distribute your
+program, make a script that copies the libraries, binaries,
+scripts and LICENSES to some output dir. Remove any modules that
+you don't need. You might even only distribute obfuscated
+bytecode of your lua scripts. There are only two requirements
+for distributables:
+
+1. It has to work
+2. I has to comply with the source code licenses.
+
+
+## How to add a module the quick and dirty way:
+
+Just drop the .lua and .so files into the main lulua directory.
+
+
+## How to do it right:
+
+Make a directory for your module.
+
+Edit these files:
+
+	COPYRIGHT  -- add copyright info of the new module.
+	Makefile   -- add build and test targets for your module.
+	init.lua   -- add the module path to path or cpath vars.
+	stdlib.lua -- update the doc generator.
+	README.MD  -- add a mention of the new module.
+
+Then regenerate docs:
+
+	make lua && make docs
+
+This will produce a new stdlib.docs.txt file.
+
+Write your git commit message into the COMMIT_MESSAGE file and
+then run:
+
+	make commit
+
+If you follow the examples of the special comments in the
+makefile, then the makefile documentation will be automatically
+generated.
+
+
+## How to remove a module the quick and dirty way:
+
+Erase it.
+
+
+## How to do it right:
+
+Erase it. Then remove every mention of it.
+

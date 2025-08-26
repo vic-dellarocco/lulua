@@ -1,0 +1,5 @@
+Lulua 1.0.1:
+
+	Adds:
+		lrandom: a mersenne twister random number generator.
+		int64: a 64 bit int type.

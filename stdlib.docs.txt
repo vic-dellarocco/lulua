@@ -1,0 +1,1885 @@
+Lulua Standard Library 1.0.1
+============================
+
+Lua needs more functions. So here they are.
+
+============================
+
+The most important variable in all of lulua:
+
+    package.base
+
+package.base holds pathname of the directory where the lulua lua
+interpreter is. It ends in a path separator char.
+
+Use package.base to find all the lua files for your app.
+
+Usage:
+  --Use it to set package.path,package.cpath
+  package.path =package.path ..package.base.."lpeg/?.lua;"
+  package.cpath=package.cpath..package.base.."lpeg/?.so;"
+  --Can your lua do this?
+  dofile(package.base.."myfile.lua")
+
+============================
+
+Lulua is based on Lua version 5.1 . It provides these additional
+functions and variables:
+
+
+New
+----------
+
+byte
+  Convert n to a byte.
+  byte(n)-->byte
+  
+  n can be a string, a char, or a number.
+  n must be convertible to an int.
+  n must be in range [0..255], else an assertion fails.
+  
+  The luaglut memarray module needs to be fed bytes.
+  
+chomp
+  Remove whitespace from the start of line.
+  chomp(line)-->string,string
+  
+  returns whitespace,restofline
+  
+ezpath
+  Less nonsense path resolver.
+  ezpath(path)-->string
+  
+  Don't you hate it when your pathnames don't work?
+  
+  Do you want to use paths that you use everyday from the
+  shell?
+  
+  Well it can be that easy,
+  
+  --Suppose you are me, at home:
+    ezpath("~/docs/foo.txt")     -->"/home/me/docs/foo.txt"
+    ezpath("~me/docs/foo.txt")   -->"/home/me/docs/foo.txt"
+    ezpath("./docs/foo.txt")     -->"/home/me/docs/foo.txt"
+    ezpath("./docs/y/../foo.txt")-->"/home/me/docs/foo.txt"
+  
+  It calls expanduser and realpath on the path.
+  
+  The path must exist! realpath can't resolve a path
+  that doesn't exist. So, that is the nonsense.
+  
+  Returns nil if the path doesn't exist.
+  
+  It even detects MacOS and uses /Users for /home
+  
+  It probably won't work on windows.
+  
+isalpha
+  True if s is only alphabetic chars.
+  isaplha(s)-->bool
+  
+isdigit
+  True if s is only numeric chars.
+  isdigit(s)-->bool
+  
+optionator
+  A rather permissive option parser.
+  optionator(argv)-->dict:options,list:args
+  
+  Accepts all sorts of stuff:
+      arg1 -f --foo -b:BAR --bar=bar arg2
+  
+  Options are any that start with '-', any number of '-'!
+  
+  Use ':' or '=' to provide a value to an option lest the
+  option have the default value true.
+  
+  The arg must be connected:
+      --foo="myfoo"   --ok
+      --foo "myfoo"   --nope
+      --foo = "myfoo" --won't work right.
+      --foo= "myfoo"  --c'mon!
+      --foo ="myfoo"  --seriously?
+  
+  Usage:
+      local options,args=optionator(arg)
+      if haskey(options,"h","help") then
+          --example of option with no arg:
+          print("Help!")
+       end
+      if haskey(options,"f","foo") then
+          --example of option with arg:
+          --because unset option is nil, we can do this:
+          FOO=options.f or options.foo
+       end
+      for _,arrg in ipairs(args) do
+          do_whatever(arrg)
+       end
+  
+swap
+  Swap 2 values.
+  swap(a,b)-->b,a
+  
+
+Globals
+----------
+
+DBG_SUPPRESS
+  A table used to suppress messages dbg messages.
+  When you call dbg, you should use the syntax:
+      dbg{msg,s="message_type"}
+  
+  Ex:
+      dbg{"So, whats for lunch?",s="blabber"}
+  
+  If the message type name is a key in DBG_SUPPRESS, then the
+  message will not be output.
+  
+  To set:
+      DBG_SUPPRESS["blabber"]=true
+  
+  To unset:
+      DBG_SUPPRESS["blabber"]=nil
+  
+F
+  Function to create python f-strings in lua.
+  See fstring/README.md
+  
+LULUA_VERSION
+  The Lulua version number. Currently: 1.0.1
+  
+MAXINT
+  The largest int. Also defined as "math.maxinteger".
+  
+MININT
+  The most negative int. Also defined as "math.mininteger".
+  
+bit
+  Bit manipulation lib for Lua5.1 .
+  
+breakpoint
+  Function that sets a breakpoint.
+  
+f
+  Function to create python f-strings in lua.
+  See fstring/README.md
+  
+penlight
+  Penlight module
+  See penlight/docs/index.html
+  
+trace
+  Function that sets a breakpoint.
+  
+
+Setup
+----------
+
+MAIN
+  Returns true if this program is called as a script.
+  Usage:
+      if MAIN() then
+          do_whatever()
+       end
+  
+  Use this just like the pythonic: if __NAME__=="__MAIN__"
+  
+
+Import
+----------
+
+import
+  Load a module.
+  import(module)-->mod
+  
+  Load a module like require(),except:
+  .lua file extension is ignored.
+  Use '/' or '.' as module delimiter.
+  The syntax is more permissive than require.
+  imports are relative to package.base
+  
+  Ex:
+      mymodule=import("foo/bar/mymodule.lua")
+      foo=import "foo_module"
+      foo=import("foo_module")
+      foo=import{"foo_module"}
+      foo=import({"foo_module"})
+  
+  Only loads one module.
+  
+reload
+  Always load a module.
+  foo=reload("foo_module")
+  
+  It doesn't have to reload, you can use it the first time too.
+  Uses same syntax as import.
+  
+
+Copy
+----------
+
+clone
+  Shallow copy of numeric keys.
+  clone(src)-->tbl
+  
+cloneiter
+  Shallow copy of numeric keys from iterator.
+  cloneiter(iter)-->tbl
+  
+  Expects a {k,v} type of iter such as ipairs.
+  
+copy
+  Shallow copy of array.
+  copy(src)-->srccopy
+  
+  Ex:
+      foo=copy(bar)
+      bar=copy({11,22,33})--perfect for numbers and strings
+      baz=copy(00,bar,44)-->{00,{11,22,33},44}--shallow copy
+      bar[2]=88--baz is now {00,{11,88,33},44}--beware.
+  
+deepcopy
+  Deep copy of table.
+  deepcopy(src)-->acopy
+  
+  Will copy metatables.
+  Doesn't capture upvalues. You can't copy closures with this.
+  
+  Ex:
+      dest=deepcopy(src)
+  
+merge
+  Merge src to dst, will overwrite keys and values.
+  merge(src,dst)
+  dst=merge(src,dst)--same effect as the first form.
+                    --I just like to return the results.
+  
+  Result is that dst is updated with k,v from src.
+  
+  If you don't want to update a table, then try this:
+      dst=merge(src)--shallow copy
+  
+  Don't:
+      merge(src,foo.dst)--no result is realized.
+  
+  Useless:
+      merge(src)--no result is realized.
+  
+
+Math
+----------
+
+clamp
+  Return a number in the range [lower..upper]
+  clamp(n,lower,upper)
+  
+  Ex: clamp(2,5,10) --> 5
+      clamp(20,5,10)-->10
+      clamp(7,5,10) --> 7
+  
+  Will swap lower,upper if upper < lower.
+  
+float
+  Convert n into a float.
+  float(n)--number
+  
+  Works on strings too.
+  
+  Ex:
+      i=float()-->0
+      i=float(3.14)-->3.14
+      i=float("2.7")-->2.7
+  
+  Can fail with an assertion error.
+  
+int
+  Convert n into an int by truncation.
+  int(n)-->i
+  
+  Works on strings too.
+  
+  Ex: i=int(n)
+      i=int(3.14)-->3.0
+      i=int("2.7")-->2.0
+  
+  Can fail with an assertion error.
+  
+intmod
+  Moduluo: x mod m, returns an int.
+  intmod(x,m)
+  
+  Because mod is defined as this in lua:
+  a % b == a - math.floor(a/b)*b
+  if a is not an int, the result is not an int!
+  
+  So use INTMOD to get an int result.
+  
+  Will return nan values.
+  
+round
+  Round n to _dp decimal places or nearest int.
+  round(3.14)  -->3
+  
+  _decimals arg is optional.
+  Ex:
+      round(3.14,1)-->3.1
+  
+
+Datatypes
+----------
+
+Enum
+  Make an Enumeration.
+  
+  myenum=Enum(names...)
+  myenum=Enum{names...}
+  
+  Pass in a list of names (strings) and get back
+  something like this: { "name1"=1,"name2"=2, etc}
+  
+  Don't try to add items later, it is designed to be
+  made all at once. So get your list of names together
+  and then make your enumeration.
+  
+classmethod
+  Make functions from the table ftab methods of obj.
+  methodist(obj,ftab)
+  
+  Uses the object's metatable.
+  
+def
+  Syntax sugar for defining something.
+  def(f)-->f
+  
+  It just returns its arg.
+  It allows alternate syntax for define and call:
+      foo=(foo definition...in here)()
+      foo=def(foo definition...in here)()
+  
+  I use this to define functions that return functions:
+  
+      Foo=def(...)()
+      Foo()
+  
+  Instead of:
+  
+      Foo=function...end
+      Foo()()
+  
+enumerate
+  Make an Enumeration.
+  
+  myenum=Enum(names...)
+  myenum=Enum{names...}
+  
+  Pass in a list of names (strings) and get back
+  something like this: { "name1"=1,"name2"=2, etc}
+  
+  Don't try to add items later, it is designed to be
+  made all at once. So get your list of names together
+  and then make your enumeration.
+  
+method
+  Call method name on object.
+  method(method_name,object,...)
+  
+  Suppose:
+      foo=Foo()
+  
+  Same as foo:dofoo() or foo.dofoo(foo):
+      method("dofoo",foo)
+  
+  Same as foo:dofoo(arg1,arg2):
+      method("dofoo",foo,arg1,arg2)
+  
+methodist
+  Make functions from the table ftab methods of obj.
+  methodist(obj,ftab)
+  
+  Uses the object's metatable.
+  
+settype
+  Yes you can add new types.
+  settype(obj,typename)
+  
+  Uses the secret __type field that Lua5.1 wasn't using.
+  Uses the metatable.
+  
+type
+  Return the type of an object.
+  
+  Ex:
+      settype(myobj,"myobj_type")
+      type(myobj)-->"myobj_type"
+      type("hello")-->"string" --works on build in types too.
+  
+  Yes you can add new types.
+  Stores the type name as a string in the __type field that
+  Lua5.1 wasn't using.
+  
+
+Structures
+----------
+
+Array
+  A zero-based array type for numbers
+  myarray=Array(size)
+  myarray=Array(size,default)
+  myarray=Array{size,default}
+  myarray=Array{size=NUM}
+  myarray=Array{size,default=VAL}
+  myarray=Array{size=NUM,default=VAL}
+  
+  default is optional, it is 0 if unset.
+  You can't use the brackets [] for anything but numbers.
+  Number indices will be truncated to ints
+  Ex: myarray[3.14]-->myarray[3.0]
+  
+  myarray=Array(5,1)-->[1,1,1,1,1]
+  
+  methods:
+      len:  return the number of elements in the array.
+      push: add an item to the end of the array. This
+            grows the array.
+      iter: function that returns a zero-aware iterator.
+  
+  How to loop through the array:
+      for i,v in myarray:iter() do
+          myarray[i]=v+1
+       end
+  
+Deque
+  Fast deque from "Programming in Lua"
+  
+  d=Deque()     --create an empty deque.
+  d=Deque(list) --create from a List or table.
+  
+  Methods:
+      push(val)
+      pop
+      bot
+      top
+      left
+      right
+      pushleft(val)
+      popleft
+      iter
+  
+  Use the iter function to loop through it:
+      for i,v in d:iter() do ...
+  
+Stack
+  A stack
+  
+  mystack=Stack()
+  
+  methods:
+      push(val)
+      pop
+      top
+  
+
+Functions
+----------
+
+exec
+  Execute code.
+  exec(code_string)
+  
+len
+  Get the total number of keys in table.
+  len(tbl)
+  
+  len(tbl) counts all keys.
+  #tbl only counts consecutive ints starting at 1.
+  
+range
+  Inclusive range
+  range(2,4)->{2,3,4}
+  
+range0
+  Zero based range. open right interval.
+  range0(3)-->{0,1,2}
+  
+
+Iterators
+----------
+
+CONCAT
+  Concatenation iterator.
+  CONCAT(...)
+  Pass in one or more lists, it iterates over each.
+  
+  Accepts tables as lists or the List() type.
+  
+  for v in CONCAT({1},{2,3}) do print(v);end
+      --{1,2,3}
+  
+FLATTEN
+  Iterator that flattens a list one level
+  FLATTEN(tbl)
+  
+IARRAY
+  Iterator for arrays, starts at zero.
+  IARRAY(tbl)
+  Another way to make an iterator. Uses closures.
+  
+IPAIRS
+  Pairs iterator.
+  IPAIRS(tbl)
+  
+  Reference implementation of a stateless iterator.
+  This has the same functionality as ipairs()
+  
+IRANGE
+  Inclusive range iterator.
+  IRANGE(start,finish)
+  
+  Ex:
+      for i in IRANGE(3) do print(i);end
+      --{1,2,3}
+      for i in IRANGE(11,15) do print(i);end
+      --{11,12,13,14,15}
+  
+IRANGE0
+  Zero based iterator. open right interval.
+  IRANGE0(start,finish)
+  
+  Ex:
+      for i in IRANGE0(3) do print(i);end
+      --{0,1,2}
+      for i in IRANGE0(10,15) do print(i);end
+      --{10,11,12,13,14}
+  
+REVERSE
+  Reverse ipairs iterator
+  REVERSE(tbl)
+  
+REVERSEARRAY
+  Reverse order iterator for zero-based arrays.
+  REVERSEARRAY(tbl)
+  
+UNROLL
+  Iterator to completely flatten a list (Lua5.1)
+  UNROLL(tbl)
+  
+  Makes an unrolled list, then returns an iterator over that.
+  
+irange
+  Inclusive range iterator.
+  IRANGE(start,finish)
+  
+  Ex:
+      for i in IRANGE(3) do print(i);end
+      --{1,2,3}
+      for i in IRANGE(11,15) do print(i);end
+      --{11,12,13,14,15}
+  
+irange0
+  Zero based iterator. open right interval.
+  IRANGE0(start,finish)
+  
+  Ex:
+      for i in IRANGE0(3) do print(i);end
+      --{0,1,2}
+      for i in IRANGE0(10,15) do print(i);end
+      --{10,11,12,13,14}
+  
+reversed
+  Reverse ipairs iterator
+  REVERSE(tbl)
+  
+
+Table
+----------
+
+List
+  Pythonical list type. Has Lua table functions as methods.
+  So versatile!
+      List(...)    --create list from a list.
+      List(lst)    --create list from a list.
+      List(lst,...)--same as List(...)
+      List{lst}    --create list from a list.
+      List()       --create an empty list.
+      List{}       --create an empty list.
+      List{size=n,default=v}--create list of size n, value v.
+      List{v,size=n}        --create list of size n, value v.
+      List{v,s=n}           --s can be used instead of size.
+      List{n,default=v}     --create list of size n, value v.
+  
+bot
+  Returns the first element of the table.
+  bot(tbl)
+  
+coalesce
+  Condenses sparse bucket arrays by merging them.
+  coalesce(tbl,src)-->tbl
+  coalesce(src)-->tbl
+  
+  Preserves the values but not the keys.
+  
+  Order of elements may not be preserved.
+  Dupplicate elements are preserved.
+  
+  Only considers numerical keys, which may be negative.
+  
+  Ex:
+      cc=coalesce({},{[-1]=22,[444]=321})
+          -->{22,321}
+  
+  Modifies tbl, and also returns it.
+  
+  Can be used as a method of the List type:
+      cc=List({[-1]=22,[444]=321})
+      cc:coalesce()
+  
+cons
+  cons function.
+  cons(a,b)
+  
+  Combine a,b into one list.
+  
+  a,b-->{a,b}
+  {1,2},3->{1,2,3}
+  {1,2,3},{4,5}->{1,2,3,4,5}
+  
+  
+extend
+  Extends a table with elements from another table.
+  extend(tbl,src)
+  
+  Copies items from src to tbl, preserving order.
+  
+  Can be used as a List method.
+  
+flatten
+  Flattens a table or List by one level.
+  flatten(tbl)-->tbl
+  
+  Ex:
+      flatten({1,{2,3},4})  -->{1,2,3,4}
+      flatten({1,{2,{3}},4})-->{1,2,{3},4}
+  
+  Preserves the order of elements.
+  
+has
+  Check if a table has any item from a list of items.
+  has(tbl,...}
+  lst:has(...)--as a list method.
+  
+  Checks if any value from a variadic argument list is present
+  in a table. Similar to Python's in operator usage with lists.
+  Returns true if any value from {...} is in tbl, else false.
+  
+  Ex:
+      has(tbl,'bar')
+      has(tbl,'bar','baz')
+      has({11,22,33},88,22)-->true because of 22
+  
+haskey
+  Check if a table has any item from a list of items.
+  haskey(tbl,...}
+  lst:haskey(...)--as a list method.
+  
+  Checks if any value from a variadic argument list is present
+  in a table's keys. Similar to Python's in operator usage 
+  with lists.
+  
+  Returns true if any key from {...} is a key in tbl,
+  else false.
+  
+  Ex:
+      haskey(tbl,'bar')
+      haskey(tbl,'bar','baz')
+      haskey({11,22,33},88,2)-->true because key 2 exists.
+  
+left
+  Alias for `bot`, returning the first element of the table.
+  left(tbl)
+  
+list
+  Pythonical list type. Has Lua table functions as methods.
+  So versatile!
+      List(...)    --create list from a list.
+      List(lst)    --create list from a list.
+      List(lst,...)--same as List(...)
+      List{lst}    --create list from a list.
+      List()       --create an empty list.
+      List{}       --create an empty list.
+      List{size=n,default=v}--create list of size n, value v.
+      List{v,size=n}        --create list of size n, value v.
+      List{v,s=n}           --s can be used instead of size.
+      List{n,default=v}     --create list of size n, value v.
+  
+pop
+  Removes and returns the last element of the table.
+  pop(tbl)
+  
+popleft
+  Removes and returns the first element of the table.
+  popleft(tbl)
+  
+push
+  Adds a value to the end of the table.
+  push(tbl,val)
+  
+  Returns the modified table.
+  
+pushleft
+  Inserts a value at the beginning of the table.
+  pushleft(tbl,val)
+  
+  Returns the modified table.
+  
+right
+  Alias for `top`, returning the last element of the table.
+  right(tbl)
+  
+slice
+  Performs a Pythonic slice operation on a table.
+  slice(tbl,first,last,step)
+  
+  Negative values are not supported for
+      start (first), stop (last), and step.
+  
+  Lua tables start at index 1, and so does this function.
+  
+  Ex:
+      table.slice({11,22,33},2)  -->{22,33}
+      table.slice({11,22,33},2,2)-->{22}
+  
+  If the input is of type List, it converts the result
+  back to a List object. Otherwise, it returns a table.
+  
+sort
+  Returns a new sorted table.
+  tbl=sort(tbl,comp)
+  
+sorted
+  Returns a new sorted table.
+  tbl=sort(tbl,comp)
+  
+table.is_blank
+  True if a table is empty or only blank strings.
+  :is_blank()
+  Returns true if the table is empty or all string values
+  are blank after trimming whitespace;
+  otherwise, returns false.
+  
+table.is_empty
+  Checks if a given table is empty.
+  :is_empty()
+  Returns true if the table has no key-value pairs;
+  otherwise, returns false.
+  
+top
+  Returns the last element of the table.
+  top(tbl)
+  
+uniq
+  Removes duplicate consecutive entries from a sorted list.
+  uniq(tbl)
+  Like the UNIX `uniq` command, it assumes the input table is
+  already sorted.
+  
+unroll
+  Recursively unrolls a table or List.
+  unroll(tbl)
+  Returns a table or List of all leaf nodes, depth-first.
+  
+
+Strings
+----------
+
+dbg
+  Debug print function with filtering capabilities.
+  dbg(args)
+  
+  args (table): A table containing arguments to print. The
+  table may contain a key `s` to specify a filter class
+  for the message.
+  
+  Usage:
+      dbg({"message", s="filter_class"})
+      dbg{"message",  s="filter_class"} --prefer this syntax.
+  
+  Filtering:
+      Set `DBG_SUPPRESS` to control which messages get
+      printed. Any key set to a non-false, non-nil value
+      will suppress messages of that type.
+      
+      Example:
+          DBG_SUPPRESS["error"] = true
+          dbg({"An error occurred.", s="error"})
+              --message will be suppressed due to the filter.
+          dbg({"A general log message."})
+               -- message will still be printed.
+  
+indent
+  Indent string s by indentation level i.
+  indent(i,s)
+  
+  indent(1,"Hello world.")-->"    Hello world."
+  
+  An indentation level is 4 spaces.
+  
+print
+  Print function that accepts multiple args.
+  print(s,...)
+  
+  Modeled after the python print function.
+  print(a,b,c)--and it works!
+  
+printf
+  printf function.
+  printf(s,...)
+  
+repr
+  string representation of basic types.
+  repr(foo)
+  
+sprintf
+  sprintf function.
+  sprintf(s,...)-->string
+  
+str
+  Convert an object to a string.
+  str(obj)-->a string
+  
+  Use this when you want to print an object.
+  
+string.join
+  Joins a table of strings into a string.
+  string.join(s,tbl)
+  
+  s (string):  The delimiter to use between items.
+  tbl (table): The table of strings to join.
+  
+  Returns a single string composed of the joined table elements.
+  
+  Ex:
+      string.join(", ", {"apple", "banana", "cherry"})
+          --> "apple, banana, cherry"
+      string.join("", {"a", "b", "c"})--> "abc"
+  
+string.ltrim
+  Removes leading whitespace from a string.
+  string.ltrim(s) --> trimmedString
+  
+  Ex:
+      string.ltrim("   Hello, World   ") --> "Hello, World!   "
+  
+string.rtrim
+  Removes trailing whitespace from a string.
+  string.rtrim(s) --> trimmedString
+  
+  Ex:
+      string.rtrim("   Hello, World   ") --> "   Hello, World!"
+  
+string.slice
+  Slices a string from a Pythonic perspective.
+  string.slice(s,first,last,step)
+  
+  s (string): The string to slice.
+  first (number, optional): The starting index of the 
+      slice. Defaults to 1.
+  last  (number, optional): The ending index of the slice.
+      Defaults to the length of the string.
+  step  (number, optional): The step size for slicing.
+      Defaults to 1.
+  
+  Returns:
+      A substring of the input string, sliced according to the
+      provided parameters.
+  
+  Ex:
+      string.slice("Hello, World!", 8, 12, 2)
+      string.slice("Lua is great!", 1, 7, 2)
+  
+string.split
+  Splits a string into a table of substrings.
+  s (string): The string to split.
+  sep (string, optional): The separator to split on.
+      Defaults to '%s+' (space characters).
+  _max (number, optional): Maximum number of splits.
+      Defaults to -1 (no limit).
+  _regex (boolean, optional): Whether the separator should
+      be treated as a regex pattern. Defaults to false.
+  
+  Returns:
+      A table of substrings resulting from splitting the input
+      string.
+  
+  Ex:
+      string.split("1-2-3", "-") --> {"1","2","3"}
+  
+string.startswith
+  Checks if a string starts with another.
+  string.startswith(s,start)
+  
+  s (string): The string to check.
+  start (string): Does it start with this string?
+  
+  Returns a boolean indicating whether the string starts with
+  the specified substring.
+  
+  Ex:
+      string.startswith("Hello, World!", "Hello") --> true
+      string.startswith("Lua is great!", "great!") --> false
+  
+string.trim
+  Removes leading and trailing whitespace.
+  string.trim(s)-->string
+  s:trim()--is also a string method
+  
+  string.trim("   ok  ")->"ok"
+  
+string.trimall
+  Removes all whitespace from a string.
+  string.trimall(s) --> s without any whitespace
+  
+  Ex:
+      string.trimall("  This is a test  ")-->"Thisisatest"
+  
+  You might use this on base64 encoded strings, for example.
+      
+tbl_repr
+  Return the string representation of a table.
+  tbl_repr(arg,i,_hide)
+  
+  arg:table or List --the table
+  i:int 			  --indentation level. can be 0 or nil.
+  __hide:bool 	  --if true, hide double underscore keys.
+  
+tbl_str
+  Table to string, hides double underscore string keys.
+  tbl_str(arg)-->string
+  
+
+Functional
+----------
+
+ALL
+  returns true if BOOL(arg) for all arg in args.
+  ALL(args)
+  
+  Uses python-style boolean evauation.
+  
+  ALL({"!"})      -->true
+  ALL({1,2,3})    -->true
+  ALL({1,0,3})    -->false
+  ALL({})         -->false
+  ALL(List())     -->false
+  ALL({"nope",""})-->false
+  
+ANY
+  Returns true if true for any argument.
+  ANY(args)
+  
+  Uses python-style boolean evauation.
+  
+  ANY({true, false})-->true
+  ANY({true, true}) -->true
+  ANY({false,false})-->false
+  ANY({})           -->false
+  ANY(List())       -->false
+  
+APPLY
+  APPLY function.
+  APPLY(f,...)
+  
+  Calls function f with the optional arg list.
+  
+  APPLY(math.sqrt,16)-->returns 4
+  
+BOOL
+  Python style boolean function.
+  BOOL(arg)
+  
+  return false if arg in
+      [nil,zero,false,"",{},List()] else return true
+  
+  In Lua only nil and false are false, but Python is more
+  permissive, where zero,empty strings,empty lists and dicts,
+  all evaulate as false. This function uses the Python style.
+  
+BSIEVE
+  Binary sieve: separates the haves from the have-nots.
+  haves,havenots=BSIEVE(f,args)
+  
+  This function separates elements in a table (args) into two
+  sets based on a predicate function (f). Elements that satisfy
+  the predicate function are placed in the 'haves' set, while
+  those that do not satisfy the predicate are placed in the
+  'havenots' set.
+  
+  Parameters:
+      f: 	A predicate function that takes one argument and
+          returns a boolean indicating whether the element
+          belongs to the 'haves' set.
+      args: A table containing elements to be separated.
+  
+  Returns:
+      Two tables: The first contains elements from args that
+      satisfy the condition defined by the predicate function
+      f, and the second contains elements that do not.
+  
+  Example usage:
+      over_ten = function(n) return n > 10 end
+  
+      over,under=BSIEVE(over_ten,{9, 10, 11, 12, 13})
+      print("> 10:", unpack(over))  --{11, 12, 13}
+      print("<=10:", unpack(under)) --{9, 10}
+  
+CALL
+  Calls f if it is a function and is not nil.
+  CALL(f,_args)
+  
+  If args is nil, calls f() directly;
+  otherwise, unpacks args and passes them to f().
+  CALL(function() print("Hello") end, {})-->prints "Hello"
+  CALL(function(a) print(a) end, {"World"})-->prints "World"
+  
+CURRY
+  Curry2 in lua.
+  CURRY(f)
+  
+  This function is designed to implement currying in Lua.
+  Currying is a technique in functional programming where a
+  function with multiple arguments is transformed into a
+  weirdo function structure that represents the curried form
+  of the input function. Each level of nesting corresponds to
+  a fixed argument of the original function.
+  
+  To use this function, pass the original function as the
+  argument. The resulting curried function can then be called
+  with the required number of arguments, either all at once or
+  over multiple calls.
+  
+  This is curry2, so it needs a function with 2 arguments.
+  
+  function add(a,b)
+      return a+b
+   end
+  cad=CURRY(add)
+  
+  --all at once:
+  print(cad(1)(2))--> 3
+  
+  --one at a time:
+  c =cad(2^5)
+  cc=c(1)
+  print(cc)-->33
+  
+DEPTH
+  --Depth-first traversal: f(arg) for arg in args.
+  DEPTH(f,args)
+  
+  Depth-first traversal, applies function f as it goes.
+  Returns the arg sequence unchanged.
+  
+  Example:
+      t = {1,2,{3,{4}},5}
+      DEPTH(print, t)--> prints 1 2 3 4 5
+  
+DEPTHFIRST
+  --Depth-first traversal: f(arg) for arg in args.
+  DEPTH(f,args)
+  
+  Depth-first traversal, applies function f as it goes.
+  Returns the arg sequence unchanged.
+  
+  Example:
+      t = {1,2,{3,{4}},5}
+      DEPTH(print, t)--> prints 1 2 3 4 5
+  
+DYNAMIC
+  Dynamic scoping function.
+  DYNAMIC(name)
+  
+  Returns a function that, when called, returns the dynamically
+  scoped value of the global variable named by the input string.
+  
+  DYNAMIC("print")()-->returns the current print function.
+  
+FILTER
+  Filters a table or List based on a predicate function, f.
+  FILTER(f,args)
+  
+  Returns a table or List containing the items where
+  f(item) is true.
+  
+  Ex:
+      even=function(n) return n % 2 == 0;end
+      nn=FILTER(even, {1, 2, 3, 4, 5})
+      print(nn) --> {2, 4}
+  
+FOREACH
+  Applies the function f to every item in the list args.
+  MAP(f,args)
+  MAP{f,args}
+  MAP(f,args,iter)
+  MAP{f,args,iter=pairs}--alternate syntax allows named arg.
+  
+  Returns a list of the results.
+  
+  Will iterate over elements in args using an iterator function,
+  which defaults to ipairs().
+  
+  Examples:
+  MAP(function(x) return x * 2 end, {1, 2, 3})
+  --> {2, 4, 6}
+  
+  Using the default iterator (ipairs):
+  MAP(function(x) return x + 1 end, {1, 2, 3})
+  --> {2, 3, 4}
+  
+  Specifying a custom iterator:
+  local t = {[1] = "a", [2] = "b", [3] = "c", ["foo"]="bar"}
+  MAP(function(v) return v end, t, pairs)
+  --> {"a","b","c","bar"}
+  
+FULLINTERLEAVE
+  Interleave 2 sequences, with placeholder values.
+  FULLINTERLEAVE(seq1, seq2, placeholder)
+  
+  Returns a sequence containing alternating elements from seq1
+  and seq2, using the placeholder for missing values in the
+  shorter sequence.
+  
+  Returns a List if seq1 and/or seq2 is a List.
+  
+  Ex:
+      seq1 = {1,2,3,4}
+      seq2 = {'a','b'}
+      placeholder='X'
+      interleaved=FULLINTERLEAVE(seq1,seq2,placeholder)
+      --interleaved-->{1,'a',2,'b',3,'X',4,'X'}
+  
+FULLZIP
+  Makes a sequence of pairs from 2 sequences.
+  FULLZIP(seq1,seq2,placeholder)
+  
+  Python zip but uses the longest sequence.
+  
+  The placeholder cannot be nil.
+  
+  Ex:
+      seq1 = {1, 2, 3, 4}
+      seq2 = {'a', 'b'}
+      placeholder = 'X'
+      zippy = FULLZIP(seq1, seq2, placeholder)
+      --zippy-->{{1,'a'},{2,'b'},{3,'X'},{4,'X'}}
+  
+IF
+  if BOOL(bool) v1 else v2
+  IF(bool,v1,v2)
+  
+  Evaluates a boolean expression and returns either v1 or v2
+  based on the result.
+  
+  Uses python-style boolean evauation.
+  
+  IF(true, "true", "false")-->"true"
+  IF(false, "true", "false")-->"false"
+  
+IFF
+  IFF function.
+  IFF(bool,f1,f2)
+  
+  Similar to IF but takes functions f1 and f2 instead of values.
+  Executes f1() if BOOL(bool) returns true,
+  otherwise executes f2().
+  
+  Uses python-style boolean evauation.
+  
+  IFF(true,function() print("f1") end,
+           function() print("f2") end)-->f1()
+  
+INTERLEAVE
+  Interleave 2 sequences.
+  INTERLEAVE(seq1, seq2)
+  
+  Interleaves two sequences (seq1 and seq2),
+  stopping at the length of the shortest sequence.
+  
+  Ex:
+      seq1 = {1,2,3}
+      seq2 = {'a','b','c'}
+      interleaved = INTERLEAVE(seq1, seq2)
+      --interleaved-->{1,'a',2,'b',3,'c'}
+  
+MAP
+  Applies the function f to every item in the list args.
+  MAP(f,args)
+  MAP{f,args}
+  MAP(f,args,iter)
+  MAP{f,args,iter=pairs}--alternate syntax allows named arg.
+  
+  Returns a list of the results.
+  
+  Will iterate over elements in args using an iterator function,
+  which defaults to ipairs().
+  
+  Examples:
+  MAP(function(x) return x * 2 end, {1, 2, 3})
+  --> {2, 4, 6}
+  
+  Using the default iterator (ipairs):
+  MAP(function(x) return x + 1 end, {1, 2, 3})
+  --> {2, 3, 4}
+  
+  Specifying a custom iterator:
+  local t = {[1] = "a", [2] = "b", [3] = "c", ["foo"]="bar"}
+  MAP(function(v) return v end, t, pairs)
+  --> {"a","b","c","bar"}
+  
+MAX
+  Returns the largest item in args or nil if args is empty.
+  MAX(args)
+  
+  Iterates through the sequence to find the maximum value.
+  
+  MAX({10, 20, 30})-->30
+  MAX({})-->nil
+  
+MIN
+  Returns the smallest item in args or nil if args is empty.
+  MIN(args)
+  
+  Iterates through the sequence to find the minimum value.
+  
+  MIN({10, 20, 30})-->10
+  MIN({})-->nil
+  
+NOT
+  NOT function.
+  NOT(arg)
+  
+  Returns true if arg is in [nil,zero,false,"",{}],
+  else returns false.
+  
+  Uses python-style boolean evauation.
+  
+  NOT(nil)-->true
+  NOT(0)-->true
+  NOT(false)-->true
+  NOT("")-->true
+  NOT({})-->true
+  
+PARTIAL
+  PARTIAL function application.
+  PARTIAL(f,arrg)
+  
+  Returns a variadic function where arrg is the first argument.
+  
+  The original function f is expected to take arrg as its first
+  argument, followed by any number of additional arguments.
+  
+  PARTIAL(print, "Hello")("World")-->prints "Hello World"
+  PARTIAL(print, "Hello")("Steve")-->prints "Hello Steve"
+  
+PARTITION
+  Partition a sequence.
+  PARTITION(f, seq,_retain)
+  
+  f is a boolean function that determines the separator
+  item.
+  
+  _retain has 3 modes: set it to "keep" and it will retain
+  the separator item as it's own subsequence. Set it to
+  any other non-false value and it will begin the next
+  sub-sequence starting with the separator item.
+  
+  If _retain is nil or false, the separator item will be
+  discarded.
+  
+SUM
+  Sums a sequence of numbers.
+  SUM(args)
+  
+  Returns the sum of all numeric values in the sequence.
+  The sequence must contain only numbers.
+  Returns 0 if args is empty.
+  
+  SUM({1, 2, 3, 4, 5})-->15
+  SUM({10, 20, 30, 40, 50})-->150
+  SUM({})-->0
+  
+ZIP
+  Makes a sequence of pairs from 2 sequences.
+  ZIP(seq1, seq2)
+  
+  Like Python's zip function.
+  Stops at the end of the shortest sequence.
+  
+  Ex:
+      local seq1 = {1, 2, 3}
+      local seq2 = {'a', 'b', 'c'}
+      local zipped = ZIP(seq1, seq2)
+      --zipped-->{{1, 'a'}, {2, 'b'}, {3, 'c'}}
+  
+  
+all
+  returns true if BOOL(arg) for all arg in args.
+  ALL(args)
+  
+  Uses python-style boolean evauation.
+  
+  ALL({"!"})      -->true
+  ALL({1,2,3})    -->true
+  ALL({1,0,3})    -->false
+  ALL({})         -->false
+  ALL(List())     -->false
+  ALL({"nope",""})-->false
+  
+any
+  Returns true if true for any argument.
+  ANY(args)
+  
+  Uses python-style boolean evauation.
+  
+  ANY({true, false})-->true
+  ANY({true, true}) -->true
+  ANY({false,false})-->false
+  ANY({})           -->false
+  ANY(List())       -->false
+  
+bool
+  Python style boolean function.
+  BOOL(arg)
+  
+  return false if arg in
+      [nil,zero,false,"",{},List()] else return true
+  
+  In Lua only nil and false are false, but Python is more
+  permissive, where zero,empty strings,empty lists and dicts,
+  all evaulate as false. This function uses the Python style.
+  
+bsieve
+  Binary sieve: separates the haves from the have-nots.
+  haves,havenots=BSIEVE(f,args)
+  
+  This function separates elements in a table (args) into two
+  sets based on a predicate function (f). Elements that satisfy
+  the predicate function are placed in the 'haves' set, while
+  those that do not satisfy the predicate are placed in the
+  'havenots' set.
+  
+  Parameters:
+      f: 	A predicate function that takes one argument and
+          returns a boolean indicating whether the element
+          belongs to the 'haves' set.
+      args: A table containing elements to be separated.
+  
+  Returns:
+      Two tables: The first contains elements from args that
+      satisfy the condition defined by the predicate function
+      f, and the second contains elements that do not.
+  
+  Example usage:
+      over_ten = function(n) return n > 10 end
+  
+      over,under=BSIEVE(over_ten,{9, 10, 11, 12, 13})
+      print("> 10:", unpack(over))  --{11, 12, 13}
+      print("<=10:", unpack(under)) --{9, 10}
+  
+curry
+  Curry2 in lua.
+  CURRY(f)
+  
+  This function is designed to implement currying in Lua.
+  Currying is a technique in functional programming where a
+  function with multiple arguments is transformed into a
+  weirdo function structure that represents the curried form
+  of the input function. Each level of nesting corresponds to
+  a fixed argument of the original function.
+  
+  To use this function, pass the original function as the
+  argument. The resulting curried function can then be called
+  with the required number of arguments, either all at once or
+  over multiple calls.
+  
+  This is curry2, so it needs a function with 2 arguments.
+  
+  function add(a,b)
+      return a+b
+   end
+  cad=CURRY(add)
+  
+  --all at once:
+  print(cad(1)(2))--> 3
+  
+  --one at a time:
+  c =cad(2^5)
+  cc=c(1)
+  print(cc)-->33
+  
+filter
+  Filters a table or List based on a predicate function, f.
+  FILTER(f,args)
+  
+  Returns a table or List containing the items where
+  f(item) is true.
+  
+  Ex:
+      even=function(n) return n % 2 == 0;end
+      nn=FILTER(even, {1, 2, 3, 4, 5})
+      print(nn) --> {2, 4}
+  
+map
+  Applies the function f to every item in the list args.
+  MAP(f,args)
+  MAP{f,args}
+  MAP(f,args,iter)
+  MAP{f,args,iter=pairs}--alternate syntax allows named arg.
+  
+  Returns a list of the results.
+  
+  Will iterate over elements in args using an iterator function,
+  which defaults to ipairs().
+  
+  Examples:
+  MAP(function(x) return x * 2 end, {1, 2, 3})
+  --> {2, 4, 6}
+  
+  Using the default iterator (ipairs):
+  MAP(function(x) return x + 1 end, {1, 2, 3})
+  --> {2, 3, 4}
+  
+  Specifying a custom iterator:
+  local t = {[1] = "a", [2] = "b", [3] = "c", ["foo"]="bar"}
+  MAP(function(v) return v end, t, pairs)
+  --> {"a","b","c","bar"}
+  
+max
+  Returns the largest item in args or nil if args is empty.
+  MAX(args)
+  
+  Iterates through the sequence to find the maximum value.
+  
+  MAX({10, 20, 30})-->30
+  MAX({})-->nil
+  
+min
+  Returns the smallest item in args or nil if args is empty.
+  MIN(args)
+  
+  Iterates through the sequence to find the minimum value.
+  
+  MIN({10, 20, 30})-->10
+  MIN({})-->nil
+  
+sum
+  Sums a sequence of numbers.
+  SUM(args)
+  
+  Returns the sum of all numeric values in the sequence.
+  The sequence must contain only numbers.
+  Returns 0 if args is empty.
+  
+  SUM({1, 2, 3, 4, 5})-->15
+  SUM({10, 20, 30, 40, 50})-->150
+  SUM({})-->0
+  
+zip
+  Makes a sequence of pairs from 2 sequences.
+  ZIP(seq1, seq2)
+  
+  Like Python's zip function.
+  Stops at the end of the shortest sequence.
+  
+  Ex:
+      local seq1 = {1, 2, 3}
+      local seq2 = {'a', 'b', 'c'}
+      local zipped = ZIP(seq1, seq2)
+      --zipped-->{{1, 'a'}, {2, 'b'}, {3, 'c'}}
+  
+  
+
+Bitwise
+----------
+
+checkbit
+  Check if bit b of number n is set.
+  checkbit(n,b)-->bool
+  
+  bits start at 1. there is no bit zero. I say so.
+  
+setbit
+  Set bit b of number n.
+  setbit(n,b)-->number
+  
+  bits start at 1. there is no bit zero. I say so.
+  
+setbits
+  Create a new number with bits set.
+  n=setbits(...)
+  
+  Pass in a list bit numbers to set.
+  
+  Bits are numbered starting at 1. So 1 to 8 for bits in a byte.
+  Ex: setbits(3,1)--> 101 in binary.
+  
+  Allows non-numbers as args, they will be skipped.
+  You can't use nil as a placeholder in a list. It means end
+  of list. So, you can use any non-number as a placeholder.
+  
+  setting bit 0 is a no-op. There is no bit zero.
+  
+  print("bit: "..setbits(3,1))--> 5
+  
+unsetbit
+  Unset bit b of number n.
+  unsetbit(n,b)-->number
+  
+  bits start at 1. there is no bit zero. I say so.
+  
+
+Misc
+----------
+
+SSET
+  Safe set, disallow assignment of blank value.
+  SSET(arrg)-->arrg
+  
+  Used to detect programming errors and unitialized data.
+  Usage: foo=SSET(val)
+  Error on nil, empty string, or empty table.
+  
+basename
+  Shell basename
+  basename(path,_sep)
+  
+  Returns the last path component from a given path.
+  
+  The optional _sep argument can be used to set the
+  path separator.
+  
+  Ex:
+      base = basename("/home/user/documents/file.txt")
+      print(base)-->"file.txt"
+  
+circle_back
+  Generate indices for iterating round a list.
+  circle_back(pos,size,base0)-->index
+  
+  Return incremented pos or "circle back" to beginning of an
+  array of a certain size. Set base0 to use this on zero based
+  arrays.
+  
+  Use this to implement circular arrays.
+  
+  Usage: pos has a different meaning if base0 is true:
+      --for lua table or List:
+      seq={11,22,33}
+      size=#seq
+      pos=1
+      while 1 do
+          print(seq[pos])
+          pos=circle_back(pos,size)
+       end
+  
+      --for c/c++ array:
+      seq=Array{3,0}--[0,0,0]
+      size=seq:len()
+      seq[0]=11
+      seq[1]=22
+      seq[2]=33
+      pos=0
+      while 1 do
+          print(seq[pos])
+          pos=circle_back(pos,size,true)
+       end
+  
+dir
+  Print keys of tbl.
+  dir(tbl)
+  
+  Useful in interactive interpreter.
+  
+getext
+  Return the file extension of path if it exists.
+  getext(path)-->file_ext
+  
+  Returns an empty string if no file path exists.
+  Returns "." if path=="."
+  
+glob
+  Glob pattern matching using the posix.glob library.
+  glob(pattern,_flags)
+  
+  Glob pattern matching using the posix.glob library.
+  
+  _flags is an optional integer specifying flags for the glob.
+      Defaults to 0. See: posix/doc/modules/posix.glob.html
+  
+  Returns a table of filenames
+  
+  Example usage:
+      matches = glob("*.*")
+      for _, match in ipairs(matches) do
+          print(match)
+      end
+  
+  Requires the posix module.
+  
+keys
+  Return keys of tbl.
+  keys(tbl)->list of keys
+  
+pass
+  It does nothing!
+  pass()-->nil
+  
+shell
+  Executes a shell command.
+  shell(cmd)
+  
+  Super dangerous function. Security disaster.
+  
+  Uses the $SHELL environment var to determine the
+  shell.
+  
+  Ex:
+      shell("touch timestamp")
+  
+  If the command fails, this function will call the
+  "error" function to report the error and crash your
+  program.
+  
+  Don't ship code that uses this.
+  
+values
+  Return values of tbl.
+  values(tbl)->list of values
+  
+warn
+  Print a warning to stderr.
+  warn(msg)
+  
+
+Pythonic
+----------
+
+bin
+  Returns binary representation of signed int n as a string.
+  bin(n)
+  
+  _width: byte width parameter. Default=4
+          _width 1 through 8 is allowed.
+  
+  signed ints as large as  2^53-1 can be represented.
+  signed ints as small as -2^53+1 can be represented.
+  
+  unsigned ints as large as  2^52-1 can be represented.
+  unsigned ints as small as -2^52+1 can be represented.
+  
+  Of course, these will also be limited by the byte width.
+  
+callable
+  Return true if obj is callable like a function.
+  callable(obj)-->bool
+  
+chr
+  Return char for number n
+  chr(n)-->string
+  
+  chr(99)-->"c"
+  
+  Only for ASCII.
+  n must be in range [0..255]
+  
+  Empty string or 0 returns null char.
+  
+delattr
+  Delete attribute name from obj.
+  delattr(obj,name)
+  
+getattr
+  Get attribute name from obj.
+  getattr(obj,name)
+  
+globals
+  Return the table of global variables.
+  globals()->table
+  
+hasattr
+  Check if obj has an attribute by name.
+  hasattr(obj,name)
+  
+hex
+  Return hex representation of int as string: '0xAF01'
+  hex(n)->string
+  
+input
+  Prompt the user for a line of input.
+  input(_prompt)-->string
+  
+locals
+  Return a table of local variables
+  locals()-->table
+  
+  Does not get upvalues,closures,captured variables.
+  
+oct
+  Convert an int to an octal string representation.
+  oct(n)-->string
+  
+ord
+  Return number for char c
+  orc(c)-->int
+  
+  ASCII only.
+  
+pow
+  Exponentiation: raise a to the b power.
+  pow(a,b)-->number
+  
+  math.pow in lua before version 5.3
+  
+setattr
+  Set attribute name of obj.
+  setattr(obj,name)
+  
+ubin
+  Return a binary representation of a 32 bit unsigned integer.
+  ubin(n,_width)
+  
+os.path.basename
+  Python style basename function.
+  os.path.basename(path)-->string
+  os.path.basename(path,sep)-->string
+  
+  You can provide the path separator. If you don't, it
+  will be auto detected.
+  
+os.path.dirname
+  Return the directory part of a path.
+  os.path.dirname(path)-->string
+  os.path.dirname(path,sep)-->string
+  
+  Returns a string which may be empty if no directory
+  is in path.
+  
+  The returned directory string will not end in a path
+  separator char unless the directory string represents
+  the root directory.
+  
+os.path.expanduser
+  Replace ~ and ~user in paths.
+  os.path.expanduser(path)-->string
+  
+  if path starts with ~ then the home dir of the current
+  user will be resolved. This information comes from an
+  environment variable. It will crash your program with
+  an error if HOME or USERPROFILE is unset.
+  
+  if the path starts with ~user then the hypothetical
+  home dir of a user will be confabulated.
+  
+  ~user expansion is only available on Linux and MacOS.
+  It will crash your program with an error if you try this
+  on Windows.
+  
+  Ex:
+      os.path.expanduser("~/docs")-->"/home/sandy/docs"
+      os.path.expanduser("~sam/docs")-->"/home/sam/docs"
+  
+os.path.getsize
+  Get the size of a file.
+  os.path.getsize(filename)-->int
+  
+  It only works on files.
+  
+  Returns nil if called on a directory or an unreadable file.
+  
+os.path.isfile
+  Returns true if path is a filepath.
+  os.path.isfile(path)-->bool
+  
+  Requires lfs module
+  
+os.path.join
+  Join 2 paths together.
+  os.path.join=function(...)-->string
+  
+  Auto detect the path separator (this is what you want):
+      os.path.join("foo","bar","baz")->"foo/bar/baz"
+  
+  2nd arg can be a path separator if the first arg is a table:
+      os.path.join({"foo","bar","baz"},"\\")->"foo\\bar\\baz"
+  
+  Use keyword arg for sep:
+      os.path{"foo","bar",sep=":"}
+  
+os.path.realpath
+  Resolve a real file path.
+  os.path.realpath(path)-->string
+  
+  The path must exist. If it doesn't exist this function
+  returns nil.
+  
+os.path.split
+  Split a path.
+  os.path.split=function(path)-->head,tail
+  os.path.split=function(path,sep)-->head,tail
+  
+  Returns split path components. Splits from the right side.
+  
+  The path separator is optional and will be auto-detected if
+  not supplied.
+  
+  Ex:
+      os.path.split("/foo/bar)-->"/foo","bar"
+  
+os.path.splitext
+  Split a file extension off of a path.
+  os.path.splitext(path)-->path,ext
+  
+  Ex:
+      os.path.splitext("foo.txt")-->"foo",".txt"
+  
+sys.exit
+  Alternative name for the os.exit function.
+  sys.exit(code)
+  
+sys.argv
+  If you want to use sys.argv then you will have to set it in
+  every file you want to use it in! arg is nil if this is not
+  the main file! So no sys.argv in that case!
+
+  Ex:
+    sys.argv=arg
+
+
+Modules
+----------
+
+Lulua also has the following preconfigured modules available:
+
+base64:    base64 encoder/decoder
+bit:       bit manipulation lib for Lua5.1, already enabled.
+curses:    Full screen terminal character control.
+debug:     interactive debugger, already enabled call trace() or
+           breakpoint() in your code to trigger.
+fstring:   python style f-strings, already enabled use functions
+           f"..." or F"..."
+gambiarra: a very simple testing framework.
+int64:     64 bit integers.
+lfs:       lua filesystem, file and directory functions.
+linenoise: a "readline" alternative that actually compiles.
+lpeg:      parsing expression grammars for lua.
+lrandom    Mersenne Twister random number generator.
+luaglut:   old-school openGL.
+lunit:     a very complicated testing framework.
+nativefs:  for love2d, gets rid of filesystem restrictions.
+penlight:  another standard library for lua, already enabled
+           imported as "penlight".
+posix:     lua posix, 
+sdl:       simple direct media layer.
+signal:    raise and catch system signals.
+sqlite:    sql database.
+utf8:      utf8 functions from the compat53 module.
+zlib:      file compression functions.
+

@@ -1,0 +1,7 @@
+This is lunitx Version 0.6, an extended version of Lunit
+for Lua 5.2.
+
+Lunit is a unit testing framework for lua.
+
+To learn more about lunit take a look in ANNOUNCE
+and look in DOCUMENTATION and check lunitx/ example files

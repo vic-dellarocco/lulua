@@ -1,0 +1,19 @@
+Lulua 1.0.2:
+
+	Adds:
+		Improvements to the makefile.
+		Penlight is now also available as pl.
+		Penlight tests pass on Linux.
+		Nativefs tests pass on Linux.
+	Removes:
+		Removed penlight.xml module:
+			reason: It is broken and I can't fix it. It has been
+					scheduled to be depreciated by the penlight
+					maintainers. There are known issues.
+
+Lulua 1.0.1:
+
+	Adds:
+		lrandom: a mersenne twister random number generator.
+		int64: a 64 bit int type.
+

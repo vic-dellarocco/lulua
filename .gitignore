@@ -1,0 +1,16 @@
+# The file that contains my commit message for git:
+COMMIT_MESSAGE
+
+# MacOS bull-nonsense:
+**/.DS_Store
+**/._*
+
+# Compiled objects and binaries
+*.a
+*.o
+*.so
+*.dll
+*.exe
+*.dylib
+a.out
+

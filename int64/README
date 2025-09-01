@@ -1,0 +1,31 @@
+This code provides support for 64-bit signed integers in Lua. Arithmetic is
+as defined by the C standard, that is, overflow is handled by wrap-around.
+
+To build the library and run a simple test, just do make.
+If Lua is not installed in /usr/local, tell make:
+	make LUA_TOPDIR=/var/tmp/lhf/lua-5.3.5/install
+
+To install the library where Lua can find it, use a variant of these:
+	make install
+	sudo make install
+	sudo make install LIBDIR=/usr/local/lib/lua/5.3
+
+For detailed installation instructions, see
+	http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/install.html
+
+The library is simple and intuitive; see the summary below.
+Read test.lua to see the library in action.
+
+Create 64-bit ints with int64.new, which accepts Lua numbers and strings,
+and then operate on them naturally, using ordinary arithmetic operations.
+There are no bitwise operations, though.
+
+This code is hereby placed in the public domain and also under the MIT license.
+
+Please send comments, suggestions, and bug reports to lhf@tecgraf.puc-rio.br .
+
+int64 library:
+__add(z,w)	__lt(z,w)	__sub(z,w)	min		version
+__div(z,w)	__mod(z,w)	__tostring(z)	new(z)
+__eq(z,w)	__mul(z,w)	__unm(z)	tonumber(z)
+__le(z,w)	__pow(z,n)	max		tostring(z)

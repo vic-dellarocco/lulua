@@ -1,0 +1,177 @@
+Lulua Lua Distro.
+
+Copyright © 2024 Vic Dellarocco.
+
+The Lulua Lua Distro provides a lua programming
+environment with a collection of additional modules.
+
+The project is licensed under the terms of the MIT License,
+with submodules licensed under the terms of the MIT License,
+the zlib License, and the ISC License, as noted.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+[ Lulua contains code from Lua 5.1
+  Copyright (C) 1994-2012 Lua.org, PUC-Rio.
+  See lulua/lua5.1/COPYRIGHT ]
+
+[ Lulua contains the following software as modules,
+  licensed as noted:
+
+base64
+	[A binary to text encoder library.]
+	Luiz Henrique de Figueiredo
+	Public domain, See: base64/README
+	https://web.tecgraf.puc-rio.br/~lhf/ftp/lua/index.html
+
+bit: lua-bit-numberlua
+	[Bit operations for 32 bit integers, LuaJIT bit module
+	 compatible.]
+	David Manura
+	MIT License, See: bit/COPYRIGHT
+	https://github.com/davidm/lua-bit-numberlua
+
+int64: lint64
+	[64-bit integers for Lua]
+	Luiz Henrique de Figueiredo
+	MIT license, See: int64/README
+	https://web.tecgraf.puc-rio.br/~lhf/ftp/lua/index.html
+
+curses: luancurses
+	[Full-screen text terminal manipulation.]
+	Jesse Luehrs
+	MIT License, See curses/LICENSE
+	https://github.com/doy/luancurses
+
+debug: debugger.lua
+	[A debugger.]
+	Scott Lembcke
+	MIT License, See debug/README.md
+	https://github.com/slembcke/debugger.lua
+
+fstring
+	[Python-style f-strings.]
+	Hisham Muhammad
+	MIT License, See fstring/LICENSE
+	https://github.com/hishamhm/f-strings
+
+gambiarra
+	[Test suite.]
+	Serge Zaitsev, Sebastian Huebner
+	MIT License, See gambiarra/LICENSE
+	https://git.kokolor.es/imo/gambiarra
+
+lfs: lua filesystem
+	[Lua filesystem functions.]
+	Kepler Project
+	MIT License, See lfs/LICENSE
+	https://github.com/lunarmodules/luafilesystem
+
+linenoise: lua-linenoise
+	[Terminal text input library.]
+	Rob Hoelz
+	MIT License, See linenoise/COPYING
+	https://github.com/hoelzro/lua-linenoise
+
+lrandom
+	[Random number generator based on the Mersenne Twister.]
+	Luiz Henrique de Figueiredo
+	MIT license, See: lrandom/README
+	https://web.tecgraf.puc-rio.br/~lhf/ftp/lua/index.html
+
+lpeg
+	[Parsers.]
+	Lua.org, PUC-Rio.
+	MIT License, See lpeg/lpeg.html
+	https://www.inf.puc-rio.br/~roberto/lpeg/
+
+luaglut
+	[OpenGL.]
+	Varol Kaptan
+	MIT License, See luaglut/LICENSE
+	https://github.com/LuaDist/luaglut
+
+lunit
+	[Unit testing.]
+	Michael Roth
+	MIT License, See lunit/LICENSE
+	https://github.com/mrothNET/lunit
+
+nativefs
+	[Remove filesystem restrictions in Love2d.]
+	megagrump@pm.me, EngineerSmith
+	MIT License, see nativefs/LICENSE
+	https://github.com/EngineerSmith/nativefs
+
+penlight
+	[A standard library.]
+	Steve Donovan, David Manura
+	MIT License, See penlight/LICENSE.md
+	https://github.com/lunarmodules/Penlight
+
+posix
+	[Posix.]
+	luaposix authors
+	MIT License, See posix/LICENSE
+	https://github.com/luaposix/luaposix
+
+sdl
+	[Multimedia.]
+	David Demelier
+	ISC License, See sdl/LICENSE
+	https://github.com/Tangent128/luasdl2
+
+signal
+	[Signal handlers.]
+	Patrick J. Donnelly
+	MIT License, See signal/LICENSE
+	https://github.com/batrick/lua-signal
+
+stdlib
+	[Lulua Lua Standard library.]
+	Vic Dellarocco
+	MIT License, See stdlib.lua
+	https://github.com/vic-dellarocco/lulua
+
+sqlite: lsqlite3
+	[Database.]
+	Tiago Dionizio, Doug Currie
+	MIT License, See sqlite/doc/lsqlite3.html
+	http://lua.sqlite.org
+	[Contains the sqlite C library which is
+	 in the public domain.
+	 https://www.sqlite.org]
+
+utf8: utf8 module from compat53
+	[Basic utf8 support.]
+	Kepler Project
+	MIT License, see utf8/LICENSE
+	https://github.com/lunarmodules/lua-compat-5.3
+
+zlib
+	[File compression.]
+	Tiago Dionizio
+	MIT License, See zlib/README
+	https://github.com/LuaDist/lzlib
+	[Contains zlib C library which is licensed
+	 under the ZLIB license, See zlib/zlib-1.3/LICENSE
+	 https://www.zlib.net]
+
+]
+(end of COPYRIGHT)
